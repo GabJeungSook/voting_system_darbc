@@ -121,7 +121,7 @@ class Elections extends Component implements Tables\Contracts\HasTable
                         ->body('You can only activate one (1) election at a time.')
                         ->danger()
                         ->send();
-                        $this->redirect(route('elections'));
+                        $this->redirect(route('admin.elections'));
                     } else {
                         $record->is_active == false ? $record->update(['is_active' => true]) : $record->update(['is_active' => false]);
                     }

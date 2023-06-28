@@ -19,4 +19,9 @@ class Election extends Model
     {
         return $this->HasMany(Candidate::class);
     }
+
+    public function registered_members()
+    {
+        return $this->HasMany(RegisteredMember::class);
+    }
 }

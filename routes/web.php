@@ -18,36 +18,58 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-
 Route::get('/dashboard', function () {
+    if(auth()->user()->role_id == 1)
+    {
+        return redirect()->route('admin.dashboard');
+    }elseif(auth()->user()->role_id == 2)
+    {
+        return redirect()->route('registration.dashboard');
+    }
+
+});
+
+Route::get('admin/dashboard', function () {
     return view('admin.dashboard');
 })
     ->middleware(['auth', 'verified', 'role:admin'])
-    ->name('dashboard');
+    ->name('admin.dashboard');
 
-Route::get('/users', function () {
+Route::get('/admin/users', function () {
     return view('admin.users');
 })
     ->middleware(['auth', 'verified', 'role:admin'])
-    ->name('users');
+    ->name('admin.users');
 
-Route::get('/elections', function () {
+Route::get('/admin/elections', function () {
     return view('admin.elections');
 })
     ->middleware(['auth', 'verified', 'role:admin'])
-    ->name('elections');
+    ->name('admin.elections');
 
-Route::get('/positions', function () {
+Route::get('/admin/positions', function () {
     return view('admin.positions');
 })
     ->middleware(['auth', 'verified', 'role:admin'])
-    ->name('positions');
+    ->name('admin.positions');
 
-Route::get('/candidates', function () {
+Route::get('/admin/candidates', function () {
     return view('admin.candidates');
 })
     ->middleware(['auth', 'verified', 'role:admin'])
-    ->name('candidates');
+    ->name('admin.candidates');
+
+Route::get('registration/dashboard', function () {
+    return view('registration.dashboard');
+})
+    ->middleware(['auth', 'verified', 'role:registration'])
+    ->name('registration.dashboard');
+
+Route::get('registration/members', function () {
+    return view('registration.members');
+})
+    ->middleware(['auth', 'verified', 'role:registration'])
+    ->name('registration.members');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

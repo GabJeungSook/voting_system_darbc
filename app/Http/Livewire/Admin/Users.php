@@ -21,7 +21,7 @@ class Users extends Component implements Tables\Contracts\HasTable
 
     protected function getTableQuery(): Builder
     {
-        return User::query()->where('role_id', 2);
+        return User::query()->where('role_id', '!=', 1);
     }
 
     protected function getTableHeaderActions(): array
@@ -37,7 +37,7 @@ class Users extends Component implements Tables\Contracts\HasTable
                 {
                     DB::beginTransaction();
                     User::create([
-                        'role_id' => 2,
+                        'role_id' => $data['role_id'],
                         'name' => $data['name'],
                         'email' => $data['email'],
                         'password' => Hash::make($data['password']),
@@ -53,10 +53,6 @@ class Users extends Component implements Tables\Contracts\HasTable
                     ->body('Please match your passwords.')
                     ->danger()
                     ->send();
-                    // $this->dialog()->error(
-                    //     $title = 'Passwords did not match !',
-                    //     $description = 'Please match your passwords.'
-                    // );
                 }
             })
             ->form([
@@ -64,7 +60,14 @@ class Users extends Component implements Tables\Contracts\HasTable
                 Forms\Components\TextInput::make('email')->email()->required(),
                 Forms\Components\TextInput::make('password')->password()->required(),
                 Forms\Components\TextInput::make('confirm_password')->password()->required(),
-            ])
+                Forms\Components\Select::make('role_id')
+                ->label('User Assignment')
+                ->options([
+                    2 => 'Registration',
+                    3 => 'Voting'
+                ])
+                ->required(),
+                ])
         ];
     }
 
@@ -76,12 +79,20 @@ class Users extends Component implements Tables\Contracts\HasTable
             ->button()
             ->color('success')
             ->mountUsing(fn (Forms\ComponentContainer $form, User $record) => $form->fill([
+                'role_id' => $record->role_id,
                 'name' => $record->name,
                 'email' => $record->email,
             ]))
             ->form([
                 Forms\Components\TextInput::make('name')->required(),
                 Forms\Components\TextInput::make('email')->email()->required(),
+                Forms\Components\Select::make('role_id')
+                ->label('User Assignment')
+                ->options([
+                    2 => 'Registration',
+                    3 => 'Voting'
+                ])
+                ->required(),
                 Forms\Components\Fieldset::make('Change Password')
                 ->schema([
                     Forms\Components\TextInput::make('old_password')->reactive()->password(),
@@ -113,10 +124,6 @@ class Users extends Component implements Tables\Contracts\HasTable
                             ->body('Please match your passwords.')
                             ->danger()
                             ->send();
-                            // $this->dialog()->error(
-                            //     $title = 'Passwords did not match !',
-                            //     $description = 'Please match your passwords.'
-                            // );
                         }
                 } else {
                     Notification::make()
@@ -131,6 +138,7 @@ class Users extends Component implements Tables\Contracts\HasTable
                 }
                 }else{
                     DB::beginTransaction();
+                    $record->role_id = $data['role_id'];
                     $record->name = $data['name'];
                     $record->email = $data['email'];
                     $record->save();
@@ -165,6 +173,10 @@ class Users extends Component implements Tables\Contracts\HasTable
             ->searchable(),
             Tables\Columns\TextColumn::make('email')
             ->label('EMAIL')
+            ->searchable(),
+            Tables\Columns\TextColumn::make('roles.name')
+            ->formatStateUsing(fn (User $record) => strtoupper($record->roles->name))
+            ->label('ASSIGNMENT')
             ->searchable(),
         ];
     }
