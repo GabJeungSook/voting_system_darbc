@@ -25,6 +25,9 @@ Route::get('/dashboard', function () {
     }elseif(auth()->user()->role_id == 2)
     {
         return redirect()->route('registration.dashboard');
+    }elseif(auth()->user()->role_id == 3)
+    {
+        return redirect()->route('voting.dashboard');
     }
 
 });
@@ -70,6 +73,18 @@ Route::get('registration/members', function () {
 })
     ->middleware(['auth', 'verified', 'role:registration'])
     ->name('registration.members');
+
+Route::get('voting/dashboard', function () {
+    return view('voting.dashboard');
+})
+    ->middleware(['auth', 'verified', 'role:voting'])
+    ->name('voting.dashboard');
+
+Route::get('voting/voting-module', function () {
+    return view('voting.voting-module');
+})
+    ->middleware(['auth', 'verified', 'role:voting'])
+    ->name('voting.voting-module');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
