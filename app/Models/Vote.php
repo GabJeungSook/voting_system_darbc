@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RegisteredMember extends Model
+class Vote extends Model
 {
     use HasFactory;
     protected $guarded = [];
@@ -20,8 +20,18 @@ class RegisteredMember extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function votes()
+    public function registered_member()
     {
-        return $this->HasMany(Vote::class);
+        return $this->belongsTo(RegisteredMember::class, 'registered_member_id');
+    }
+
+    public function position()
+    {
+        return $this->belongsTo(Position::class, 'position_id');
+    }
+
+    public function candidate()
+    {
+        return $this->belongsTo(Candidate::class, 'candidate_id');
     }
 }

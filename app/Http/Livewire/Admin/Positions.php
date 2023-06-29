@@ -52,9 +52,7 @@ class Positions extends Component implements Tables\Contracts\HasTable
             ->form([
                 Forms\Components\Select::make('election_id')
                 ->label('Election')
-                ->options(Election::where('is_active', 1)->pluck('name', 'id'))
-                ->default(1)
-                ->disablePlaceholderSelection()->required(),
+                ->options(Election::where('is_active', 1)->pluck('name', 'id'))->required(),
                 Forms\Components\TextInput::make('name')->required(),
                 Forms\Components\TextInput::make('number_of_candidates')
                 ->numeric()

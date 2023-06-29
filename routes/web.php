@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Models\RegisteredMember;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -85,6 +86,14 @@ Route::get('voting/voting-module', function () {
 })
     ->middleware(['auth', 'verified', 'role:voting'])
     ->name('voting.voting-module');
+
+Route::get('/cast-vote/{record}', function ($record) {
+    $voteRecord = RegisteredMember::findOrFail($record);
+
+    return view('voting.cast-vote', ['record' => $voteRecord]);
+})
+    ->middleware(['auth', 'verified', 'role:voting'])
+    ->name('voting.cast-vote');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

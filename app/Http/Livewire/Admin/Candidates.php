@@ -65,9 +65,7 @@ class Candidates extends Component implements Tables\Contracts\HasTable
             ->form([
                 Forms\Components\Select::make('election_id')
                 ->label('Election')
-                ->options(Election::where('is_active', 1)->pluck('name', 'id'))
-                ->default(1)
-                ->disablePlaceholderSelection()->required(),
+                ->options(Election::where('is_active', 1)->pluck('name', 'id'))->required(),
                 Forms\Components\Select::make('position_id')
                 ->label('Position')
                 ->options(Position::whereHas('election', function($query){$query->where('is_active', 1);})->pluck('name', 'id'))
