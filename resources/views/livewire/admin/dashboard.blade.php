@@ -1,6 +1,8 @@
 <div>
-    <div class="bg-gray-900">
+    <x-button red icon="eye" label="View Live Result" wire:click="redirectToLiveResult" />
+    <div class="bg-gray-900 mt-5">
         <div class="mx-auto max-w-7xl">
+
           <div class="grid grid-cols-1 gap-px bg-white/5 sm:grid-cols-2 lg:grid-cols-4">
             <div class="bg-gray-900 px-4 py-6 sm:px-6 lg:px-8">
               <p class="text-sm font-medium leading-6 text-gray-400">Number of deploys</p>

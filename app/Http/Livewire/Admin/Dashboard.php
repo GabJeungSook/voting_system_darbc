@@ -10,4 +10,9 @@ class Dashboard extends Component
     {
         return view('livewire.admin.dashboard');
     }
+
+    public function redirectToLiveResult()
+    {
+        return redirect()->route('admin.live-result');
+    }
 }

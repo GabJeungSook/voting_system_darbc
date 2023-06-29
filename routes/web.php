@@ -63,6 +63,12 @@ Route::get('/admin/candidates', function () {
     ->middleware(['auth', 'verified', 'role:admin'])
     ->name('admin.candidates');
 
+Route::get('/admin/live-result', function () {
+    return view('admin.live-result');
+})
+    ->middleware(['auth', 'verified', 'role:admin'])
+    ->name('admin.live-result');
+
 Route::get('registration/dashboard', function () {
     return view('registration.dashboard');
 })

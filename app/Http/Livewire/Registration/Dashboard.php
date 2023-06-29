@@ -17,7 +17,7 @@ class Dashboard extends Component implements Tables\Contracts\HasTable
 
     protected function getTableQuery(): Builder
     {
-        return RegisteredMember::query()->where('user_id', auth()->user()->id);
+        return RegisteredMember::query()->where('election_id', $this->election_id)->where('user_id', auth()->user()->id);
     }
 
     protected function getTableColumns(): array
@@ -49,7 +49,7 @@ class Dashboard extends Component implements Tables\Contracts\HasTable
     {
         $this->election_id = Election::where('is_active', true)->first()?->id;
         $this->registered_count = RegisteredMember::where('election_id', $this->election_id)->where('user_id', auth()->user()->id)->count();
-        $this->registered_count_total = RegisteredMember::count();
+        $this->registered_count_total = RegisteredMember::where('election_id', $this->election_id)->count();
     }
 
     public function render()
