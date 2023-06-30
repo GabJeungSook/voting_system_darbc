@@ -101,6 +101,14 @@ Route::get('/cast-vote/{record}', function ($record) {
     ->middleware(['auth', 'verified', 'role:voting'])
     ->name('voting.cast-vote');
 
+Route::get('/view-vote-ballot/{record}', function ($record) {
+    $voteBallotRecord = RegisteredMember::findOrFail($record);
+
+    return view('voting.view-ballot', ['record' => $voteBallotRecord]);
+})
+    ->middleware(['auth', 'verified', 'role:voting'])
+    ->name('voting.view-ballot');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

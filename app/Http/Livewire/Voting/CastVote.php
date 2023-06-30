@@ -164,7 +164,8 @@ class CastVote extends Component
 
             // Redirect to the desired page after successful voting
             $this->reviewVoteModal = false;
-            return redirect()->route('voting.voting-module');
+            // route('voting.view-ballot', $record)
+            return redirect()->route('voting.view-ballot', $this->record);
 
         } catch (\Exception $e) {
             DB::rollback();
