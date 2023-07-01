@@ -16,7 +16,7 @@
                   <a href="#" class="font-medium text-gray-900 hover:text-gray-600">{{strtoupper($item->name)}}</a>
                 </div>
                 <div class="">
-                    <p class="text-gray-800 text-lg pr-4">{{$item->registered_members->where('election_id', $election->id)->count()}}</p>
+                    <p class="text-gray-800 text-lg pr-4">{{$item->registered_members->where('election_id', $election?->id)->count()}}</p>
                   </div>
               </div>
 
