@@ -21,7 +21,7 @@ class Dashboard extends Component
         $this->election = Election::where('is_active', true)->first();
         $this->tellers = User::where('role_id', 2)->get();
         $this->voting_tellers = User::where('role_id', 3)->get();
-        $this->total_registered_members = RegisteredMember::where('election_id', $this->election->id)->count();
+        $this->total_registered_members = RegisteredMember::where('election_id', $this->election?->id)->count();
         $this->total_voters = Vote::where('election_id', $this->election->id)->count();
     }
 
