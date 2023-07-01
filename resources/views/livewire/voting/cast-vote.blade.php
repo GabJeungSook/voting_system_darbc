@@ -21,7 +21,7 @@
                                 <div class="relative w-1/5 p-2">
                                     <div class="flex flex-col items-center">
                                         <div class="text-center font-semibold text-lg">
-                                            <img src="{{$this->getFileUrl($candidate->image_path)}}" alt="" class="mb-3 rounded-lg w-48 h-48 border-gray-400 border-2 transition duration-300 ease-in-out transform hover:scale-110 {{ in_array($candidate->id, $selectedImages[$currentStep]) ? 'border-8 border-green-600' : 'border-gray-400' }}" wire:click="selectImage({{$candidate->id }})">
+                                            <img src="{{$this->getFileUrl($candidate->image_path)}}" alt="" class="mb-3 rounded-lg w-60 h-60 border-gray-400 border-2 transition duration-300 ease-in-out transform hover:scale-110 {{ in_array($candidate->id, $selectedImages[$currentStep]) ? 'border-8 border-green-600' : 'border-gray-400' }}" wire:click="selectImage({{$candidate->id }})">
                                             <span>{{strtoupper($candidate->first_name.' '.$candidate->middle_name.' '.$candidate->last_name)}}</span>
                                         </div>
                                         @if (in_array($candidate->id, $selectedImages[$currentStep]))
@@ -101,7 +101,7 @@
                                                             $candidate = App\Models\Candidate::firstWhere('id', $selectedCandidate['candidate_id']);
                                                         @endphp
                                                         <div class="flex flex-col items-center">
-                                                            <img src="{{$this->getFileUrl($candidate->image_path)}}" alt="" class="mb-3 rounded-lg w-32 h-32 border-gray-400 border-2 transition duration-300 ease-in-out transform hover:scale-110" >
+                                                            <img src="{{$this->getFileUrl($candidate->image_path)}}" alt="" class="mb-3 rounded-lg w-56 h-56 border-gray-400 border-2 transition duration-300 ease-in-out transform hover:scale-110" >
                                                             <span class="text-center">{{ strtoupper($candidate->first_name.' '.$candidate->middle_name.' '.$candidate->last_name) }}</span>
                                                         </div>
                                                     @endif
