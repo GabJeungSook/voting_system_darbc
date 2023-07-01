@@ -53,7 +53,7 @@ class Positions extends Component implements Tables\Contracts\HasTable
                 Forms\Components\Select::make('election_id')
                 ->label('Election')
                 ->options(Election::where('is_active', 1)->pluck('name', 'id'))->required(),
-                Forms\Components\TextInput::make('name')->required(),
+                Forms\Components\TextInput::make('name')->label('Position')->required(),
                 Forms\Components\TextInput::make('number_of_candidates')
                 ->numeric()
                 ->required(),
@@ -77,7 +77,7 @@ class Positions extends Component implements Tables\Contracts\HasTable
                 'number_of_winners' => $record->number_of_winners,
             ]))
             ->form([
-                Forms\Components\TextInput::make('name')->required(),
+                Forms\Components\TextInput::make('name')->label('Position')->required(),
                 Forms\Components\TextInput::make('number_of_candidates')
                 ->numeric()
                 ->required(),
@@ -108,7 +108,7 @@ class Positions extends Component implements Tables\Contracts\HasTable
             ->formatStateUsing(fn (Position $record) => strtoupper($record->election->name))
             ->searchable(),
             Tables\Columns\TextColumn::make('name')
-            ->label('NAME')
+            ->label('POSITION')
             ->searchable(),
             Tables\Columns\TextColumn::make('number_of_candidates')
             ->label('NUMBER OF CANDIDATES')
