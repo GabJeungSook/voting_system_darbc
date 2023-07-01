@@ -9,6 +9,7 @@ use App\Models\RegisteredMember;
 use Filament\Notifications\Notification;
 use Filament\Tables\Actions\Action;
 use WireUi\Traits\Actions;
+use Illuminate\Support\Facades\Http;
 use DB;
 
 class Members extends Component implements Forms\Contracts\HasForms
@@ -110,21 +111,39 @@ class Members extends Component implements Forms\Contracts\HasForms
         return view('livewire.registration.members');
     }
 
+    // public function getDataFromAPI($id)
+    // {
+    //     $url = 'https://darbc.org/api/member-information/'.$id;
+    //     $response = file_get_contents($url);
+    //     $member_data = json_decode($response, true);
+
+    //     return collect($member_data['data']);
+    // }
+
     public function getDataFromAPI($id)
     {
         $url = 'https://darbc.org/api/member-information/'.$id;
-        $response = file_get_contents($url);
+        $response = Http::get($url);
         $member_data = json_decode($response, true);
 
         return collect($member_data['data']);
     }
 
 
+    // public function getNamesFromAPI()
+    // {
+    //     $url = 'https://darbc.org/api/member-darbc-names';
+    //     $response = file_get_contents($url);
+    //     $member_data = json_decode($response, true);
+
+    //     return collect($member_data);
+    // }
+
     public function getNamesFromAPI()
     {
         $url = 'https://darbc.org/api/member-darbc-names';
-        $response = file_get_contents($url);
-        $member_data = json_decode($response, true);
+        $response = Http::get($url);
+        $member_data = $response->json();
 
         return collect($member_data);
     }
