@@ -45,6 +45,11 @@ class VotingModule extends Component implements Tables\Contracts\HasTable
         ];
     }
 
+    protected function getTablePollingInterval(): ?string
+    {
+        return '3s';
+    }
+
     protected function getTableColumns(): array
     {
         return [
