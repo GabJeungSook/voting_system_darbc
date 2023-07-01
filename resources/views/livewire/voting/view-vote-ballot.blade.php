@@ -8,11 +8,11 @@
             <div class="px-4 py-5 sm:px-6">
                 <div class="flex space-x-1 justify-center">
                     <div class="grid place-content-start">
-                        <img src="{{ asset('images/darbc.png') }}" class="h-10" alt="">
+                        <img src="{{ asset('images/darbc.png') }}" class="xl:h-10 xl:w-10 sm:h-8 sm:w-16" alt="">
                     </div>
                     <div>
-                        <h1 class="text-xl font-bold text-gray-700 lg:text-sm xl:text-xl">DOLEFIL AGRARIAN REFORM BENEFICIARIES COOP.</h1>
-                        <h1 class=" lg:text-xs xl:text-sm text-center">DARBC Complex, Brgy. Cannery Site, Polomolok, South Cotabato</h1>
+                        <h1 class="text-xl font-bold text-gray-700 sm:text-sm lg:text-sm xl:text-xl">DOLEFIL AGRARIAN REFORM BENEFICIARIES COOP.</h1>
+                        <h1 class=" lg:text-xs sm:text-sm xl:text-sm text-center">DARBC Complex, Brgy. Cannery Site, Polomolok, South Cotabato</h1>
                         <h1 class="text-2xl text-center font-bold text-gray-700 mt-5">OFFICIAL BALLOT</h1>
                     </div>
 
