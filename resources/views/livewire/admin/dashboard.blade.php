@@ -43,7 +43,6 @@
                     <p class="text-gray-800 text-lg pr-4">{{$item->votes->where('election_id', $election?->id)->pluck('registered_member_id')->unique()->count()}}</p>
                   </div>
               </div>
-
           </li>
           @endforeach
         </ul>
