@@ -7,15 +7,20 @@ use App\Models\Election;
 
 class OfficialResult extends Component
 {
-    public $elections;
-    public $report_get;
+    public $election;
+    public $reportget;
+    public $report_show = false;
 
-    public function mount()
+    public function generateReport()
     {
-        $this->elections = Election::get();
+        $this->election = Election::find($this->reportget);
+        $this->report_show = true;
     }
+
     public function render()
     {
-        return view('livewire.admin.reports.official-result');
+        return view('livewire.admin.reports.official-result',[
+            'elections' => Election::get(),
+        ]);
     }
 }

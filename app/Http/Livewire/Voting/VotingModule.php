@@ -23,8 +23,9 @@ class VotingModule extends Component implements Tables\Contracts\HasTable
 
     protected function getTableQuery(): Builder
     {
-        return RegisteredMember::query()->where('election_id', $this->election_id
-    );
+        return RegisteredMember::query()->where('election_id', $this->election_id)
+        ->orderByRaw('CASE WHEN (SELECT COUNT(*) FROM votes WHERE votes.registered_member_id = registered_members.id) = 0 THEN 0 ELSE 1 END')
+        ->orderBy('created_at', 'desc');
     }
 
     public function getTableActions()

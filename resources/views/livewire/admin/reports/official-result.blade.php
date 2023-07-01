@@ -2,11 +2,11 @@
     <div class="flex justify-between">
         <div>
             <div>
-                <x-button label="Back" class="font-bold" icon="arrow-left" positive  wire:click="redirectToHealth" />
+                <x-button label="Back" class="font-bold" icon="arrow-left" positive  wire:click="redirectToDashboard" />
               </div>
           </div>
         <div class="select flex space-x-2 items-end">
-            <x-native-select label="Report" wire:model="report_get">
+            <x-native-select label="Report" wire:model="reportget">
               <option selected hidden>Select Election</option>
               @foreach ($elections as $election)
               <option value={{$election->id}}>
@@ -20,7 +20,7 @@
               <option value="3">Transmitted Report</option> --}}
               {{-- <option value="3">Masterlist</option> --}}
             </x-native-select>
-            <x-button.circle positive icon="refresh" spinner="report_get" />
+            <x-button positive icon="refresh" label="Generate" class="mb-0.5" spinner="reportget" wire:click="generateReport" />
           </div>
     </div>
 
@@ -58,6 +58,9 @@
     </div>
   @endif --}}
   <div class="mt-5 border rounded-lg p-4" x-ref="printContainer">
+    @if ($report_show)
+    @include('reports.official-result', ['election' => $election])
+    @endif
     {{-- @switch($report_get)
       @case(1)
         @include('reports.health')
