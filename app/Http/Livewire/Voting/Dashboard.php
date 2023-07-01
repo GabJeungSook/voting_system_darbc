@@ -6,6 +6,7 @@ use Livewire\Component;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Election;
+use App\Models\Vote;
 use App\Models\RegisteredMember;
 
 class Dashboard extends Component implements Tables\Contracts\HasTable
@@ -55,7 +56,7 @@ class Dashboard extends Component implements Tables\Contracts\HasTable
         $this->voter_count = RegisteredMember::where('election_id', $this->election_id)->whereHas('votes', function ($query) {
             $query->where('user_id', auth()->user()->id);
         })->count();
-        $this->voter_count_total = RegisteredMember::where('election_id', $this->election_id)->whereHas('votes')->count();
+        $this->voter_count_total = Vote::where('election_id', $this->election_id)->distinct('registered_member_id')->count();
     }
 
     public function render()
