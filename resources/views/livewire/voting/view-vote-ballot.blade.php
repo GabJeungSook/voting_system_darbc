@@ -33,21 +33,21 @@
             <div class="p-2">
                 <span class="text-sm font-mono">ELECTION DATE: {{\Carbon\Carbon::parse($election->date_from)->format('F d, Y')}} - {{\Carbon\Carbon::parse($election->date_to)->format('F d, Y')}}</span>
              </div>
-            <div class="px-4 py-5 sm:p-6">
+            <div class="px-4 py-3 sm:p-6">
                 <div class="px-4 sm:px-6 lg:px-8">
-                    <div class="mt-8 flow-root">
+                    <div class="mt-4 flow-root">
                       <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                        <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                        <div class="inline-block min-w-full pb-4 align-middle sm:px-6 lg:px-3">
                             <table class="min-w-full border border-gray-600">
                                 <tbody class="bg-white">
                                     @foreach ($positions as $item)
                                     <tr class="border-t border-gray-600">
-                                        <th colspan="5" scope="colgroup" class="bg-indigo-800 py-2 pl-4 pr-3 text-center text-md uppercase font-semibold text-white sm:pl-3">{{$item->name}}</th>
+                                        <th colspan="5" scope="colgroup" class="bg-indigo-800 py-2 pl-4 pr-3 text-left text-sm uppercase font-semibold text-white sm:pl-3">{{$item->name}}</th>
                                     </tr>
                                     @foreach ($votes as $vote)
                                     @if ($vote->position_id == $item->id)
                                     <tr class="border-t border-gray-600">
-                                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-center text-md font-medium text-gray-900 sm:pl-3">
+                                        <td class="whitespace-nowrap py-2 pl-4 pr-3 text-left text-sm font-medium text-gray-900 sm:pl-3">
                                             {{strtoupper($vote->candidate->first_name.' '.$vote->candidate->middle_name.' '.$vote->candidate->last_name)}}
                                         </td>
                                     </tr>
