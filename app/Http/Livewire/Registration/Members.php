@@ -120,14 +120,23 @@ class Members extends Component implements Forms\Contracts\HasForms
     //     return collect($member_data['data']);
     // }
 
-    public function getDataFromAPI($id)
+    public function getDataFromAPI($id, $page = 1, $perPage = 10)
     {
-        $url = 'https://darbc.org/api/member-information/'.$id;
+        $url = "https://darbc.org/api/member-information/{$id}?page={$page}&per_page={$perPage}";
         $response = Http::get($url);
-        $member_data = json_decode($response, true);
+        $member_data = $response->json();
 
         return collect($member_data['data']);
     }
+
+    // public function getDataFromAPI($id)
+    // {
+    //     $url = 'https://darbc.org/api/member-information/'.$id;
+    //     $response = Http::get($url);
+    //     $member_data = json_decode($response, true);
+
+    //     return collect($member_data['data']);
+    // }
 
 
     // public function getNamesFromAPI()
