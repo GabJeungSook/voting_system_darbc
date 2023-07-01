@@ -63,6 +63,12 @@ Route::get('/admin/candidates', function () {
     ->middleware(['auth', 'verified', 'role:admin'])
     ->name('admin.candidates');
 
+Route::get('/admin/members', function () {
+    return view('admin.members');
+})
+    ->middleware(['auth', 'verified', 'role:admin'])
+    ->name('admin.members');
+
 Route::get('/admin/live-result', function () {
     return view('admin.live-result');
 })
@@ -74,12 +80,6 @@ Route::get('/admin/reports/official-result', function () {
 })
     ->middleware(['auth', 'verified', 'role:admin'])
     ->name('admin.reports.official-result');
-
-Route::get('/admin/upload', function () {
-    return view('admin.upload');
- })
-    ->middleware(['auth', 'verified', 'role:admin'])
-    ->name('admin.upload');
 
 Route::get('registration/dashboard', function () {
     return view('registration.dashboard');
