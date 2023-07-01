@@ -23,6 +23,7 @@ class CastVote extends Component
     public $selectedImages = [];
     public $selectedCandidates = [];
     public $reviewVoteModal = false;
+    public $reviewVoteStepsModal = false;
 
     public function mount()
     {
@@ -108,6 +109,22 @@ class CastVote extends Component
         $this->reviewVoteModal = true;
         $this->selectedCandidates =  $selectedCandidates;
         // dd($selectedCandidates);
+    }
+
+    public function showReview()
+    {
+        $selectedCandidates = [];
+        foreach ($this->selectedImages as $step => $stepImages) {
+            $position = $this->positions[$step - 1];
+            foreach ($stepImages as $imageId) {
+                $selectedCandidates[] = [
+                    'candidate_id' => $imageId,
+                    'position_id' => $position->id,
+                ];
+            }
+        }
+        $this->reviewVoteStepsModal = true;
+        $this->selectedCandidates =  $selectedCandidates;
     }
 
     public function saveVote()

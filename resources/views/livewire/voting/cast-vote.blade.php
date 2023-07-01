@@ -1,6 +1,17 @@
 <div>
-    <div class="text-lg font-medium">
-        Voter: {{strtoupper($record->first_name.' '.$record->middle_name.' '.$record->last_name)}}
+
+    <div class="flex justify-between">
+        <div class="text-lg font-medium">
+            Voter: {{strtoupper($record->first_name.' '.$record->middle_name.' '.$record->last_name)}}
+        </div>
+        @if($currentStep != $steps)
+        <button wire:click="showReview" class="flex bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mr-3">
+                <path fill-rule="evenodd" d="M19.916 4.626a.75.75 0 01.208 1.04l-9 13.5a.75.75 0 01-1.154.114l-6-6a.75.75 0 011.06-1.06l5.353 5.353 8.493-12.739a.75.75 0 011.04-.208z" clip-rule="evenodd" />
+              </svg>
+            Review Selections
+        </button>
+        @endif
     </div>
     @if ($steps === 0)
         <div class="">
@@ -72,6 +83,63 @@
             </div>
         </div>
     @endif
+
+    {{-- REVIEW VOTE STEPS MODAL --}}
+    <x-modal.card title="Review Selections" fullscreen blur wire:model.defer="reviewVoteStepsModal">
+        {{-- @dump($selectedCandidates) --}}
+        <div class="px-4 sm:px-6 lg:px-8">
+            <div class="sm:flex sm:items-center">
+            </div>
+            <div class="mt-8 flow-root">
+                <h1 class="text-center text-2xl font-semibold mb-4">{{$election->name}}</h1>
+                <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                    <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                        <table class="min-w-full">
+                            <thead class="bg-white">
+                                <!-- Table header content goes here -->
+                            </thead>
+                            <tbody class="bg-white">
+                                @foreach ($positions as $item)
+                                    <tr class="border-t border-gray-200">
+                                        <th colspan="5" scope="colgroup" class="text-center bg-gray-50 py-2 pl-4 pr-3 text-sm font-semibold text-gray-900 sm:pl-3">{{ strtoupper($item->name) }}</th>
+                                    </tr>
+                                    <tr class="border-t border-gray-300">
+                                        <td colspan="5" class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                                            <div class="flex justify-center space-x-4">
+                                                @foreach ($selectedCandidates as $selectedCandidate)
+                                                    @if ($selectedCandidate['position_id'] === $item->id)
+                                                        @php
+                                                            $candidate = App\Models\Candidate::firstWhere('id', $selectedCandidate['candidate_id']);
+                                                        @endphp
+                                                        <div class="flex flex-col items-center">
+                                                            <img src="{{$this->getFileUrl($candidate->image_path)}}" alt="" class="mb-3 rounded-lg w-56 h-56 border-gray-400 border-2 transition duration-300 ease-in-out transform hover:scale-110" >
+                                                            <span class="text-center">{{ strtoupper($candidate->first_name.' '.$candidate->middle_name.' '.$candidate->last_name) }}</span>
+                                                        </div>
+                                                    @endif
+                                                @endforeach
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <x-slot name="footer">
+            <div class="flex justify-between gap-x-4">
+                <div class=""></div>
+                <div class="flex space-x-3">
+                    <x-button slate label="Close" x-on:click="close" />
+
+                </div>
+            </div>
+        </x-slot>
+    </x-modal.card>
 
     {{-- REVIEW VOTE MODAL --}}
     <x-modal.card title="Review Vote" fullscreen blur wire:model.defer="reviewVoteModal">
