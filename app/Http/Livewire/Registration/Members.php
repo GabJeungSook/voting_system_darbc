@@ -24,6 +24,7 @@ class Members extends Component implements Forms\Contracts\HasForms
     public $member_first_name;
     public $member_middle_name;
     public $member_last_name;
+    public $member_restriction;
     public $is_not_changed = false;
 
     protected $listeners = ['refreshComponent' => '$refresh'];
@@ -43,6 +44,12 @@ class Members extends Component implements Forms\Contracts\HasForms
         ];
     }
 
+    public function resets()
+    {
+        $this->member_id = null;
+        $this->is_not_changed = false;
+    }
+
     public function showData()
     {
         if($this->member_id != null)
@@ -53,6 +60,7 @@ class Members extends Component implements Forms\Contracts\HasForms
             $this->member_first_name = $this->member_details['user']['first_name'];
             $this->member_middle_name = $this->member_details['user']['middle_name'];
             $this->member_last_name =  $this->member_details['user']['surname'];
+            $this->member_restriction =  $this->member_details['active_restriction'];
         }
     }
 
@@ -76,15 +84,17 @@ class Members extends Component implements Forms\Contracts\HasForms
                 $title = 'Member Registered',
                 $description = 'User was successfully registered.'
             );
-            $this->member_id = null;
-            $this->is_not_changed = false;
+            $this->resets();
+            // $this->member_id = null;
+            // $this->is_not_changed = false;
         }else{
             $this->dialog()->error(
                 $title = 'Operation Faild',
                 $description = 'User was already registered.'
             );
-            $this->member_id = null;
-            $this->is_not_changed = false;
+            $this->resets();
+            // $this->member_id = null;
+            // $this->is_not_changed = false;
         }
 
     }
