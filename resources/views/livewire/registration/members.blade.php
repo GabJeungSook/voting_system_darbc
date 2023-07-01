@@ -13,7 +13,9 @@
         <x-input wire:model="member_last_name" disabled class="my-3" label="LAST NAME" placeholder="" />
         @if ($member_restriction != null)
         <x-input wire:model="member_restriction" disabled class="my-3" label="RESTRICTION" placeholder="" />
+        <div class="flex justify-end">
         <x-button negative label="Cancel" wire:click="resets"/>
+        </div>
         @else
         <div class="flex justify-end">
             <x-button positive label="Register"
