@@ -60,7 +60,13 @@ class Members extends Component implements Forms\Contracts\HasForms
             $this->member_first_name = $this->member_details['user']['first_name'];
             $this->member_middle_name = $this->member_details['user']['middle_name'];
             $this->member_last_name =  $this->member_details['user']['surname'];
-            $this->member_restriction =  $this->member_details['active_restriction'];
+            if($this->member_details['active_restriction'] == null)
+            {
+                $this->member_restriction = null;
+            }else{
+                $this->member_restriction =  $this->member_details['active_restriction']['entries'];
+            }
+
         }
     }
 
