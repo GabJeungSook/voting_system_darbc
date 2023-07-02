@@ -6,60 +6,35 @@ use Livewire\Component;
 use App\Models\Election;
 use App\Models\RegisteredMember;
 use Filament\Tables;
-use Filament\Forms;
-use Illuminate\Database\Eloquent\Builder;
-use Filament\Notifications\Notification;
 use Filament\Tables\Actions\Action;
-use WireUi\Traits\Actions;
-use Carbon\Carbon;
-use DB;
+use Illuminate\Database\Eloquent\Builder;
 
-class VotingModule extends Component implements Tables\Contracts\HasTable
+
+class Voted extends Component implements Tables\Contracts\HasTable
 {
     use Tables\Concerns\InteractsWithTable;
-    use Actions;
 
     public $election_id;
 
     protected function getTableQuery(): Builder
     {
-        return RegisteredMember::query()->where('election_id', $this->election_id)->doesntHave('votes');
-    }
-
-    protected function getTableHeaderActions(): array
-    {
-        return [
-            Action::make('view')
-            ->label('View Successfull Voters')
-            ->button()
-            ->color('warning')
-            ->icon('heroicon-o-eye')
-            ->url(route('voting.voted'))
-            ->openUrlInNewTab()
-        ];
-    }
-
-    public function getTableActions()
-    {
-        return [
-            Action::make('vote')
-            ->icon('heroicon-o-user')
-            ->button()
-            ->color('success')
-            ->url(fn (RegisteredMember $record): string => route('voting.cast-vote', $record))
-            ->visible(fn (RegisteredMember $record) => $record->votes->isEmpty()),
-            Action::make('view_ballot')
-            ->icon('heroicon-o-eye')
-            ->button()
-            ->color('warning')
-            ->url(fn (RegisteredMember $record): string => route('voting.view-ballot', $record))
-            ->visible(fn (RegisteredMember $record) => !$record->votes->isEmpty()),
-        ];
+        return RegisteredMember::query()->where('election_id', $this->election_id)->whereHas('votes');
     }
 
     protected function getTablePollingInterval(): ?string
     {
         return '3s';
+    }
+
+    public function getTableActions()
+    {
+        return [
+            Action::make('view_ballot')
+            ->icon('heroicon-o-eye')
+            ->button()
+            ->color('warning')
+            ->url(fn (RegisteredMember $record): string => route('voting.view-ballot', $record)),
+        ];
     }
 
     protected function getTableColumns(): array
@@ -92,8 +67,9 @@ class VotingModule extends Component implements Tables\Contracts\HasTable
         $this->election_id = Election::where('is_active', true)->first()?->id;
     }
 
+
     public function render()
     {
-        return view('livewire.voting.voting-module');
+        return view('livewire.voting.voted');
     }
 }

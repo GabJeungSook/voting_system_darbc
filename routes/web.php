@@ -111,6 +111,12 @@ Route::get('voting/voting-module', function () {
     ->middleware(['auth', 'verified', 'role:voting'])
     ->name('voting.voting-module');
 
+Route::get('voting/voting-module/successful-voters', function () {
+    return view('voting.voted');
+})
+    ->middleware(['auth', 'verified', 'role:voting'])
+    ->name('voting.voted');
+
 Route::get('/cast-vote/{record}', function ($record) {
     $voteRecord = RegisteredMember::findOrFail($record);
 

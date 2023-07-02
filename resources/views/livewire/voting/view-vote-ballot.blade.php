@@ -48,7 +48,7 @@
                                     @if ($vote->position_id == $item->id)
                                     <tr class="border-t border-gray-600">
                                         <td class="whitespace-nowrap py-2 pl-4 pr-3 text-left text-sm font-medium text-gray-900 sm:pl-3">
-                                            {{strtoupper($vote->candidate->first_name.' '.$vote->candidate->middle_name.' '.$vote->candidate->last_name)}}
+                                            {{strtoupper($vote->candidate?->first_name.' '.$vote->candidate?->middle_name.' '.$vote->candidate?->last_name)}}
                                         </td>
                                     </tr>
                                     @endif

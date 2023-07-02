@@ -162,7 +162,7 @@ class Users extends Component implements Tables\Contracts\HasTable
                     );
                 }),
                 Action::make('delete')
-                ->icon('heroicon-o-key')
+                ->icon('heroicon-o-trash')
                 ->button()
                 ->color('danger')
                 ->requiresConfirmation()
