@@ -96,7 +96,12 @@ class Positions extends Component implements Tables\Contracts\HasTable
                     $title = 'Success',
                     $description = 'Data was successfully updated'
                 );
-            })
+            }),
+            Action::make('delete')
+            ->icon('heroicon-o-trash')
+            ->button()
+            ->color('danger')
+            ->action(fn (Position $record) => $record->delete())
         ];
     }
 
