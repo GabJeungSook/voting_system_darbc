@@ -149,18 +149,27 @@ class Users extends Component implements Tables\Contracts\HasTable
                     );
                 }
             }),
-            Action::make('reset_password')
-            ->icon('heroicon-o-key')
-            ->button()
-            ->color('danger')
-            ->requiresConfirmation()
-            ->action(function (User $record, array $data): void {
-                $record->password = Hash::make('12345');
-                $record->save();
-                $this->dialog()->success(
-                    $title = 'Password Reset Successfull'
-                );
-            }),
+            Tables\Actions\ActionGroup::make([
+                Action::make('reset_password')
+                ->icon('heroicon-o-key')
+                ->color('warning')
+                ->requiresConfirmation()
+                ->action(function (User $record, array $data): void {
+                    $record->password = Hash::make('12345');
+                    $record->save();
+                    $this->dialog()->success(
+                        $title = 'Password Reset Successfull'
+                    );
+                }),
+                Action::make('delete')
+                ->icon('heroicon-o-key')
+                ->button()
+                ->color('danger')
+                ->requiresConfirmation()
+                ->action(fn (User $record) => $record->delete()),
+
+            ])
+
         ];
     }
 
