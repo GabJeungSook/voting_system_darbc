@@ -81,6 +81,12 @@ Route::get('/admin/reports/official-result', function () {
     ->middleware(['auth', 'verified', 'role:admin'])
     ->name('admin.reports.official-result');
 
+Route::get('/admin/reports/registered-members', function () {
+    return view('admin.reports.registered-members');
+ })
+    ->middleware(['auth', 'verified', 'role:admin'])
+    ->name('admin.reports.registered-members');
+
 Route::get('registration/dashboard', function () {
     return view('registration.dashboard');
 })

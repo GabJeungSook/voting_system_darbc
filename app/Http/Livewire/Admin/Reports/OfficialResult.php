@@ -4,17 +4,33 @@ namespace App\Http\Livewire\Admin\Reports;
 
 use Livewire\Component;
 use App\Models\Election;
+use App\Models\Position;
 
 class OfficialResult extends Component
 {
     public $election;
-    public $reportget;
-    public $report_show = false;
+    public $positions;
+    public $votes;
 
-    public function generateReport()
+    public function mount()
     {
-        $this->election = Election::find($this->reportget);
-        $this->report_show = true;
+        $this->positions = Position::with('candidates')->get();
+        $this->election = Election::where('is_active', true)->first();
+        $this->calculateVoteCounts();
+    }
+
+    public function calculateVoteCounts()
+    {
+        foreach ($this->positions as $position) {
+            $position->candidates->each(function ($candidate) {
+                $candidate->vote_count = $candidate->votes()->count();
+            });
+        }
+    }
+
+    public function redirectToDashboard()
+    {
+        return redirect()->route('admin.dashboard');
     }
 
     public function render()
