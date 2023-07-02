@@ -35,7 +35,6 @@ class VotingModule extends Component implements Tables\Contracts\HasTable
             ->color('warning')
             ->icon('heroicon-o-eye')
             ->url(route('voting.voted'))
-            ->openUrlInNewTab()
         ];
     }
 

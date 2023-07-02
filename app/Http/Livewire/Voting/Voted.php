@@ -67,6 +67,11 @@ class Voted extends Component implements Tables\Contracts\HasTable
         $this->election_id = Election::where('is_active', true)->first()?->id;
     }
 
+    public function returnToVotingIndex()
+    {
+        return redirect()->route('voting.voting-module');
+    }
+
 
     public function render()
     {
