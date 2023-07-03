@@ -6,9 +6,12 @@ use Livewire\Component;
 use App\Models\Position;
 use App\Models\Election;
 use App\Models\Vote;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Filament\Notifications\Notification;
 use WireUi\Traits\Actions;
+use Mike42\Escpos\Printer;
+use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
 use DB;
 
 class CastVote extends Component
@@ -20,6 +23,7 @@ class CastVote extends Component
     public $steps;
     public $positions;
     public $election;
+    public $votes;
     public $selectedImages = [];
     public $selectedCandidates = [];
     public $reviewVoteModal = false;
@@ -27,8 +31,8 @@ class CastVote extends Component
 
     public function mount()
     {
-        $this->positions = Position::get();
         $this->election = Election::where('is_active', true)->first();
+        $this->positions = Position::where('election_id', $this->election->id)->get();
         $this->steps = $this->positions->count();
         $this->selectedImages = [];
         foreach ($this->positions as $step => $position) {
@@ -79,6 +83,10 @@ class CastVote extends Component
                 // Add the image ID if it's not already selected and within the maximum limit
                 if ($selectedImagesCount < $maximumWinners) {
                     $this->selectedImages[$this->currentStep][] = $imageId;
+                }else{
+                    $this->dialog()->error(
+                        $title = 'Dili pwede mag sobra sa '.$maximumWinners.' ang pilion.',
+                    );
                 }
             }
         } else {
@@ -127,6 +135,49 @@ class CastVote extends Component
         $this->selectedCandidates =  $selectedCandidates;
     }
 
+    public function printBallot($member)
+    {
+        $reg_member = $member;
+        $votes = $reg_member->votes()->get();
+        $printerIp = "192.168.1.50";
+        $printerPort = 9100;
+        $member_name = strtoupper($reg_member->first_name.' '.$reg_member->middle_name.' '.$reg_member->last_name);
+        $connector = new NetworkPrintConnector($printerIp, $printerPort);
+        $printer = new Printer($connector);
+        try {
+            $printer->setJustification(Printer::JUSTIFY_CENTER);
+            $printer -> text("DARBC ELECTION 2023\n");
+            $printer -> text("OFFICIAL BALLOT\n");
+            $printer -> feed(2);
+            $printer -> text(\Carbon\Carbon::parse(now())->format('F d, Y')."\n");
+            $printer -> feed(3);
+            foreach($this->positions as $position)
+            {
+                $printer -> text(strtoupper($position->name)."\n");
+
+                  // Retrieve the votes for the current position and member
+                // $votes = $member->votes()->where('position_id', $position->id)->get();
+
+                 // Print the candidates for the position
+                    foreach ($votes as $vote) {
+                        if ($vote->position_id == $position->id)
+                        {
+                            $printer->text(strtoupper($vote->candidate?->first_name.' '.$vote->candidate?->middle_name.' '.$vote->candidate?->last_name) . "\n");
+                        }
+                    }
+                    $printer->feed(2);
+            }
+
+            $printer -> feed(4);
+            $printer -> text($member_name);
+            $printer -> feed(2);
+            $printer -> cut();
+            $printer -> close();
+        } finally {
+            $printer -> close();
+        }
+    }
+
     public function saveVote()
     {
         DB::beginTransaction();
@@ -168,21 +219,16 @@ class CastVote extends Component
             }
 
             DB::commit();
-
-            // Display a success message or perform any other necessary actions after saving the votes
-
-
+            $this->printBallot($this->record);
             Notification::make()
             ->title('Member Successfully Voted!')
             ->success()
             ->send();
 
 
-
-            // Redirect to the desired page after successful voting
             $this->reviewVoteModal = false;
-            // route('voting.view-ballot', $record)
-            return redirect()->route('voting.view-ballot', $this->record);
+            //  route('voting.view-ballot', $record);
+            return redirect()->route('voting.scan-qr');
 
         } catch (\Exception $e) {
             DB::rollback();
@@ -190,7 +236,7 @@ class CastVote extends Component
             // Handle the exception or display an error message
             Notification::make()
             ->title('Operation Failed!')
-            ->body('Members vote cannot be saved.')
+            ->body('Members vote cannot be saved.'. $e)
             ->danger()
             ->send();
         }

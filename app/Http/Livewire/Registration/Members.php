@@ -1,17 +1,21 @@
 <?php
 
 namespace App\Http\Livewire\Registration;
-
-use Livewire\Component;
-use Filament\Forms;
-use App\Models\Election;
-use App\Models\Member;
-use App\Models\RegisteredMember;
-use Filament\Notifications\Notification;
-use Filament\Tables\Actions\Action;
-use WireUi\Traits\Actions;
-use Illuminate\Support\Facades\Http;
 use DB;
+use Filament\Forms;
+use App\Models\Member;
+use Livewire\Component;
+use App\Models\Election;
+use Mike42\Escpos\Printer;
+use WireUi\Traits\Actions;
+use Mike42\Escpos\EscposImage;
+use App\Models\RegisteredMember;
+use Filament\Tables\Actions\Action;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
+use Filament\Notifications\Notification;
+use Mike42\Escpos\PrintConnectors\FilePrintConnector;
+use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
 
 class Members extends Component implements Forms\Contracts\HasForms
 {
@@ -79,13 +83,43 @@ class Members extends Component implements Forms\Contracts\HasForms
         }
     }
 
+    public function printQR($member)
+    {
+        $reg_member = $member;
+        $printerIp = "192.168.1.50";
+        $printerPort = 9100;
+        $content = $reg_member->qr_code;
+        $member_name = strtoupper($reg_member->first_name.' '.$reg_member->middle_name.' '.$reg_member->last_name);
+        $ec = Printer::QR_ECLEVEL_L;
+        $size = 8;
+        $model = Printer::QR_MODEL_2;
+        // $img = EscposImage::load(Storage::url('images/darbc.png'));
+        $connector = new NetworkPrintConnector($printerIp, $printerPort);
+        $printer = new Printer($connector);
+        try {
+            $printer->setJustification(Printer::JUSTIFY_CENTER);
+            // $printer -> graphics($img, 2);
+            $printer -> text("DARBC ELECTION 2023\n");
+            $printer -> text($member_name);
+            $printer -> feed(4);
+            $printer -> qrCode($content, $ec, $size, $model);
+            $printer -> text($content);
+            $printer -> feed(4);
+            $printer -> cut();
+            $printer -> close();
+        } finally {
+            $printer -> close();
+        }
+    }
+
     public function registerMember()
     {
+
         $exists = RegisteredMember::where('darbc_member_user_id', $this->member_id)->exists();
         if(!$exists)
         {
             DB::beginTransaction();
-            RegisteredMember::create([
+            $member = RegisteredMember::create([
                'election_id' => $this->election_id,
                'user_id' => auth()->user()->id,
                'darbc_member_user_id' => $this->member_id,
@@ -93,6 +127,7 @@ class Members extends Component implements Forms\Contracts\HasForms
                'first_name' => $this->member_first_name,
                'middle_name' => $this->member_middle_name,
                'last_name' => $this->member_last_name,
+               'qr_code' => uniqid(),
             ]);
             DB::commit();
             $this->dialog()->success(
@@ -100,8 +135,7 @@ class Members extends Component implements Forms\Contracts\HasForms
                 $description = 'User was successfully registered.'
             );
             $this->resets();
-            // $this->member_id = null;
-            // $this->is_not_changed = false;
+            $this->printQR($member);
         }else{
             $this->dialog()->error(
                 $title = 'Operation Faild',

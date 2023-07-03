@@ -7,6 +7,9 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Election;
 use App\Models\RegisteredMember;
+use Filament\Tables\Actions\Action;
+use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
+use Mike42\Escpos\Printer;
 
 class Dashboard extends Component implements Tables\Contracts\HasTable
 {
@@ -18,6 +21,48 @@ class Dashboard extends Component implements Tables\Contracts\HasTable
     protected function getTableQuery(): Builder
     {
         return RegisteredMember::query()->where('election_id', $this->election_id)->where('user_id', auth()->user()->id);
+    }
+
+    public function printQR($member)
+    {
+        $reg_member = $member;
+        $printerIp = "192.168.1.50";
+        $printerPort = 9100;
+        $content = $reg_member->qr_code;
+        $member_name = strtoupper($reg_member->first_name.' '.$reg_member->middle_name.' '.$reg_member->last_name);
+        $ec = Printer::QR_ECLEVEL_L;
+        $size = 8;
+        $model = Printer::QR_MODEL_2;
+        $connector = new NetworkPrintConnector($printerIp, $printerPort);
+        $printer = new Printer($connector);
+        try {
+            $printer->setJustification(Printer::JUSTIFY_CENTER);
+            $printer -> text("DARBC 2023 ELECTION\n");
+            $printer -> text($member_name);
+            $printer -> feed(4);
+            $printer -> qrCode($content, $ec, $size, $model);
+            $printer -> text($content);
+            $printer -> feed(4);
+            $printer -> cut();
+            $printer -> close();
+        } finally {
+            $printer -> close();
+        }
+    }
+
+    public function getTableActions()
+    {
+        return [
+            Action::make('reprint_qr')
+            ->label('Print QR Code')
+            ->icon('heroicon-o-printer')
+            ->button()
+            ->color('warning')
+            ->requiresConfirmation()
+            ->action(function (RegisteredMember $record) {
+                $this->printQR($record);
+            })
+        ];
     }
 
     protected function getTableColumns(): array

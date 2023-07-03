@@ -81,6 +81,12 @@ Route::get('/admin/reports/official-result', function () {
     ->middleware(['auth', 'verified', 'role:admin'])
     ->name('admin.reports.official-result');
 
+Route::get('/admin/upload', function () {
+    return view('admin.upload');
+ })
+    ->middleware(['auth', 'verified', 'role:admin'])
+    ->name('admin.upload');
+
 Route::get('/admin/reports/registered-members', function () {
     return view('admin.reports.registered-members');
  })
@@ -116,6 +122,12 @@ Route::get('voting/voting-module/successful-voters', function () {
 })
     ->middleware(['auth', 'verified', 'role:voting'])
     ->name('voting.voted');
+
+Route::get('voting/scan-qr-code', function () {
+    return view('voting.scan-qr');
+})
+    ->middleware(['auth', 'verified', 'role:voting'])
+    ->name('voting.scan-qr');
 
 Route::get('/cast-vote/{record}', function ($record) {
     $voteRecord = RegisteredMember::findOrFail($record);
