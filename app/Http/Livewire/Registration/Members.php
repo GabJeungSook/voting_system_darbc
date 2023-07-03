@@ -86,6 +86,7 @@ class Members extends Component implements Forms\Contracts\HasForms
     public function printQR($member)
     {
         $reg_member = $member;
+        $printerIp = "192.168.1.50";
         $printerPort = 9100;
         $content = $reg_member->qr_code;
         $member_name = strtoupper($reg_member->first_name.' '.$reg_member->middle_name.' '.$reg_member->last_name);
@@ -93,9 +94,10 @@ class Members extends Component implements Forms\Contracts\HasForms
         $size = 8;
         $model = Printer::QR_MODEL_2;
         // $img = EscposImage::load(Storage::url('images/darbc.png'));
-        $connector = new NetworkPrintConnector($_SERVER['SERVER_ADDR']);
+        $connector = new NetworkPrintConnector($printerIp);
         $printer = new Printer($connector);
         try {
+            if($printer)
             $printer->setJustification(Printer::JUSTIFY_CENTER);
             // $printer -> graphics($img, 2);
             $printer -> text("DARBC ELECTION 2023\n");
@@ -106,9 +108,14 @@ class Members extends Component implements Forms\Contracts\HasForms
             $printer -> feed(4);
             $printer -> cut();
             $printer -> close();
-        } catch(\Exception $e) {
-            dd($e->getMessage()); // Display the error message for debugging
-            // or Log::error($e->getMessage()); // Log the error message
+        } catch(\Exception $e)
+        {
+            Notification::make()
+            ->title($e->getMessage())
+            ->success()
+            ->send();
+        }finally {
+            $printer -> close();
         }
     }
 
