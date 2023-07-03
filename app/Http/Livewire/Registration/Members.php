@@ -107,7 +107,13 @@ class Members extends Component implements Forms\Contracts\HasForms
             $printer -> feed(4);
             $printer -> cut();
             $printer -> close();
-        } finally {
+        } catch(\Exception $e)
+        {
+            Notification::make()
+            ->title($e->getMessage())
+            ->success()
+            ->send();
+        }finally {
             $printer -> close();
         }
     }

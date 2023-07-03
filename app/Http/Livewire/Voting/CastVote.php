@@ -173,12 +173,6 @@ class CastVote extends Component
             $printer -> feed(2);
             $printer -> cut();
             $printer -> close();
-        }catch(\Exception $e)
-        {
-            Notification::make()
-            ->title($e->getMessage())
-            ->success()
-            ->send();
         } finally {
             $printer -> close();
         }
