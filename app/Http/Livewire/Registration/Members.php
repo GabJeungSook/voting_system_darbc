@@ -94,9 +94,10 @@ class Members extends Component implements Forms\Contracts\HasForms
         $size = 8;
         $model = Printer::QR_MODEL_2;
         // $img = EscposImage::load(Storage::url('images/darbc.png'));
-        $connector = new NetworkPrintConnector($printerIp, $printerPort);
+        $connector = new NetworkPrintConnector($printerIp);
         $printer = new Printer($connector);
         try {
+            if($printer)
             $printer->setJustification(Printer::JUSTIFY_CENTER);
             // $printer -> graphics($img, 2);
             $printer -> text("DARBC ELECTION 2023\n");
