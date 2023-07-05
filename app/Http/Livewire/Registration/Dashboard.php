@@ -26,14 +26,14 @@ class Dashboard extends Component implements Tables\Contracts\HasTable
     public function printQR($member)
     {
         $reg_member = $member;
-        $printerIp = "192.168.1.50";
+        $printerIp = "192.168.6.106";
         $printerPort = 9100;
         $content = $reg_member->qr_code;
         $member_name = strtoupper($reg_member->first_name.' '.$reg_member->middle_name.' '.$reg_member->last_name);
         $ec = Printer::QR_ECLEVEL_L;
         $size = 8;
         $model = Printer::QR_MODEL_2;
-        $connector = new NetworkPrintConnector($printerIp, $printerPort);
+        $connector = new NetworkPrintConnector($printerIp);
         $printer = new Printer($connector);
         try {
             $printer->setJustification(Printer::JUSTIFY_CENTER);

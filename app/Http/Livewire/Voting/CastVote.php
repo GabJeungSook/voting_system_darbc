@@ -139,7 +139,7 @@ class CastVote extends Component
     {
         $reg_member = $member;
         $votes = $reg_member->votes()->get();
-        $printerIp = "192.168.1.50";
+        $printerIp = "192.168.6.105";
         $printerPort = 9100;
         $member_name = strtoupper($reg_member->first_name.' '.$reg_member->middle_name.' '.$reg_member->last_name);
         $connector = new NetworkPrintConnector($printerIp, $printerPort);
@@ -150,6 +150,7 @@ class CastVote extends Component
             $printer -> text("OFFICIAL BALLOT\n");
             $printer -> feed(2);
             $printer -> text(\Carbon\Carbon::parse(now())->format('F d, Y')."\n");
+            $printer -> text(\Carbon\Carbon::parse(now())->format('h:i:s A')."\n");
             $printer -> feed(3);
             foreach($this->positions as $position)
             {
