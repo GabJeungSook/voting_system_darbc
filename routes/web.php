@@ -63,6 +63,12 @@ Route::get('/admin/candidates', function () {
     ->middleware(['auth', 'verified', 'role:admin'])
     ->name('admin.candidates');
 
+Route::get('/admin/printers', function () {
+    return view('admin.printers');
+})
+    ->middleware(['auth', 'verified', 'role:admin'])
+    ->name('admin.printers');
+
 Route::get('/admin/members', function () {
     return view('admin.members');
 })

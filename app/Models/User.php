@@ -58,4 +58,9 @@ class User extends Authenticatable
     {
         return $this->HasMany(Vote::class);
     }
+
+    public function printer()
+    {
+        return $this->HasOne(Printer::class);
+    }
 }

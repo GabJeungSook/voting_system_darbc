@@ -139,7 +139,7 @@ class CastVote extends Component
     {
         $reg_member = $member;
         $votes = $reg_member->votes()->get();
-        $printerIp = "192.168.6.105";
+        $printerIp = auth()->user()->printer->ip_address;
         $printerPort = 9100;
         $member_name = strtoupper($reg_member->first_name.' '.$reg_member->middle_name.' '.$reg_member->last_name);
         $connector = new NetworkPrintConnector($printerIp, $printerPort);

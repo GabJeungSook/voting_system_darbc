@@ -86,7 +86,7 @@ class Members extends Component implements Forms\Contracts\HasForms
     public function printQR($member)
     {
         $reg_member = $member;
-        $printerIp = "192.168.6.106";
+        $printerIp = auth()->user()->printer->ip_address;
         $printerPort = 9100;
         $content = $reg_member->qr_code;
         $member_name = strtoupper($reg_member->first_name.' '.$reg_member->middle_name.' '.$reg_member->last_name);
