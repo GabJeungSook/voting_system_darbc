@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Registration;
 use DB;
+use Filament\Tables;
 use Filament\Forms;
 use App\Models\Member;
 use Livewire\Component;
@@ -10,6 +11,7 @@ use Mike42\Escpos\Printer;
 use WireUi\Traits\Actions;
 use Mike42\Escpos\EscposImage;
 use App\Models\RegisteredMember;
+use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Actions\Action;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
@@ -17,9 +19,9 @@ use Filament\Notifications\Notification;
 use Mike42\Escpos\PrintConnectors\FilePrintConnector;
 use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
 
-class Members extends Component implements Forms\Contracts\HasForms
+class Members extends Component implements Tables\Contracts\HasTable
 {
-    use Forms\Concerns\InteractsWithForms;
+    use Tables\Concerns\InteractsWithTable;
     use Actions;
 
     public $election_id;
@@ -48,6 +50,86 @@ class Members extends Component implements Forms\Contracts\HasForms
             ->options(Member::pluck('full_name', 'id'))
             // ->options($this->member_full_names->pluck('full_name', 'id'))
             ->required()
+        ];
+    }
+
+    protected function getTableQuery(): Builder
+    {
+        return Member::query();
+        // return Member::query()->orderBy('restriction', 'asc');
+    }
+
+    public function getTableActions()
+    {
+        return [
+            Action::make('register')
+            ->icon('heroicon-o-check')
+            ->button()
+            ->color('success')
+            ->action(function (Member $record, array $data): void {
+                $exists = RegisteredMember::where('darbc_member_user_id', $record->id)->exists();
+                if(!$exists)
+                {
+                    DB::beginTransaction();
+                    $member = RegisteredMember::create([
+                       'election_id' => $this->election_id,
+                       'user_id' => auth()->user()->id,
+                       'darbc_member_user_id' => $record->id,
+                       'darbc_id' =>  $record->darbc_id,
+                       'first_name' => $record->first_name,
+                       'middle_name' =>$record->middle_name,
+                       'last_name' => $record->last_name,
+                       'qr_code' => uniqid(),
+                    ]);
+                    DB::commit();
+                    $this->dialog()->success(
+                        $title = 'Member Registered',
+                        $description = 'User was successfully registered.'
+                    );
+                    $this->resets();
+                    // $this->printQR($member);
+                }else{
+                    $this->dialog()->error(
+                        $title = 'Operation Faild',
+                        $description = 'User was already registered.'
+                    );
+                    $this->resets();
+                }
+            })->requiresConfirmation()->visible(function ($record) {
+                $exists = RegisteredMember::where('darbc_member_user_id', $record->id)->exists();
+                if(!$exists && $record->restriction === '')
+                {
+                    return true;
+                }else
+                {
+                    return false;
+                }
+            }),
+        ];
+    }
+
+    protected function getTableColumns(): array
+    {
+        return [
+            Tables\Columns\TextColumn::make('darbc_id')
+            ->label('DARBC ID')
+            ->searchable(isIndividual:true),
+            Tables\Columns\TextColumn::make('first_name')
+            ->label('FIRST NAME')
+            ->formatStateUsing(fn (Member $record) => strtoupper($record->first_name))
+            ->searchable(isIndividual:true),
+            Tables\Columns\TextColumn::make('middle_name')
+            ->label('MIDDLE NAME')
+            ->formatStateUsing(fn (Member $record) => strtoupper($record->middle_name))
+            ->searchable(isIndividual:true),
+            Tables\Columns\TextColumn::make('last_name')
+            ->label('LAST NAME')
+            ->formatStateUsing(fn (Member $record) => strtoupper($record->last_name))
+            ->searchable(isIndividual:true),
+            Tables\Columns\BadgeColumn::make('restriction')
+            ->label('RESTRICTION')
+            ->color('danger')
+            ->searchable(isIndividual:true)->sortable(),
         ];
     }
 
@@ -149,8 +231,6 @@ class Members extends Component implements Forms\Contracts\HasForms
                 $description = 'User was already registered.'
             );
             $this->resets();
-            // $this->member_id = null;
-            // $this->is_not_changed = false;
         }
 
     }
@@ -208,6 +288,7 @@ class Members extends Component implements Forms\Contracts\HasForms
 
     public function mount(): void
     {
+
         $this->election_id = Election::where('is_active', true)->first()?->id;
       // $this->member_full_names = $this->getNamesFromAPI();
     }

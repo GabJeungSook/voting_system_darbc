@@ -1,6 +1,7 @@
 <div>
     @if ($election_id != null)
-   {{$this->form}}
+    {{$this->table}}
+   {{-- {{$this->form}}
    <div class="my-3">
     <x-button class="w-full" indigo label="Submit" wire:click="showData" spinner="showData" />
    </div>
@@ -35,7 +36,7 @@
 
       <!-- Content goes here -->
     </div>
-  </div>
+  </div> --}}
   @else
   <div class="text-5xl text-red-700">
     No Active Election. Contact Admin to add and activate an election

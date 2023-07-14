@@ -73,26 +73,42 @@ class CastVote extends Component
         $position = $this->positions[$this->currentStep - 1];
         $maximumWinners = $position->number_of_winners;
 
-        if ($this->isMultipleSelectionStep()) {
-            $selectedImagesCount = count($this->selectedImages[$this->currentStep]);
+        $selectedImagesCount = count($this->selectedImages[$this->currentStep]);
 
-            if (in_array($imageId, $this->selectedImages[$this->currentStep])) {
-                // Remove the image ID if it's already selected
-                $this->selectedImages[$this->currentStep] = array_diff($this->selectedImages[$this->currentStep], [$imageId]);
-            } else {
-                // Add the image ID if it's not already selected and within the maximum limit
-                if ($selectedImagesCount < $maximumWinners) {
-                    $this->selectedImages[$this->currentStep][] = $imageId;
-                }else{
-                    $this->dialog()->error(
-                        $title = 'Dili pwede mag sobra sa '.$maximumWinners.' ang pilion.',
-                    );
-                }
-            }
+        if (in_array($imageId, $this->selectedImages[$this->currentStep])) {
+            // Remove the image ID if it's already selected
+            $this->selectedImages[$this->currentStep] = array_diff($this->selectedImages[$this->currentStep], [$imageId]);
         } else {
-            // Replace the selected image ID with the new one for single selection steps
-            $this->selectedImages[$this->currentStep] = [$imageId];
+            // Add the image ID if it's not already selected and within the maximum limit
+            if ($selectedImagesCount < $maximumWinners) {
+                $this->selectedImages[$this->currentStep][] = $imageId;
+            }else{
+                $this->dialog()->error(
+                    $title = 'Dili pwede mag sobra sa '.$maximumWinners.' ang pilion.',
+                );
+            }
         }
+
+        // if ($this->isMultipleSelectionStep()) {
+        //     $selectedImagesCount = count($this->selectedImages[$this->currentStep]);
+
+        //     if (in_array($imageId, $this->selectedImages[$this->currentStep])) {
+        //         // Remove the image ID if it's already selected
+        //         $this->selectedImages[$this->currentStep] = array_diff($this->selectedImages[$this->currentStep], [$imageId]);
+        //     } else {
+        //         // Add the image ID if it's not already selected and within the maximum limit
+        //         if ($selectedImagesCount < $maximumWinners) {
+        //             $this->selectedImages[$this->currentStep][] = $imageId;
+        //         }else{
+        //             $this->dialog()->error(
+        //                 $title = 'Dili pwede mag sobra sa '.$maximumWinners.' ang pilion.',
+        //             );
+        //         }
+        //     }
+        // } else {
+        //     // Replace the selected image ID with the new one for single selection steps
+        //     $this->selectedImages[$this->currentStep] = [$imageId];
+        // }
     }
 
     public function isMultipleSelectionStep()

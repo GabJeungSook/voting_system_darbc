@@ -86,7 +86,7 @@ class Members extends Component implements Tables\Contracts\HasTable
             Tables\Columns\BadgeColumn::make('restriction')
             ->label('RESTRICTION')
             ->color('danger')
-            ->searchable(),
+            ->searchable()->sortable(),
         ];
     }
 

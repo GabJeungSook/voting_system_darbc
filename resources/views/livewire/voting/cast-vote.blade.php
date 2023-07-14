@@ -54,7 +54,7 @@
 
         <div class="flex mt-14">
             @if($currentStep > 1)
-                <button wire:click="previousStep" class="flex bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <button wire:click="previousStep" class="flex bg-blue-500 hover:bg-blue-700 text-white font-bold py-5 px-5 rounded">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mr-3">
                         <path fill-rule="evenodd" d="M13.28 3.97a.75.75 0 010 1.06L6.31 12l6.97 6.97a.75.75 0 11-1.06 1.06l-7.5-7.5a.75.75 0 010-1.06l7.5-7.5a.75.75 0 011.06 0zm6 0a.75.75 0 010 1.06L12.31 12l6.97 6.97a.75.75 0 11-1.06 1.06l-7.5-7.5a.75.75 0 010-1.06l7.5-7.5a.75.75 0 011.06 0z" clip-rule="evenodd" />
                     </svg>
@@ -64,7 +64,7 @@
 
             <div class="ml-auto">
                 @if($currentStep < $steps)
-                    <button wire:click="nextStep" class="flex bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    <button wire:click="nextStep" class="flex bg-blue-500 hover:bg-blue-700 text-white font-bold py-5 px-5 rounded">
                         Next
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 ml-3">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5" />
@@ -73,7 +73,7 @@
                 @endif
 
                 @if($currentStep === $steps)
-                    <button wire:click="showBallot" class="flex bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                    <button wire:click="showBallot" class="flex bg-green-500 hover:bg-green-700 text-white font-bold py-5 px-5 rounded">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mr-3">
                             <path fill-rule="evenodd" d="M19.916 4.626a.75.75 0 01.208 1.04l-9 13.5a.75.75 0 01-1.154.114l-6-6a.75.75 0 011.06-1.06l5.353 5.353 8.493-12.739a.75.75 0 011.04-.208z" clip-rule="evenodd" />
                           </svg>
@@ -166,8 +166,8 @@
             <div class="flex justify-between gap-x-4">
                 <div class=""></div>
                 <div class="flex space-x-3">
-                    <x-button slate label="Cancel" x-on:click="close" />
-                    <x-button positive icon="check" label="Submit" spinner="saveVote"
+                    <x-button slate label="Cancel" x-on:click="close" class="py-5 px-5"/>
+                    <x-button positive icon="check" label="Submit" spinner="saveVote" class="py-5 px-5"
                         x-on:confirm="{
                             title: 'Are you sure you want to save your vote?',
                             icon: 'warning',
