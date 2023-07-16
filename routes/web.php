@@ -111,6 +111,12 @@ Route::get('registration/members', function () {
     ->middleware(['auth', 'verified', 'role:registration'])
     ->name('registration.members');
 
+Route::get('registration/reports', function () {
+    return view('registration.report');
+})
+    ->middleware(['auth', 'verified', 'role:registration'])
+    ->name('registration.report');
+
 Route::get('voting/dashboard', function () {
     return view('voting.dashboard');
 })
