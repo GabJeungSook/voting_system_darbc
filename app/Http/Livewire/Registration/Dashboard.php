@@ -23,6 +23,26 @@ class Dashboard extends Component implements Tables\Contracts\HasTable
         return RegisteredMember::query()->where('election_id', $this->election_id)->where('user_id', auth()->user()->id);
     }
 
+    public function testPrinter()
+    {
+        $printerIp = auth()->user()->printer->ip_address;
+        $printerPort = 9100;
+        $connector = new NetworkPrintConnector($printerIp);
+        $printer = new Printer($connector);
+        try {
+            $printer->setJustification(Printer::JUSTIFY_CENTER);
+            $printer->text("DARBC 2023 ELECTION\n");
+            $printer->text(auth()->user()->name);
+            $printer->feed(4);
+            $printer->text("Printer is good to go!");
+            $printer->feed(4);
+            $printer->cut();
+            $printer->close();
+        } finally {
+            $printer -> close();
+        }
+    }
+
     public function printQR($member)
     {
         $reg_member = $member;
@@ -35,18 +55,24 @@ class Dashboard extends Component implements Tables\Contracts\HasTable
         $model = Printer::QR_MODEL_2;
         $connector = new NetworkPrintConnector($printerIp);
         $printer = new Printer($connector);
+
         try {
             $printer->setJustification(Printer::JUSTIFY_CENTER);
-            $printer -> text("DARBC 2023 ELECTION\n");
-            $printer -> text($member_name);
-            $printer -> feed(4);
-            $printer -> qrCode($content, $ec, $size, $model);
-            $printer -> text($content);
-            $printer -> feed(4);
-            $printer -> cut();
-            $printer -> close();
+
+            // Add border and make the text bold
+            $printer->setEmphasis(true);
+            $printer->text("DARBC ELECTION 2023\n");
+            // $printer->setEmphasis(false);
+
+            $printer->text($member_name);
+            $printer->feed(4);
+            $printer->qrCode($content, $ec, $size, $model);
+            $printer->text($content);
+            $printer->feed(4);
+            $printer->cut();
+            $printer->close();
         } finally {
-            $printer -> close();
+            $printer->close();
         }
     }
 
