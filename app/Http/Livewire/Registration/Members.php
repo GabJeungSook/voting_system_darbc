@@ -113,23 +113,23 @@ class Members extends Component implements Tables\Contracts\HasTable
         return [
             Tables\Columns\TextColumn::make('darbc_id')
             ->label('DARBC ID')
-            ->searchable(isIndividual:true),
+            ->searchable(),
             Tables\Columns\TextColumn::make('first_name')
             ->label('FIRST NAME')
             ->formatStateUsing(fn (Member $record) => strtoupper($record->first_name))
-            ->searchable(isIndividual:true),
+            ->searchable(),
             Tables\Columns\TextColumn::make('middle_name')
             ->label('MIDDLE NAME')
             ->formatStateUsing(fn (Member $record) => strtoupper($record->middle_name))
-            ->searchable(isIndividual:true),
+            ->searchable(),
             Tables\Columns\TextColumn::make('last_name')
             ->label('LAST NAME')
             ->formatStateUsing(fn (Member $record) => strtoupper($record->last_name))
-            ->searchable(isIndividual:true),
+            ->searchable(),
             Tables\Columns\BadgeColumn::make('restriction')
             ->label('RESTRICTION')
             ->color('danger')
-            ->searchable(isIndividual:true)->sortable(),
+            ->searchable()->sortable(),
         ];
     }
 
