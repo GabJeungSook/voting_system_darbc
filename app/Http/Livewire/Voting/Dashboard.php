@@ -18,25 +18,25 @@ class Dashboard extends Component implements Tables\Contracts\HasTable
     public $voter_count;
     public $voter_count_total;
 
-    // public function testPrinter()
-    // {
-    //     $printerIp = auth()->user()->printer->ip_address;
-    //     $printerPort = 9100;
-    //     $connector = new NetworkPrintConnector($printerIp);
-    //     $printer = new Printer($connector);
-    //     try {
-    //         $printer->setJustification(Printer::JUSTIFY_CENTER);
-    //         $printer->text("DARBC 2023 ELECTION\n");
-    //         $printer->text(auth()->user()->name);
-    //         $printer->feed(4);
-    //         $printer->text("Printer is good to go!");
-    //         $printer->feed(4);
-    //         $printer->cut();
-    //         $printer->close();
-    //     } finally {
-    //         $printer -> close();
-    //     }
-    // }
+    public function testPrinter()
+    {
+        $printerIp = auth()->user()->printer->ip_address;
+        $printerPort = 9100;
+        $connector = new NetworkPrintConnector($printerIp);
+        $printer = new Printer($connector);
+        try {
+            $printer->setJustification(Printer::JUSTIFY_CENTER);
+            $printer->text("DARBC 2023 ELECTION\n");
+            $printer->text(auth()->user()->name);
+            $printer->feed(4);
+            $printer->text("Printer is good to go!");
+            $printer->feed(4);
+            $printer->cut();
+            $printer->close();
+        } finally {
+            $printer -> close();
+        }
+    }
 
     protected function getTableQuery(): Builder
     {

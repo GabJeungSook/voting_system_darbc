@@ -236,7 +236,7 @@ class CastVote extends Component
             }
 
             DB::commit();
-            // $this->printBallot($this->record);
+            $this->printBallot($this->record);
             Notification::make()
             ->title('Member Successfully Voted!')
             ->success()
