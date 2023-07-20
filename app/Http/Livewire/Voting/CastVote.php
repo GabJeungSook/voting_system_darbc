@@ -209,16 +209,14 @@ class CastVote extends Component
 
             if ($existingVote) {
                 // Display an error message or handle the case where the member has already voted
-
                 Notification::make()
-                ->title('Member Already Voted!')
-                ->body('Member votes cannot be more than once.')
-                ->error()
+                ->title('Member '.$this->record->first_name.' '.$this->record->middle_name.' '.$this->record->last_name. ' Already Voted!')
+                ->danger()
                 ->send();
 
                 // You can choose to redirect or return here, depending on your application flow
                 $this->reviewVoteModal = false;
-                return redirect()->route('voting.voting-module');
+                return redirect()->route('voting.scan-qr');
             }
 
             foreach ($this->selectedCandidates as $selectedCandidate) {
