@@ -26,13 +26,13 @@
                         <span class="mt-2 text-md">Maximum of ({{$item->number_of_winners}}) selections.</span>
                     </div>
                     <div class="overflow-hidden rounded-lg bg-gray-200 mt-10">
-                        <div class="px-4 py-5 sm:p-6 flex flex-wrap justify-center">
+                        <div class="py-5 sm:p-4 flex flex-wrap justify-center">
                             <!-- Content goes here -->
                             @foreach ($item->candidates as $candidate)
-                                <div class="relative w-1/5 p-2">
+                                <div class="relative w-1/5">
                                     <div class="flex flex-col items-center">
                                         <div class="text-center font-semibold text-lg">
-                                            <img src="{{$this->getFileUrl($candidate->image_path)}}" alt="" class="mb-3 rounded-lg w-60 h-60 border-gray-400 border-2 transition duration-300 ease-in-out transform hover:scale-110 {{ in_array($candidate->id, $selectedImages[$currentStep]) ? 'border-8 border-green-600' : 'border-gray-400' }}" wire:click="selectImage({{$candidate->id }})">
+                                            <img src="{{$this->getFileUrl($candidate->image_path)}}" alt="" class="mb-3 rounded-lg w-48 h-48 border-gray-400 border-2 transition duration-300 ease-in-out transform hover:scale-110 {{ in_array($candidate->id, $selectedImages[$currentStep]) ? 'border-8 border-green-600' : 'border-gray-400' }}" wire:click="selectImage({{$candidate->id }})">
                                             <span>{{strtoupper($candidate->first_name.' '.$candidate->middle_name.' '.$candidate->last_name)}}</span>
                                         </div>
                                         @if (in_array($candidate->id, $selectedImages[$currentStep]))
@@ -87,32 +87,107 @@
     {{-- REVIEW VOTE STEPS MODAL --}}
     <x-modal.card title="Review Selections" fullscreen blur wire:model.defer="reviewVoteStepsModal">
         <div class="px-4 sm:px-6 lg:px-8">
-            <div class="sm:flex sm:items-center"></div>
-            <div class="mt-8">
-                <h1 class="text-center text-2xl font-semibold mb-4">{{ $election->name }}</h1>
-                <div class="flex flex-wrap justify-center">
-                    @foreach ($positions as $item)
-                        <div class="w-full md:w-1/2 lg:w-1/3">
-                            <div class="bg-white border-t border-gray-200 mb-4">
-                                <div class="bg-gray-50 py-2 pl-4 pr-3 text-sm font-semibold text-gray-900">{{ strtoupper($item->name) }}</div>
-                                <div class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900">
-                                    <div class="flex justify-left space-x-4">
-                                        @foreach ($selectedCandidates as $selectedCandidate)
+            <div class="mt-8 flow-root">
+                <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                    <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                        <table class="min-w-full">
+                            <tbody class="bg-white">
+                                @foreach ($positions->where('id',1) as $item)
+                                <tr class="border-t border-gray-200">
+                                    <th colspan="5" scope="colgroup" class="bg-gray-50 py-2 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-3">{{ strtoupper($item->name) }}</th>
+                                </tr>
+                                <tr class="border-t border-gray-300">
+                                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                                        <div class="flex justify-center space-x-4">
+                                            @foreach ($selectedCandidates as $selectedCandidate)
                                             @if ($selectedCandidate['position_id'] === $item->id)
+                                            @php
+                                            $candidate = App\Models\Candidate::find($selectedCandidate['candidate_id']);
+                                            @endphp
+                                            <div class="flex flex-col items-center mb-4">
+                                                <img src="{{ $this->getFileUrl($candidate->image_path) }}" alt="{{ $candidate->first_name }}" class="w-48 h-48 rounded-lg border-gray-400 border-2">
+                                                <span class="text-center font-bold">{{ strtoupper($candidate->first_name.' '.$candidate->middle_name.' '.$candidate->last_name) }}</span>
+                                            </div>
+                                            @endif
+                                            @endforeach
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <div class="px-4 sm:px-6 lg:px-8 col-span-1">
+                <div class="mt-8 flow-root">
+                    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                        <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                            <table class="min-w-full">
+                                <tbody class="bg-white">
+                                    @foreach ($positions->where('id',2) as $item)
+                                    <tr class="border-t border-gray-200">
+                                        <th colspan="5" scope="colgroup" class="bg-gray-50 py-2 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-3">{{ strtoupper($item->name) }}</th>
+                                    </tr>
+                                    <tr class="border-t border-gray-300">
+                                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                                            <div class="flex justify-center space-x-4">
+                                                @foreach ($selectedCandidates as $selectedCandidate)
+                                                @if ($selectedCandidate['position_id'] === $item->id)
                                                 @php
-                                                    $candidate = App\Models\Candidate::find($selectedCandidate['candidate_id']);
+                                                $candidate = App\Models\Candidate::find($selectedCandidate['candidate_id']);
                                                 @endphp
                                                 <div class="flex flex-col items-center mb-4">
                                                     <img src="{{ $this->getFileUrl($candidate->image_path) }}" alt="{{ $candidate->first_name }}" class="w-48 h-48 rounded-lg border-gray-400 border-2">
-                                                    <span class="text-center">{{ strtoupper($candidate->first_name.' '.$candidate->middle_name.' '.$candidate->last_name) }}</span>
+                                                    <span class="text-center font-bold">{{ strtoupper($candidate->first_name.' '.$candidate->middle_name.' '.$candidate->last_name) }}</span>
                                                 </div>
-                                            @endif
-                                        @endforeach
-                                    </div>
-                                </div>
-                            </div>
+                                                @endif
+                                                @endforeach
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
-                    @endforeach
+                    </div>
+                </div>
+            </div>
+
+            <div class="px-4 sm:px-6 lg:px-8 col-span-1">
+                <div class="mt-8 flow-root">
+                    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                        <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                            <table class="min-w-full">
+                                <tbody class="bg-white">
+                                    @foreach ($positions->where('id',3) as $item)
+                                    <tr class="border-t border-gray-200">
+                                        <th colspan="5" scope="colgroup" class="bg-gray-50 py-2 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-3">{{ strtoupper($item->name) }}</th>
+                                    </tr>
+                                    <tr class="border-t border-gray-300">
+                                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                                            <div class="flex justify-center space-x-4">
+                                                @foreach ($selectedCandidates as $selectedCandidate)
+                                                @if ($selectedCandidate['position_id'] === $item->id)
+                                                @php
+                                                $candidate = App\Models\Candidate::find($selectedCandidate['candidate_id']);
+                                                @endphp
+                                                <div class="flex flex-col items-center mb-4">
+                                                    <img src="{{ $this->getFileUrl($candidate->image_path) }}" alt="{{ $candidate->first_name }}" class="w-48 h-48 rounded-lg border-gray-400 border-2">
+                                                    <span class="text-center font-bold">{{ strtoupper($candidate->first_name.' '.$candidate->middle_name.' '.$candidate->last_name) }}</span>
+                                                </div>
+                                                @endif
+                                                @endforeach
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -130,9 +205,118 @@
         </x-slot>
     </x-modal.card>
 
+
+
+
     {{-- REVIEW VOTE MODAL --}}
     <x-modal.card title="Review Vote" fullscreen blur wire:model.defer="reviewVoteModal">
         <div class="px-4 sm:px-6 lg:px-8">
+            <div class="mt-8 flow-root">
+                <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                    <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                        <table class="min-w-full">
+                            <tbody class="bg-white">
+                                @foreach ($positions->where('id',1) as $item)
+                                <tr class="border-t border-gray-200">
+                                    <th colspan="5" scope="colgroup" class="bg-gray-50 py-2 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-3">{{ strtoupper($item->name) }}</th>
+                                </tr>
+                                <tr class="border-t border-gray-300">
+                                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                                        <div class="flex justify-center space-x-4">
+                                            @foreach ($selectedCandidates as $selectedCandidate)
+                                            @if ($selectedCandidate['position_id'] === $item->id)
+                                            @php
+                                            $candidate = App\Models\Candidate::find($selectedCandidate['candidate_id']);
+                                            @endphp
+                                            <div class="flex flex-col items-center mb-4">
+                                                <img src="{{ $this->getFileUrl($candidate->image_path) }}" alt="{{ $candidate->first_name }}" class="w-48 h-48 rounded-lg border-gray-400 border-2">
+                                                <span class="text-center font-bold">{{ strtoupper($candidate->first_name.' '.$candidate->middle_name.' '.$candidate->last_name) }}</span>
+                                            </div>
+                                            @endif
+                                            @endforeach
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <div class="px-4 sm:px-6 lg:px-8 col-span-1">
+                <div class="mt-8 flow-root">
+                    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                        <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                            <table class="min-w-full">
+                                <tbody class="bg-white">
+                                    @foreach ($positions->where('id',2) as $item)
+                                    <tr class="border-t border-gray-200">
+                                        <th colspan="5" scope="colgroup" class="bg-gray-50 py-2 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-3">{{ strtoupper($item->name) }}</th>
+                                    </tr>
+                                    <tr class="border-t border-gray-300">
+                                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                                            <div class="flex justify-center space-x-4">
+                                                @foreach ($selectedCandidates as $selectedCandidate)
+                                                @if ($selectedCandidate['position_id'] === $item->id)
+                                                @php
+                                                $candidate = App\Models\Candidate::find($selectedCandidate['candidate_id']);
+                                                @endphp
+                                                <div class="flex flex-col items-center mb-4">
+                                                    <img src="{{ $this->getFileUrl($candidate->image_path) }}" alt="{{ $candidate->first_name }}" class="w-48 h-48 rounded-lg border-gray-400 border-2">
+                                                    <span class="text-center font-bold">{{ strtoupper($candidate->first_name.' '.$candidate->middle_name.' '.$candidate->last_name) }}</span>
+                                                </div>
+                                                @endif
+                                                @endforeach
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="px-4 sm:px-6 lg:px-8 col-span-1">
+                <div class="mt-8 flow-root">
+                    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                        <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                            <table class="min-w-full">
+                                <tbody class="bg-white">
+                                    @foreach ($positions->where('id',3) as $item)
+                                    <tr class="border-t border-gray-200">
+                                        <th colspan="5" scope="colgroup" class="bg-gray-50 py-2 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-3">{{ strtoupper($item->name) }}</th>
+                                    </tr>
+                                    <tr class="border-t border-gray-300">
+                                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
+                                            <div class="flex justify-center space-x-4">
+                                                @foreach ($selectedCandidates as $selectedCandidate)
+                                                @if ($selectedCandidate['position_id'] === $item->id)
+                                                @php
+                                                $candidate = App\Models\Candidate::find($selectedCandidate['candidate_id']);
+                                                @endphp
+                                                <div class="flex flex-col items-center mb-4">
+                                                    <img src="{{ $this->getFileUrl($candidate->image_path) }}" alt="{{ $candidate->first_name }}" class="w-48 h-48 rounded-lg border-gray-400 border-2">
+                                                    <span class="text-center font-bold">{{ strtoupper($candidate->first_name.' '.$candidate->middle_name.' '.$candidate->last_name) }}</span>
+                                                </div>
+                                                @endif
+                                                @endforeach
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- <div class="px-4 sm:px-6 lg:px-8">
             <div class="sm:flex sm:items-center"></div>
             <div class="mt-8">
                 <h1 class="text-center text-2xl font-semibold mb-4">{{ $election->name }}</h1>
@@ -150,7 +334,7 @@
                                                 @endphp
                                                 <div class="flex flex-col items-center mb-4">
                                                     <img src="{{ $this->getFileUrl($candidate->image_path) }}" alt="{{ $candidate->first_name }}" class="w-48 h-48 rounded-lg border-gray-400 border-2">
-                                                    <span class="text-center">{{ strtoupper($candidate->first_name.' '.$candidate->middle_name.' '.$candidate->last_name) }}</span>
+                                                    <span class="text-center font-bold">{{ strtoupper($candidate->first_name.' '.$candidate->middle_name.' '.$candidate->last_name) }}</span>
                                                 </div>
                                             @endif
                                         @endforeach
@@ -161,13 +345,13 @@
                     @endforeach
                 </div>
             </div>
-        </div>
+        </div> --}}
         <x-slot name="footer">
             <div class="flex justify-between gap-x-4">
                 <div class=""></div>
                 <div class="flex space-x-3">
                     <x-button slate label="Cancel" x-on:click="close" class="py-5 px-5"/>
-                    <x-button positive icon="check" label="Submit" spinner="saveVote" class="py-5 px-5"
+                    <x-button positive icon="check" label="Submit" spinner="saveVote" class="py-14 px-14"
                         x-on:confirm="{
                             title: 'Are you sure you want to save your vote?',
                             icon: 'warning',

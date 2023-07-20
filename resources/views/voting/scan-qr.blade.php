@@ -1,3 +1,3 @@
-<x-cast-vote-layout>
+<x-scan-qr>
     <livewire:voting.scan-qr-code/>
-</x-cast-vote-layout>
+</x-scan-qr>

@@ -1,3 +1,3 @@
-<x-cast-vote-layout>
+<x-scan-qr>
     <livewire:voting.cast-vote :record="$record"/>
-</x-cast-vote-layout>
+</x-scan-qr>
