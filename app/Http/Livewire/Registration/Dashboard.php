@@ -86,7 +86,7 @@ class Dashboard extends Component implements Tables\Contracts\HasTable
             ->color('warning')
             ->requiresConfirmation()
             ->action(function (RegisteredMember $record) {
-                // $this->printQR($record);
+                $this->printQR($record);
             })
         ];
     }
