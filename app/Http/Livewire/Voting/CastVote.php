@@ -235,6 +235,9 @@ class CastVote extends Component
                 ]);
             }
 
+            $this->record->has_voted = 1;
+            $this->record->save();
+
             DB::commit();
             $this->printBallot($this->record);
             Notification::make()
