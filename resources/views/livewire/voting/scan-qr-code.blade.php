@@ -5,7 +5,7 @@
         </div>
     </div>
     <div>
-        <h1 class="text-6xl text-center font-bold text-gray-700 mt-5">DARBC ELECTION 2023</h1>
+        <h1 class="text-6xl text-center font-bold text-gray-700 mt-5">DARBC DRY RUN ELECTION 2023</h1>
     </div>
     <div class="flex justify-center mt-5">
         <input wire:model="scannedCode" wire:change="verifyCode" type="text" id="qrInput" class="text-center p-4 text-2xl focus:outline-none w-full mx-14 rounded-md" autofocus>
