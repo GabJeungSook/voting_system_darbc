@@ -87,6 +87,10 @@ class Members extends Component implements Tables\Contracts\HasTable
             ->label('SPA NAME')
             ->formatStateUsing(fn (Member $record) => strtoupper($record->spa))
             ->searchable(),
+            Tables\Columns\BadgeColumn::make('restriction')
+            ->label('RESTRICTION')
+            ->color('danger')
+            ->searchable()->sortable(),
             Tables\Columns\ToggleColumn::make('is_active')
             ->label('Active')
             ->onColor('success')
@@ -94,10 +98,6 @@ class Members extends Component implements Tables\Contracts\HasTable
             ->offIcon('heroicon-s-x')
             ->offColor('danger')
             ->searchable(),
-            Tables\Columns\BadgeColumn::make('restriction')
-            ->label('RESTRICTION')
-            ->color('danger')
-            ->searchable()->sortable(),
         ];
     }
 
