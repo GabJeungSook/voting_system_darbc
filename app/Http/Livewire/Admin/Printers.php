@@ -48,7 +48,7 @@ class Printers extends Component implements Tables\Contracts\HasTable
             ->form([
                 Forms\Components\Select::make('user_id')
                 ->label('Election')
-                ->options(User::where('role_id', '!=', 1)->whereDoesntHave('printer')->pluck('name', 'id'))->required(),
+                ->options(User::whereDoesntHave('printer')->pluck('name', 'id'))->required(),
                 Forms\Components\TextInput::make('ip_address')->label('IP Address')->required(),
             ])
         ];

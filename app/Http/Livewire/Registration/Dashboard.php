@@ -76,20 +76,20 @@ class Dashboard extends Component implements Tables\Contracts\HasTable
         }
     }
 
-    public function getTableActions()
-    {
-        return [
-            Action::make('reprint_qr')
-            ->label('Print QR Code')
-            ->icon('heroicon-o-printer')
-            ->button()
-            ->color('warning')
-            ->requiresConfirmation()
-            ->action(function (RegisteredMember $record) {
-                $this->printQR($record);
-            })
-        ];
-    }
+    // public function getTableActions()
+    // {
+    //     return [
+    //         Action::make('reprint_qr')
+    //         ->label('Print QR Code')
+    //         ->icon('heroicon-o-printer')
+    //         ->button()
+    //         ->color('warning')
+    //         ->requiresConfirmation()
+    //         ->action(function (RegisteredMember $record) {
+    //             $this->printQR($record);
+    //         })
+    //     ];
+    // }
 
     protected function getTableColumns(): array
     {

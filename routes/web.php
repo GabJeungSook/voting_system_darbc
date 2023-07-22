@@ -69,6 +69,12 @@ Route::get('/admin/printers', function () {
     ->middleware(['auth', 'verified', 'role:admin'])
     ->name('admin.printers');
 
+Route::get('/admin/reprint-qr', function () {
+    return view('admin.reprint-qr');
+})
+    ->middleware(['auth', 'verified', 'role:admin'])
+    ->name('admin.reprint');
+
 Route::get('/admin/members', function () {
     return view('admin.members');
 })
