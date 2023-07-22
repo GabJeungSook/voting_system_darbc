@@ -97,7 +97,7 @@ class Members extends Component implements Tables\Contracts\HasTable
                 }
             })->requiresConfirmation()->visible(function ($record) {
                 $exists = RegisteredMember::where('darbc_member_user_id', $record->id)->exists();
-                if(!$exists && $record->restriction === '')
+                if(!$exists && $record->is_active === 1)
                 {
                     return true;
                 }else

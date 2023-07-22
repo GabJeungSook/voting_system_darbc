@@ -83,6 +83,17 @@ class Members extends Component implements Tables\Contracts\HasTable
             ->label('FIRST NAME')
             ->formatStateUsing(fn (Member $record) => strtoupper($record->first_name))
             ->searchable(),
+            Tables\Columns\TextColumn::make('spa')
+            ->label('SPA NAME')
+            ->formatStateUsing(fn (Member $record) => strtoupper($record->spa))
+            ->searchable(),
+            Tables\Columns\ToggleColumn::make('is_active')
+            ->label('Active')
+            ->onColor('success')
+            ->onIcon('heroicon-s-check')
+            ->offIcon('heroicon-s-x')
+            ->offColor('danger')
+            ->searchable(),
             Tables\Columns\BadgeColumn::make('restriction')
             ->label('RESTRICTION')
             ->color('danger')
