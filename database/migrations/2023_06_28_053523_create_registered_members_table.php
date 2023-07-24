@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('election_id');
             $table->foreignId('user_id');
-            $table->integer('darbc_member_user_id');
+            $table->foreignId('member_id');
             $table->string('darbc_id');
             $table->string('first_name');
             $table->string('middle_name')->nullable();

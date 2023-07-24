@@ -67,14 +67,14 @@ class Members extends Component implements Tables\Contracts\HasTable
             ->button()
             ->color('success')
             ->action(function (Member $record, array $data): void {
-                $exists = RegisteredMember::where('darbc_member_user_id', $record->id)->exists();
+                $exists = RegisteredMember::where('member_id', $record->id)->exists();
                 if(!$exists)
                 {
                     DB::beginTransaction();
                     $member = RegisteredMember::create([
                        'election_id' => $this->election_id,
                        'user_id' => auth()->user()->id,
-                       'darbc_member_user_id' => $record->id,
+                       'member_id' => $record->id,
                        'darbc_id' =>  $record->darbc_id,
                        'first_name' => $record->first_name,
                        'middle_name' =>$record->middle_name,
@@ -96,7 +96,7 @@ class Members extends Component implements Tables\Contracts\HasTable
                     $this->resets();
                 }
             })->requiresConfirmation()->visible(function ($record) {
-                $exists = RegisteredMember::where('darbc_member_user_id', $record->id)->exists();
+                $exists = RegisteredMember::where('member_id', $record->id)->exists();
                 if(!$exists && $record->is_active === 1)
                 {
                     return true;
@@ -204,14 +204,14 @@ class Members extends Component implements Tables\Contracts\HasTable
     public function registerMember()
     {
 
-        $exists = RegisteredMember::where('darbc_member_user_id', $this->member_id)->exists();
+        $exists = RegisteredMember::where('member_id', $this->member_id)->exists();
         if(!$exists)
         {
             DB::beginTransaction();
             $member = RegisteredMember::create([
                'election_id' => $this->election_id,
                'user_id' => auth()->user()->id,
-               'darbc_member_user_id' => $this->member_id,
+               'member_id' => $this->member_id,
                'darbc_id' => $this->member_darbc_id,
                'first_name' => $this->member_first_name,
                'middle_name' => $this->member_middle_name,

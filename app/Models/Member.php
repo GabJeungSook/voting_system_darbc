@@ -9,4 +9,9 @@ class Member extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    public function registered_member()
+    {
+        return $this->hasOne(RegisteredMember::class);
+    }
 }

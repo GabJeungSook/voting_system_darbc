@@ -20,6 +20,11 @@ class RegisteredMember extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function member()
+    {
+        return $this->belongsTo(Member::class, 'member_id');
+    }
+
     public function votes()
     {
         return $this->HasMany(Vote::class);
