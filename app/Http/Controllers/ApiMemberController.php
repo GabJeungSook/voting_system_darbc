@@ -32,11 +32,10 @@ class ApiMemberController extends Controller
                 $data = [
                     'member_id' => $member->id,
                     'darbc_id' => $member->darbc_id,
-                     'election_name' => $election->name,
-                    // 'election_name' => $member->registered_member?->election->name,
+                    'election_name' => $member->registered_member->election->name,
                     'is_registered' => 1,
                     'is_active' => $member->is_active,
-                    'has_voted' => $member->registered_member?->has_voted,
+                    'has_voted' => $member->registered_member->has_voted,
                 ];
             }
 
