@@ -20,3 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('member-details/{id}', [ApiMemberController::class ,'getMemberDetails'])->name('api.getMemberDetails');
+Route::get('member-details-darbc-id/{darbc_id}', [ApiMemberController::class ,'getMemberDetailsDarbcId'])->name('api.getMemberDetailsDarbcId');
