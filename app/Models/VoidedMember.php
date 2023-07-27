@@ -5,18 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Member extends Model
+class VoidedMember extends Model
 {
     use HasFactory;
     protected $guarded = [];
 
     public function registered_member()
     {
-        return $this->hasOne(RegisteredMember::class);
+        return $this->belongsTo(RegisteredMember::class, 'registered_member_id');
     }
 
-    public function voided_member()
+    public function member()
     {
-        return $this->HasMany(VoidedMember::class);
+        return $this->belongsTo(Member::class, 'member_id');
     }
+
 }

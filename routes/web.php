@@ -75,6 +75,12 @@ Route::get('/admin/reprint-qr', function () {
     ->middleware(['auth', 'verified', 'role:admin'])
     ->name('admin.reprint');
 
+Route::get('/admin/void-member', function () {
+    return view('admin.void-member');
+})
+    ->middleware(['auth', 'verified', 'role:admin'])
+    ->name('admin.void');
+
 Route::get('/admin/members', function () {
     return view('admin.members');
 })

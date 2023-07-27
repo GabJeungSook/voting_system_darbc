@@ -41,7 +41,11 @@ class ReprintQrCode extends Component implements Tables\Contracts\HasTable
         return [
             Tables\Columns\TextColumn::make('darbc_id')
             ->label('DARBC ID')
-            ->searchable(),
+            ->searchable()->sortable(),
+            Tables\Columns\TextColumn::make('user.name')
+            ->label('COUNTER')
+            // ->formatStateUsing(fn (RegisteredMember $record) => strtoupper($record->first_name))
+            ->searchable()->sortable(),
             Tables\Columns\TextColumn::make('first_name')
             ->label('FIRST NAME')
             ->formatStateUsing(fn (RegisteredMember $record) => strtoupper($record->first_name))
@@ -57,7 +61,7 @@ class ReprintQrCode extends Component implements Tables\Contracts\HasTable
             Tables\Columns\TextColumn::make('created_at')
             ->label('REGISTRATION DATE')
             ->date('F d, Y h:i:s A')
-            ->searchable(),
+            ->searchable()->sortable(),
         ];
     }
 
