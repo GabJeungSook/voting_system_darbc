@@ -55,8 +55,9 @@ class VoidMemberRegistration extends Component implements Tables\Contracts\HasTa
             ->action(function (RegisteredMember $record, array $data) {
                 DB::beginTransaction();
                 VoidedMember::create([
-                    'registered_member_id' => $record->id,
+                    'registered_member_id' => $record->member->id,
                     'member_id' => $data['member_id'],
+                    'user_id' => $record->user_id,
                     'note' =>  $data['note'],
                     'type' =>  'REGISTRATION',
                 ]);
@@ -77,11 +78,11 @@ class VoidMemberRegistration extends Component implements Tables\Contracts\HasTa
             ->visible(fn ($record) => $record->has_voted === 1)
             ->mountUsing(fn (Forms\ComponentContainer $form, RegisteredMember $record) => $form->fill([
                 'registered_member' => strtoupper($record->first_name.' '.$record->middle_name.' '.$record->last_name),
-                'user_id' => $record->votes()->first()->user->name,
+                // 'user_id' => $record->votes()->first()->user->name,
             ]))
             ->form([
                 Forms\Components\TextInput::make('registered_member')->required()->disabled(),
-                Forms\Components\TextInput::make('user_id')->label('Voted At')->required()->disabled(),
+                // Forms\Components\TextInput::make('user_id')->label('Voted At')->required()->disabled(),
                 Forms\Components\Select::make('member_id')
                 ->label('Who voted for the member?')
                 ->preload()
@@ -93,8 +94,9 @@ class VoidMemberRegistration extends Component implements Tables\Contracts\HasTa
             ->action(function (RegisteredMember $record, array $data) {
                 DB::beginTransaction();
                 VoidedMember::create([
-                    'registered_member_id' => $record->id,
+                    'registered_member_id' => $record->member->id,
                     'member_id' => $data['member_id'],
+                    'user_id' => $record->user_id,
                     'note' =>  $data['note'],
                     'type' =>  'VOTING',
                 ]);

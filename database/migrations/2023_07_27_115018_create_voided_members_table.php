@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('registered_member_id');
             $table->foreignId('member_id');
+            $table->foreignId('user_id');
             $table->text('note')->nullable();
             $table->string('type');
             $table->timestamps();

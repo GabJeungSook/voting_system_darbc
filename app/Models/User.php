@@ -54,6 +54,11 @@ class User extends Authenticatable
         return $this->HasMany(RegisteredMember::class);
     }
 
+    public function voided_member()
+    {
+        return $this->HasMany(VoidedMember::class);
+    }
+
     public function votes()
     {
         return $this->HasMany(Vote::class);

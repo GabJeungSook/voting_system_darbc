@@ -20,4 +20,9 @@ class VoidedMember extends Model
         return $this->belongsTo(Member::class, 'member_id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
 }

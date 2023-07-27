@@ -4,10 +4,10 @@ namespace App\Http\Livewire\Admin\Reports;
 
 use Livewire\Component;
 use App\Models\Election;
-use App\Models\RegisteredMember;
+use App\Models\VoidedMember;
 use App\Models\User;
 
-class RegisteredMembers extends Component
+class VoidedVotes extends Component
 {
     public $election;
     public $counter;
@@ -27,10 +27,10 @@ class RegisteredMembers extends Component
 
     public function render()
     {
-        $this->members = RegisteredMember::where('election_id', $this->election->id)
-        ->when(!empty($this->selectedCounter), function ($query) {
+        $this->members = VoidedMember::where('type', 'VOTING')->when(!empty($this->selectedCounter), function ($query) {
             $query->where('user_id', $this->selectedCounter);
         })->get();
-        return view('livewire.admin.reports.registered-members');
+
+        return view('livewire.admin.reports.voided-votes');
     }
 }

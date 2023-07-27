@@ -111,6 +111,18 @@ Route::get('/admin/reports/registered-members', function () {
     ->middleware(['auth', 'verified', 'role:admin'])
     ->name('admin.reports.registered-members');
 
+Route::get('/admin/reports/voided-registration', function () {
+    return view('admin.reports.voided-registration');
+})
+    ->middleware(['auth', 'verified', 'role:admin'])
+    ->name('admin.reports.voided-registration');
+
+Route::get('/admin/reports/voided-votes', function () {
+    return view('admin.reports.voided-votes');
+})
+    ->middleware(['auth', 'verified', 'role:admin'])
+    ->name('admin.reports.voided-votes');
+
 Route::get('registration/dashboard', function () {
     return view('registration.dashboard');
 })
