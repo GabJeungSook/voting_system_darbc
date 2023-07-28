@@ -61,7 +61,9 @@ class VoidMemberRegistration extends Component implements Tables\Contracts\HasTa
                     'note' =>  $data['note'],
                     'type' =>  'REGISTRATION',
                 ]);
-                $record->registration_duration->delete();
+                if (optional($record->registration_duration)->exists()) {
+                    $record->registration_duration->delete();
+                }
                 $record->delete();
                 DB::commit();
                 $this->dialog()->success(
