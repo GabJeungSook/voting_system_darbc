@@ -162,15 +162,20 @@ class CastVote extends Component
         $printer = new Printer($connector);
         try {
             $printer->setJustification(Printer::JUSTIFY_CENTER);
+            $printer -> setEmphasis(true);
             $printer -> text("DARBC ELECTION 2023\n");
             $printer -> text("OFFICIAL BALLOT\n");
-            $printer -> feed(2);
+            $printer -> setEmphasis(false);
+            $printer -> feed(1);
             $printer -> text(\Carbon\Carbon::parse(now())->format('F d, Y')."\n");
-            $printer -> text(\Carbon\Carbon::parse(now())->format('h:i:s A')."\n");
+            $printer -> text(\Carbon\Carbon::parse($reg_member->registration_duration->time_start)->format('h:i:s A')." - ".\Carbon\Carbon::parse($reg_member->registration_duration->time_end)->format('h:i:s A'));
             $printer -> feed(3);
             foreach($this->positions as $position)
             {
+                $printer -> setEmphasis(true);
                 $printer -> text(strtoupper($position->name)."\n");
+                $printer -> setEmphasis(false);
+                $printer -> feed(1);
 
                   // Retrieve the votes for the current position and member
                 // $votes = $member->votes()->where('position_id', $position->id)->get();
@@ -186,7 +191,9 @@ class CastVote extends Component
             }
 
             $printer -> feed(4);
+            $printer -> setEmphasis(true);
             $printer -> text($member_name);
+            $printer -> setEmphasis(false);
             $printer -> feed(2);
             $printer -> cut();
             $printer -> close();
@@ -234,6 +241,7 @@ class CastVote extends Component
             }
 
             $this->record->has_voted = 1;
+            $this->record->registration_duration->update(['time_end' => Carbon::now()->toTimeString()]);
             $this->record->save();
 
             DB::commit();

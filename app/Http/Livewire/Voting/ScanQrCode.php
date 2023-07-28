@@ -3,8 +3,11 @@
 namespace App\Http\Livewire\Voting;
 
 use Livewire\Component;
-use App\Models\RegisteredMember;
 use WireUi\Traits\Actions;
+use App\Models\RegisteredMember;
+use Illuminate\Support\Facades\DB;
+use App\Models\RegistrationDuration;
+use Carbon\Carbon;
 
 class ScanQrCode extends Component
 {
@@ -24,6 +27,19 @@ class ScanQrCode extends Component
             );
         }else{
             $this->reset('scannedCode');
+            DB::beginTransaction();
+            $registrationDuration = RegistrationDuration::where('registered_member_id', $member->id)->first();
+            if ($registrationDuration) {
+                // If a record exists, update the time_start
+                $registrationDuration->update(['time_start' => Carbon::now()->toTimeString()]);
+            } else {
+                // If a record doesn't exist, create a new one
+                $registrationDuration = RegistrationDuration::create([
+                    'registered_member_id' =>  $member->id,
+                    'time_start' => Carbon::now()->toTimeString(),
+                ]);
+            }
+            DB::commit();
             return redirect()->route('voting.cast-vote', $member);
         }
 

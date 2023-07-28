@@ -61,7 +61,7 @@ class VoidMemberRegistration extends Component implements Tables\Contracts\HasTa
                     'note' =>  $data['note'],
                     'type' =>  'REGISTRATION',
                 ]);
-
+                $record->registration_duration->delete();
                 $record->delete();
                 DB::commit();
                 $this->dialog()->success(
@@ -102,6 +102,7 @@ class VoidMemberRegistration extends Component implements Tables\Contracts\HasTa
                 ]);
 
                 $record->votes()->delete();
+                $record->registration_duration->delete();
                 $record->delete();
                 DB::commit();
                 $this->dialog()->success(

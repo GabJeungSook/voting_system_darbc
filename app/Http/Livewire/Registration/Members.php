@@ -172,6 +172,7 @@ class Members extends Component implements Tables\Contracts\HasTable
         $printerPort = 9100;
         $content = $reg_member->qr_code;
         $member_name = strtoupper($reg_member->first_name.' '.$reg_member->middle_name.' '.$reg_member->last_name);
+        $counter_number = $member->user->name;
         $ec = Printer::QR_ECLEVEL_L;
         $size = 8;
         $model = Printer::QR_MODEL_2;
@@ -184,6 +185,8 @@ class Members extends Component implements Tables\Contracts\HasTable
             // $printer -> graphics($img, 2);
             $printer -> text("DARBC ELECTION 2023\n");
             $printer -> text($member_name);
+            $printer -> feed(1);
+            $printer -> text($counter_number);
             $printer -> feed(4);
             $printer -> qrCode($content, $ec, $size, $model);
             $printer -> text($content);

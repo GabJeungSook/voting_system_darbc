@@ -34,4 +34,9 @@ class RegisteredMember extends Model
     {
         return $this->HasMany(VoidedMember::class);
     }
+
+    public function registration_duration()
+    {
+        return $this->hasOne(RegistrationDuration::class);
+    }
 }
