@@ -122,6 +122,11 @@ Route::get('/admin/reports/voided-votes', function () {
 })
     ->middleware(['auth', 'verified', 'role:admin'])
     ->name('admin.reports.voided-votes');
+Route::get('/admin/reports/voter-list', function () {
+    return view('admin.reports.voter-list');
+})
+    ->middleware(['auth', 'verified', 'role:admin'])
+    ->name('admin.reports.voter-list');
 
 Route::get('registration/dashboard', function () {
     return view('registration.dashboard');

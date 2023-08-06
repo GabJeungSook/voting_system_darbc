@@ -30,6 +30,11 @@ class RegisteredMember extends Model
         return $this->HasMany(Vote::class);
     }
 
+    public function vote()
+    {
+        return $this->hasOne(Vote::class);
+    }
+
     public function voided_member()
     {
         return $this->HasMany(VoidedMember::class);
