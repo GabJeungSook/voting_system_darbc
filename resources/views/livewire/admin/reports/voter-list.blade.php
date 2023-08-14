@@ -8,7 +8,7 @@
           </div>
         <div class="select flex space-x-2 items-end">
             <x-native-select label="Voting Counter" wire:model="selectedCounter">
-                <option selected hidden>Select Counter</option>
+                <option value="" selected>All</option>
                 @foreach ($counter as $item)
                 <option value={{$item->id}}>{{strtoupper($item->name)}}</option>
                 @endforeach

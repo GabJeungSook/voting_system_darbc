@@ -30,7 +30,8 @@ class RegisteredMembers extends Component
         $this->members = RegisteredMember::where('election_id', $this->election->id)
         ->when(!empty($this->selectedCounter), function ($query) {
             $query->where('user_id', $this->selectedCounter);
-        })->with(['member']);
+        })->with(['member'])->get();
+
         return view('livewire.admin.reports.registered-members');
     }
 }
