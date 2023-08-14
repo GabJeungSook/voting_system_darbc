@@ -34,7 +34,7 @@
                             {{$item->darbc_id}}
                         </td>
                         <td class="whitespace-nowrap py-2 pl-4 pr-3 text-left text-sm font-medium text-gray-900 sm:pl-3 border-r">
-                            {{strtoupper($item->first_name.' '.$item->middle_name.' '.$item->last_name)}}
+                            {{strtoupper($item->last_name.', '.$item->middle_name.' '.$item->first_name)}}
                         </td>
                         <td class="whitespace-nowrap py-2 pl-4 text-left text-sm font-medium text-gray-900 sm:pl-3 border-r">
                             {{strtoupper($item->user->name)}}
