@@ -32,7 +32,7 @@
                             {{strtoupper($item->registered_member->last_name.', '.$item->registered_member->first_name.' '.$item->registered_member->middle_name)}}
                         </td>
                         <td class="whitespace-nowrap py-2 pl-4 pr-3 text-left text-sm font-medium text-gray-900 sm:pl-3 border-r">
-                            {{strtoupper($item->member->first_name.' '.$item->member->middle_name.' '.$item->member->last_name)}}
+                            {{strtoupper($item->member->last_name.', '.$item->member->first_name.' '.$item->member->middle_name)}}
                         </td>
                         <td class="whitespace-nowrap py-2 pl-4 text-left text-sm font-medium text-gray-900 sm:pl-3 border-r">
                             {{strtoupper($item->user->name)}}
