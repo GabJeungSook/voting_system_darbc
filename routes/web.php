@@ -99,6 +99,12 @@ Route::get('/admin/reports/official-result', function () {
     ->middleware(['auth', 'verified', 'role:admin'])
     ->name('admin.reports.official-result');
 
+Route::get('/admin/reports/overall-result', function () {
+    return view('admin.reports.overall-result');
+})
+    ->middleware(['auth', 'verified', 'role:admin'])
+    ->name('admin.reports.overall-result');
+
 Route::get('/admin/upload', function () {
     return view('admin.upload');
  })
