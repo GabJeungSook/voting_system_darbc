@@ -14,6 +14,7 @@
                 @endforeach
               </x-native-select>
             <x-button label="Print" class="font-bold" icon="printer" secondary  @click="printOut($refs.printContainer.outerHTML);" />
+            <x-button label="Export Excel" class="font-bold" icon="document-download" positive  wire:click="exportReport" />
           </div>
     </div>
   <div class="mt-5 border rounded-lg p-4" x-ref="printContainer">

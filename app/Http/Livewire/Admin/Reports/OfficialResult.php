@@ -5,6 +5,8 @@ namespace App\Http\Livewire\Admin\Reports;
 use Livewire\Component;
 use App\Models\Election;
 use App\Models\Position;
+use App\Exports\OfficialResultExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OfficialResult extends Component
 {
@@ -26,6 +28,11 @@ class OfficialResult extends Component
                 $candidate->vote_count = $candidate->votes()->count();
             });
         }
+    }
+
+    public function exportReport()
+    {
+        return Excel::download(new OfficialResultExport($this->positions, $this->election), 'officialResult.xlsx');
     }
 
     public function redirectToDashboard()

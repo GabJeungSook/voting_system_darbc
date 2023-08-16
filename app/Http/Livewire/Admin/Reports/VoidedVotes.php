@@ -6,6 +6,8 @@ use Livewire\Component;
 use App\Models\Election;
 use App\Models\VoidedMember;
 use App\Models\User;
+use App\Exports\VoidedVoteExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class VoidedVotes extends Component
 {
@@ -23,6 +25,11 @@ class VoidedVotes extends Component
     public function redirectToDashboard()
     {
         return redirect()->route('admin.dashboard');
+    }
+
+    public function exportReport()
+    {
+        return Excel::download(new VoidedVoteExport($this->members, $this->election, $this->selectedCounter), 'voidedVotes.xlsx');
     }
 
     public function render()

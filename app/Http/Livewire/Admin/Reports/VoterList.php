@@ -8,6 +8,8 @@ use App\Models\RegisteredMember;
 use App\Models\VoidedMember;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
+use App\Exports\VoterListExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class VoterList extends Component
 {
@@ -22,10 +24,18 @@ class VoterList extends Component
         $this->election = Election::where('is_active', true)->first();
         $this->counter = User::where('role_id', 3)->get();
     }
+
     public function redirectToDashboard()
     {
         return redirect()->route('admin.dashboard');
     }
+
+    public function exportReport()
+    {
+        return Excel::download(new VoterListExport($this->members, $this->election, $this->selectedCounter), 'voterList.xlsx');
+    }
+
+
     public function render()
     {
 

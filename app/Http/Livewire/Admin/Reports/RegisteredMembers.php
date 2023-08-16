@@ -6,6 +6,8 @@ use Livewire\Component;
 use App\Models\Election;
 use App\Models\RegisteredMember;
 use App\Models\User;
+use App\Exports\RegisteredMembersExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class RegisteredMembers extends Component
 {
@@ -23,6 +25,11 @@ class RegisteredMembers extends Component
     public function redirectToDashboard()
     {
         return redirect()->route('admin.dashboard');
+    }
+
+    public function exportReport()
+    {
+        return Excel::download(new RegisteredMembersExport($this->members, $this->election, $this->selectedCounter), 'registeredMembers.xlsx');
     }
 
     public function render()

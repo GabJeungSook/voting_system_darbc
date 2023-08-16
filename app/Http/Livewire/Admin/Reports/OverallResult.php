@@ -6,6 +6,8 @@ use Livewire\Component;
 use App\Models\Election;
 use App\Models\Position;
 use App\Models\User;
+use App\Exports\OverallResultExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OverallResult extends Component
 {
@@ -23,6 +25,11 @@ class OverallResult extends Component
         $this->calculateVoteCounts();
     }
 
+    public function exportReport()
+    {
+        return Excel::download(new OverallResultExport($this->positions, $this->election, $this->selectedCounter), 'overAllResult.xlsx');
+    }
+
     public function calculateVoteCounts()
     {
         foreach ($this->positions as $position) {
@@ -32,6 +39,11 @@ class OverallResult extends Component
                 })->count();
             });
         }
+    //     $this->positions = Position::when(!empty($this->selectedCounter), function ($query) {
+    //         $query->where('user_id', $this->selectedCounter);
+    // })->with(['candidates'=>function($query){
+    //     $query->withCount();
+    // }])->get();
     }
 
     public function updatedSelectedCounter()
