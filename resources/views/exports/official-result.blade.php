@@ -15,7 +15,7 @@
                 {{$counter++}}
              </td>
             <td class="whitespace-nowrap py-2 pl-4 pr-3 text-left text-sm font-medium text-gray-900 sm:pl-3 border-r">
-                {{strtoupper($candidate->first_name.' '.$candidate->middle_name.' '.$candidate->last_name)}}
+                {{strtoupper($candidate->last_name.', '.$candidate->first_name.' '.$candidate->middle_name)}}
             </td>
             <td class="whitespace-nowrap py-2 pl-4 text-left text-sm font-medium text-gray-900 sm:pl-3 border-r">
                 {{$candidate->vote_count}}
