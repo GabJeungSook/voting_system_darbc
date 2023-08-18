@@ -31,9 +31,9 @@
                         <td class="whitespace-nowrap py-2 pl-4 pr-3 text-left text-sm font-medium text-gray-900 sm:pl-3 border-r">
                            {{$counter++}}
                         </td>
-                        <td class="whitespace-nowrap py-2 pl-4 text-left text-sm font-medium text-gray-900 sm:pl-3 border-r">
+                        {{-- <td class="whitespace-nowrap py-2 pl-4 text-left text-sm font-medium text-gray-900 sm:pl-3 border-r">
                             {{$loop->iteration}}
-                        </td>
+                        </td> --}}
                         <td class="whitespace-nowrap py-2 pl-4 pr-3 text-left text-sm font-medium text-gray-900 sm:pl-3 border-r">
                             {{strtoupper($candidate->last_name.', '.$candidate->first_name.' '.$candidate->middle_name)}}
                         </td>
