@@ -13,6 +13,11 @@
                 <option value={{$item->id}}>{{strtoupper($item->name)}}</option>
                 @endforeach
               </x-native-select>
+              <x-native-select label="Date" wire:model="selectedDate">
+                <option value="" selected>All</option>
+                <option value="2023-07-29">Day 1</option>
+                <option value="2023-07-30">Day 2</option>
+              </x-native-select>
             <x-button label="Print" class="font-bold" icon="printer" secondary  @click="printOut($refs.printContainer.outerHTML);" />
             <x-button label="Export Excel" class="font-bold" icon="document-download" positive  wire:click="exportReport" />
           </div>

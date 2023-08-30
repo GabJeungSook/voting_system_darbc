@@ -16,7 +16,7 @@ class OverallResult extends Component
     public $votes;
     public $counter;
     public $selectedCounter;
-
+    public $selectedDate;
     public function mount()
     {
         $this->positions = Position::with('candidates')->get();
@@ -36,6 +36,8 @@ class OverallResult extends Component
             $position->candidates->each(function ($candidate) {
                 $candidate->vote_count = $candidate->votes()->when(!empty($this->selectedCounter), function ($query) {
                         $query->where('user_id', $this->selectedCounter);
+                })->when(!empty($this->selectedDate), function ($query) {
+                    $query->whereDate('created_at', $this->selectedDate);
                 })->count();
             });
         }
@@ -47,6 +49,11 @@ class OverallResult extends Component
     }
 
     public function updatedSelectedCounter()
+    {
+        $this->calculateVoteCounts();
+    }
+
+    public function updatedSelectedDate()
     {
         $this->calculateVoteCounts();
     }
