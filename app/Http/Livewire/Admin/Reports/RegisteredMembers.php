@@ -15,6 +15,7 @@ class RegisteredMembers extends Component
     public $counter;
     public $members;
     public $selectedCounter;
+    public $selectedDate;
 
     public function mount()
     {
@@ -37,6 +38,8 @@ class RegisteredMembers extends Component
         $this->members = RegisteredMember::where('election_id', $this->election->id)
         ->when(!empty($this->selectedCounter), function ($query) {
             $query->where('user_id', $this->selectedCounter);
+        }) ->when(!empty($this->selectedDate), function ($query) {
+            $query->where('created_at', $this->selectedDate);
         })->with(['member'])->get();
 
         return view('livewire.admin.reports.registered-members');
