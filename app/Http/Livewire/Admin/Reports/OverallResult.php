@@ -27,7 +27,7 @@ class OverallResult extends Component
 
     public function exportReport()
     {
-        return Excel::download(new OverallResultExport($this->positions, $this->election, $this->selectedCounter), 'overAllResult.xlsx');
+        return Excel::download(new OverallResultExport($this->positions, $this->election, $this->selectedCounter, $this->selectedDate), 'overAllResult.xlsx');
     }
 
     public function calculateVoteCounts()
