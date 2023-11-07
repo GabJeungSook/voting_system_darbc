@@ -202,6 +202,40 @@ class CastVote extends Component
         }
     }
 
+    public function printCoupon($member)
+    {
+        $reg_member = $member;
+        $votes = $reg_member->votes()->get();
+        $printerIp = auth()->user()->printer->ip_address;
+        $printerPort = 9100;
+        $member_name = strtoupper($reg_member->first_name.' '.$reg_member->middle_name.' '.$reg_member->last_name);
+        $connector = new NetworkPrintConnector($printerIp, $printerPort);
+        $printer = new Printer($connector);
+        try {
+            $printer->setJustification(Printer::JUSTIFY_CENTER);
+            $printer -> setEmphasis(true);
+            $printer -> text("DARBC ELECTION 2023\n");
+            $printer -> text("VOTERS COUPON\n");
+            $printer -> setEmphasis(false);
+            $printer -> feed(1);
+            $printer -> text(\Carbon\Carbon::parse(now())->format('F d, Y')."\n");
+            $printer -> text(\Carbon\Carbon::parse($reg_member->registration_duration->time_start)->format('h:i:s A')." - ".\Carbon\Carbon::parse($reg_member->registration_duration->time_end)->format('h:i:s A'));
+            $printer -> feed(3);
+
+            $printer -> setEmphasis(true);
+            $printer -> text($member_name);
+            $printer -> feed(1);
+            $printer -> text("VOTED");
+            $printer -> setEmphasis(false);
+            $printer -> feed(2);
+            $printer -> cut();
+            $printer -> close();
+        } finally {
+            $printer -> close();
+        }
+    }
+
+
     public function saveVote()
     {
         DB::beginTransaction();
@@ -246,6 +280,7 @@ class CastVote extends Component
 
             DB::commit();
             $this->printBallot($this->record);
+            $this->printCoupon($this->record);
             Notification::make()
             ->title('Member Successfully Voted!')
             ->success()
