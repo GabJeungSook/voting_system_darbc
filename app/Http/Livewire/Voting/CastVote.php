@@ -192,7 +192,8 @@ class CastVote extends Component
 
             $printer -> feed(4);
             $printer -> setEmphasis(true);
-            $printer -> text($member_name);
+            $printer -> text($member_name."\n");
+            $printer -> text(strtoupper(auth()->user()->name));
             $printer -> setEmphasis(false);
             $printer -> feed(2);
             $printer -> cut();
@@ -225,7 +226,7 @@ class CastVote extends Component
             $printer -> setEmphasis(true);
             $printer -> text($member_name);
             $printer -> feed(1);
-            $printer -> text("VOTED");
+            $printer -> text("VOTED AT ". strtoupper(auth()->user()->name));
             $printer -> setEmphasis(false);
             $printer -> feed(2);
             $printer -> cut();
