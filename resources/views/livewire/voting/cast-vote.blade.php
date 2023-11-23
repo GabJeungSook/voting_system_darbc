@@ -351,13 +351,14 @@
                 <div class=""></div>
                 <div class="flex space-x-3">
                     <x-button slate label="Cancel" x-on:click="close" class="py-5 px-5"/>
-                    <x-button positive icon="check" label="Submit" spinner="saveVote" class="py-14 px-14"
+                    {{-- <x-button positive icon="check" label="Submit" spinner="saveVote" class="py-14 px-14"
                         x-on:confirm="{
                             title: 'Are you sure you want to save your vote?',
                             icon: 'warning',
                             method: 'saveVote',
                             params: 1
-                        }" />
+                        }" /> --}}
+                        <x-button positive icon="check" label="Submit" spinner="saveVote" wire:click="saveVote"/>
                 </div>
             </div>
         </x-slot>

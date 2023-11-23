@@ -239,6 +239,7 @@ class CastVote extends Component
 
     public function saveVote()
     {
+
         DB::beginTransaction();
 
         try {
@@ -281,6 +282,8 @@ class CastVote extends Component
 
             DB::commit();
             $this->printBallot($this->record);
+            //0.5 second interval before printCoupon
+            sleep(0.5);
             $this->printCoupon($this->record);
             Notification::make()
             ->title('Member Successfully Voted!')
