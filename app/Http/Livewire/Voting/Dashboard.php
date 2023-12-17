@@ -93,6 +93,39 @@ class Dashboard extends Component implements Tables\Contracts\HasTable
         }
     }
 
+    public function printCoupon($member)
+    {
+        $reg_member = $member;
+        $votes = $reg_member->votes()->get();
+        $printerIp = auth()->user()->printer->ip_address;
+        $printerPort = 9100;
+        $member_name = strtoupper($reg_member->first_name.' '.$reg_member->middle_name.' '.$reg_member->last_name);
+        $connector = new NetworkPrintConnector($printerIp, $printerPort);
+        $printer = new Printer($connector);
+        try {
+            $printer->setJustification(Printer::JUSTIFY_CENTER);
+            $printer -> setEmphasis(true);
+            $printer -> text("DARBC ELECTION 2023\n");
+            $printer -> text("VOTERS COUPON\n");
+            $printer -> setEmphasis(false);
+            $printer -> feed(1);
+            $printer -> text(\Carbon\Carbon::parse(now())->format('F d, Y')."\n");
+            $printer -> text(\Carbon\Carbon::parse($reg_member->registration_duration->time_start)->format('h:i:s A')." - ".\Carbon\Carbon::parse($reg_member->registration_duration->time_end)->format('h:i:s A'));
+            $printer -> feed(3);
+
+            $printer -> setEmphasis(true);
+            $printer -> text($member_name);
+            $printer -> feed(1);
+            $printer -> text("VOTED AT ". strtoupper(auth()->user()->name));
+            $printer -> setEmphasis(false);
+            $printer -> feed(2);
+            $printer -> cut();
+            $printer -> close();
+        } finally {
+            $printer -> close();
+        }
+    }
+
     public function getTableActions()
     {
         return [
@@ -104,6 +137,9 @@ class Dashboard extends Component implements Tables\Contracts\HasTable
             ->requiresConfirmation()
             ->action(function (RegisteredMember $record) {
                 $this->printBallot($record);
+                sleep(1);
+                $this->printCoupon($record);
+
             })
         ];
     }
