@@ -58,9 +58,6 @@ class Members extends Component implements Tables\Contracts\HasTable
                     $title = 'Update Success!',
                     $description = 'Data Successfully Updated.'
                 );
-
-
-
             }),
         ];
     }
