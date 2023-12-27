@@ -134,6 +134,12 @@ Route::get('/admin/reports/voter-list', function () {
     ->middleware(['auth', 'verified', 'role:admin'])
     ->name('admin.reports.voter-list');
 
+Route::get('/admin/reports/total-votes', function () {
+    return view('admin.reports.total-votes');
+})
+    ->middleware(['auth', 'verified', 'role:admin'])
+    ->name('admin.reports.total-votes');
+
 Route::get('registration/dashboard', function () {
     return view('registration.dashboard');
 })
