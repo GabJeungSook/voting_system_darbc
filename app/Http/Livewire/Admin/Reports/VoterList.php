@@ -32,7 +32,9 @@ class VoterList extends Component
 
     public function exportReport()
     {
-        return Excel::download(new VoterListExport($this->members, $this->election, $this->selectedCounter), 'voterList.xlsx');
+        $selectedCounter = $this->selectedCounter != null ? User::where('id', $this->selectedCounter)->first()->name : 'All';
+
+        return Excel::download(new VoterListExport($this->members, $this->election, $this->selectedCounter), 'voterList_'.$selectedCounter.'.xlsx');
     }
 
 
