@@ -86,11 +86,11 @@ class Printers extends Component implements Tables\Contracts\HasTable
         return [
             Tables\Columns\TextColumn::make('user.name')
             ->label('USER')
-            ->formatStateUsing(fn (Printer $record) => strtoupper($record->user->name))
+            ->formatStateUsing(fn (Printer $record) => strtoupper($record?->user->name))
             ->searchable(),
             Tables\Columns\TextColumn::make('user.role_id')
             ->label('ASSIGNMENT')
-            ->formatStateUsing(fn (Printer $record) => strtoupper($record->user->roles->name))
+            ->formatStateUsing(fn (Printer $record) => strtoupper($record?->user->roles->name))
             ->searchable(),
             Tables\Columns\TextColumn::make('ip_address')
             ->label('IP ADDRESS')
