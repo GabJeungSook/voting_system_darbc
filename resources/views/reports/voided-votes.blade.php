@@ -23,7 +23,6 @@
                         <th  class="bg-indigo-800 py-2 pl-4 pr-3 text-left text-sm uppercase font-semibold text-white sm:pl-3 border-r">Note</th>
                         <th  class="bg-indigo-800 py-2 pl-4 pr-3 text-left text-sm uppercase font-semibold text-white sm:pl-3">Voided Date</th>
                     </tr>
-                    @dump($members)
                     @foreach ($members as $item)
                     <tr class="border-t border-gray-600">
                         <td class="whitespace-nowrap py-2 pl-4 pr-3 text-left text-sm font-medium text-gray-900 sm:pl-3 border-r">
