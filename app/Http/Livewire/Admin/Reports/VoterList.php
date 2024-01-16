@@ -49,8 +49,6 @@ class VoterList extends Component
                 $query->where('id', $this->selectedCounter);
             });
         })
-        ->where('first_name', 'like', '%'.$this->member_name.'%')
-        ->orWhere('middle_name', 'like', '%'.$this->member_name.'%')
         ->with(['registration_duration','vote.user'])->get();
 
 
