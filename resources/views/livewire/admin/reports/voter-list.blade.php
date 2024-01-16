@@ -13,7 +13,7 @@
                 <option value={{$item->id}}>{{strtoupper($item->name)}}</option>
                 @endforeach
               </x-native-select>
-              <x-input wire:model="member_name" label="Name" placeholder="Member's Name" />
+              <x-input wire:model="member_name" label="Search" placeholder="Member's Name" />
             <x-button label="Print" class="font-bold" icon="printer" secondary  @click="printOut($refs.printContainer.outerHTML);" />
             <x-button label="Export Excel" class="font-bold" icon="document-download" positive  wire:click="exportReport" />
           </div>
