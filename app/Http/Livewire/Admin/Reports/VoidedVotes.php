@@ -34,18 +34,18 @@ class VoidedVotes extends Component
 
     public function render()
     {
-        // $this->members = VoidedMember::where('type', 'VOTING')->when(!empty($this->selectedCounter), function ($query) {
-        //     // $query->where('user_id', $this->selectedCounter);
-        //     $query->whereHas('votes', function($query) {
-        //         $query->where('user_id', $this->selectedCounter);
-        //     });
-        // })->get();
-
-        $this->members = VoidedMember::whereHas('registered_member', function ($query) {
+        $this->members = VoidedMember::where('type', 'VOTING')->when(!empty($this->selectedCounter), function ($query) {
+            // $query->where('user_id', $this->selectedCounter);
             $query->whereHas('votes', function($query) {
                 $query->where('user_id', $this->selectedCounter);
             });
         })->get();
+
+        // $this->members = VoidedMember::whereHas('registered_member', function ($query) {
+        //     $query->whereHas('votes', function($query) {
+        //         $query->where('user_id', $this->selectedCounter);
+        //     });
+        // })->get();
 
         // where('type', 'VOTING')->when(!empty($this->selectedCounter), function ($query) {
         //     // $query->where('user_id', $this->selectedCounter);
