@@ -19,7 +19,7 @@ class VoidedVotes extends Component
     public function mount()
     {
         $this->election = Election::where('is_active', true)->first();
-        $this->counter = User::where('role_id', 2)->get();
+        $this->counter = User::where('role_id', 3)->get();
     }
 
     public function redirectToDashboard()
@@ -35,7 +35,10 @@ class VoidedVotes extends Component
     public function render()
     {
         $this->members = VoidedMember::where('type', 'VOTING')->when(!empty($this->selectedCounter), function ($query) {
-            $query->where('user_id', $this->selectedCounter);
+            // $query->where('user_id', $this->selectedCounter);
+            $query->whereHas('votes', function($query) {
+                $query->where('user_id', $this->selectedCounter);
+            });
         })->get();
 
         return view('livewire.admin.reports.voided-votes');

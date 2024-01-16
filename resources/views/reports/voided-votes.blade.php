@@ -35,7 +35,7 @@
                             {{strtoupper($item->member->last_name.', '.$item->member->first_name.' '.$item->member->middle_name)}}
                         </td>
                         <td class="whitespace-nowrap py-2 pl-4 text-left text-sm font-medium text-gray-900 sm:pl-3 border-r">
-                            {{strtoupper($item->user->name)}}
+                            {{strtoupper($item->user->votes()->first()->user_id)}}
                         </td>
                         <td class="whitespace-nowrap py-2 pl-4 text-left text-sm font-medium text-gray-900 sm:pl-3 border-r">
                             {{strtoupper($item->note)}}
