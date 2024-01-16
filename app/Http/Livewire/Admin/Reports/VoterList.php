@@ -18,6 +18,7 @@ class VoterList extends Component
     public $counter;
     public $members;
     public $selectedCounter;
+    public $member_name;
 
     public function mount()
     {
@@ -47,7 +48,10 @@ class VoterList extends Component
             $query->wherehas('vote.user', function($query){
                 $query->where('id', $this->selectedCounter);
             });
-        })->with(['registration_duration','vote.user'])->get();
+        })
+        ->where('first_name', 'like', '%'.$this->member_name.'%')
+        ->orWhere('middle_name', 'like', '%'.$this->member_name.'%')
+        ->with(['registration_duration','vote.user'])->get();
 
 
         return view('livewire.admin.reports.voter-list');
