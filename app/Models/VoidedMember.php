@@ -12,7 +12,7 @@ class VoidedMember extends Model
 
     public function registered_member()
     {
-        return $this->belongsTo(RegisteredMember::class, 'registered_member_id');
+        return $this->belongsTo(Member::class, 'registered_member_id');
     }
 
     public function member()
