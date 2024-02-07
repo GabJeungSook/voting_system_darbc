@@ -12,16 +12,48 @@ use Filament\Notifications\Notification;
 use Filament\Tables\Actions\Action;
 use WireUi\Traits\Actions;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\MemberImport;
 use DB;
 
 class Members extends Component implements Tables\Contracts\HasTable
 {
     use Tables\Concerns\InteractsWithTable;
     use Actions;
-
+    public $file;
     protected function getTableQuery(): Builder
     {
         return Member::query();
+    }
+
+    public function getTableHeaderActions()
+    {
+        return [
+            Action::make('import')
+            ->icon('heroicon-o-download')
+            ->label('Import Data')
+            ->button()
+            ->color('warning')
+            ->form([
+                Forms\Components\FileUpload::make('file')
+                ->label('Upload File')
+                ->helperText("Import member data from profiling")
+                ->placeholder('Choose file')
+                ->preserveFilenames()
+                ->disk('public')
+                ->directory('imports')
+                ->acceptedFileTypes(['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/csv', 'text/csv', 'text/plain'])
+                ->required(),
+            ])
+            ->action(function ($data) {
+                Excel::import(new MemberImport, $data['file']);
+
+                $this->dialog()->success(
+                    $title = 'Upload Success!',
+                    $description = 'Data Successfully Imported.'
+                );
+            }),
+        ];
     }
 
     public function getTableActions()
