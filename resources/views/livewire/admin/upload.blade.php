@@ -1,12 +1,17 @@
 <div>
     <div class="p-5">
+        <div>
+            <span wire:loading wire:target="uploadAllMembers" class="text-red-600 font-mono mt-3">Uploading Members. Please Wait...</span>
+          </div>
+        <div wire:loading.remove>
       <div class="flex flex-col border p-2 space-y-1 mb-1">
         <label for="member">Members</label>
-        <input type="file" wire:model="members">
+        <input type="file" wire:model="members" accept=".csv, .xlsx">
       </div>
-      <x-button label="Upload" wire:click="uploadMember" dark spinner="members" />
+      <x-button label="Upload Members" wire:click="uploadAllMembers" class="mt-3" slate spinner="members" />
+      </div>
     </div>
-    <div class="p-5">
+    {{-- <div class="p-5">
         <div class="flex flex-col border p-2 space-y-1 mb-1">
           <label for="without_profile">Without Profile</label>
           <input type="file" wire:model="without_profile">
@@ -61,5 +66,5 @@
           <input type="file" wire:model="w_mediation_proceeding">
         </div>
         <x-button label="Upload" wire:click="uploadMemberHOLDMediationProceeding" dark spinner="w_mediation_proceeding" />
-      </div>
+      </div> --}}
   </div>

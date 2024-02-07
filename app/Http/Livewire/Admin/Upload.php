@@ -8,6 +8,8 @@ use League\Csv\Reader;
 use App\Models\Member;
 use Illuminate\Support\Facades\Storage;
 use WireUi\Traits\Actions;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\MemberImport;
 
 class Upload extends Component
 {
@@ -58,6 +60,30 @@ class Upload extends Component
             $title = 'Success',
             $description = 'Members was successfully uploaded'
         );
+    }
+
+    public function uploadAllMembers()
+    {
+        $this->validate([
+            'members' => 'required|mimes:csv,xlsx|max:2048',
+        ]);
+
+        $file = $this->members;
+
+        try {
+            Excel::import(new MemberImport, $file);
+            $this->reset('members');
+            $this->dialog()->success(
+                        $title = 'Upload Success!',
+                        $description = 'Data Successfully Imported.'
+                    );
+            return redirect()->route('admin.members');
+        } catch (\Exception $e) {
+            $this->dialog()->error(
+                $title = 'Error importing members',
+                $description = $e->getMessage()
+            );
+        }
     }
 
     public function uploadMemberWithoutProfile()

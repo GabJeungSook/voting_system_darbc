@@ -20,7 +20,6 @@ class Members extends Component implements Tables\Contracts\HasTable
 {
     use Tables\Concerns\InteractsWithTable;
     use Actions;
-    public $file;
     protected function getTableQuery(): Builder
     {
         return Member::query();
@@ -34,26 +33,48 @@ class Members extends Component implements Tables\Contracts\HasTable
             ->label('Import Data')
             ->button()
             ->color('warning')
-            ->form([
-                Forms\Components\FileUpload::make('file')
-                ->label('Upload File')
-                ->helperText("Import member data from profiling")
-                ->placeholder('Choose file')
-                ->preserveFilenames()
-                ->disk('public')
-                ->directory('imports')
-                ->acceptedFileTypes(['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/csv', 'text/csv', 'text/plain'])
-                ->required(),
-            ])
-            ->action(function ($data) {
-                Excel::import(new MemberImport, $data['file']);
-
+            ->action('redirectToUpload')
+            ->visible(fn ($record) => Member::count() === 0),
+            Action::make('truncateMemberTable')
+            ->icon('heroicon-o-trash')
+            ->label('Clear Members')
+            ->button()
+            ->color('danger')
+            ->requiresConfirmation()
+            ->visible(fn ($record) => Member::count() > 0)
+            ->action(function () {
+                Member::truncate();
                 $this->dialog()->success(
-                    $title = 'Upload Success!',
-                    $description = 'Data Successfully Imported.'
+                    $title = 'Success!',
+                    $description = 'All Members Cleared.'
                 );
             }),
+            // ->form([
+            //     Forms\Components\FileUpload::make('file')
+            //     ->label('Upload File')
+            //     ->helperText("Import member data from profiling")
+            //     ->placeholder('Choose file')
+            //     ->preserveFilenames()
+            //     ->disk('public')
+            //     ->directory('imports')
+            //     ->acceptedFileTypes(['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/csv', 'text/csv', 'text/plain'])
+            //     ->required(),
+            // ])
+            // ->action(function ($data) {
+
+            //     Excel::import(new MemberImport, $data['file']);
+
+            //     $this->dialog()->success(
+            //         $title = 'Upload Success!',
+            //         $description = 'Data Successfully Imported.'
+            //     );
+            // }),
         ];
+    }
+
+    public function redirectToUpload()
+    {
+        return redirect()->route('admin.upload');
     }
 
     public function getTableActions()
@@ -129,6 +150,7 @@ class Members extends Component implements Tables\Contracts\HasTable
             ->searchable(),
         ];
     }
+
 
     public function render()
     {
