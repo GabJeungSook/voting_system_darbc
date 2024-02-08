@@ -3,7 +3,7 @@
         <div>
             <span wire:loading wire:target="uploadAllMembers" class="text-red-600 font-mono mt-3">Uploading Members. Please Wait...</span>
           </div>
-        <div wire:loading.remove>
+        <div wire:loading.remove wire:target="uploadAllMembers">
       <div class="flex flex-col border p-2 space-y-1 mb-1">
         <label for="member">Members</label>
         <input type="file" wire:model="members" accept=".csv, .xlsx">
