@@ -17,6 +17,7 @@ class VoterList extends Component
     public $election;
     public $counter;
     public $members;
+    public $voided_members;
     public $selectedCounter;
     public $member_name;
 
@@ -41,7 +42,8 @@ class VoterList extends Component
 
     public function render()
     {
-        $this->members = RegisteredMember::whereHas('votes')->whereHas('vote.election', function ($query) {
+        $this->members = RegisteredMember::whereHas('votes')
+        ->whereHas('vote.election', function ($query) {
             $query->where('id', $this->election->id);
         })
         ->when(!empty($this->selectedCounter), function ($query) {
@@ -57,6 +59,10 @@ class VoterList extends Component
         })
         ->with(['registration_duration', 'vote.user'])
         ->get();
+
+        $this->voided_members = VoidedMember::where('type', 'VOTING')->when(!empty($this->selectedCounter), function ($query) {
+            $query->where('user_id', $this->selectedCounter);
+        })->get();
 
 
         // $this->members = RegisteredMember::whereHas('votes')->whereHas('vote.election', function($query){

@@ -16,7 +16,7 @@
                   <a href="#" class="font-medium text-gray-900 hover:text-gray-600">{{strtoupper($item->name)}}</a>
                 </div>
                 <div class="">
-                    <p class="text-gray-800 text-lg pr-4">{{$item->registered_members->where('election_id', $election?->id)->count()}}</p>
+                    <p class="text-gray-800 text-lg pr-4">{{$item->registered_members->where('election_id', $election?->id)->where('is_voided', false)->count()}}</p>
                   </div>
               </div>
 
@@ -39,20 +39,34 @@
                 <div class="flex-1 truncate px-4 py-4 text-sm">
                   <a href="#" class="font-medium text-gray-900 hover:text-gray-600">{{strtoupper($item->name)}}</a>
                 </div>
-                <div class="">
-                    <p class="text-gray-800 text-lg pr-4">{{$item->votes->where('election_id', $election?->id)->pluck('registered_member_id')->unique()->count()}}</p>
-                  </div>
+                <div class="py-2">
+                    <div class="py-1">
+                        <p class="text-gray-800 text-sm pr-4">Total Votes: {{$item->votes->where('election_id', $election?->id)->pluck('registered_member_id')->unique()->count() + $item->voided_members->count()}}</p>
+                      </div>
+                      <div class="py-1">
+                        <p class="text-gray-800 text-sm pr-4"> Voided Votes: {{$item->voided_members->count()}}</p>
+                      </div>
+                </div>
+
               </div>
           </li>
           @endforeach
         </ul>
       </div>
-      <div class="grid grid-cols-2 gap-3">
+      <div class="grid grid-cols-4 gap-3">
         <div class="bg-gray-900 mt-5">
             <dl class="mx-auto grid grid-cols-1 gap-x-3 bg-white ">
                 <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 bg-indigo-800 rounded-md px-4 py-10 sm:px-6 xl:px-8">
-                  <dt class="text-sm text-white font-medium leading-6">Total Registered Member</dt>
+                  <dt class="text-sm text-white font-medium leading-6">Total Registered Members</dt>
                   <dd class="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-white">{{$total_registered_members}}</dd>
+                </div>
+              </dl>
+          </div>
+          <div class="bg-gray-900 mt-5">
+            <dl class="mx-auto grid grid-cols-1 gap-x-3 bg-white">
+                <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 bg-indigo-800 rounded-md px-4 py-10 sm:px-6 xl:px-8">
+                  <dt class="text-sm text-white font-medium leading-6">Total Overall Votes</dt>
+                  <dd class="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-white">{{$total_overall_votes}}</dd>
                 </div>
               </dl>
           </div>
@@ -61,6 +75,14 @@
                 <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 bg-indigo-800 rounded-md px-4 py-10 sm:px-6 xl:px-8">
                   <dt class="text-sm text-white font-medium leading-6">Total Successful Voters</dt>
                   <dd class="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-white">{{$total_voters}}</dd>
+                </div>
+              </dl>
+          </div>
+          <div class="bg-gray-900 mt-5">
+            <dl class="mx-auto grid grid-cols-1 gap-x-3 bg-white">
+                <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 bg-indigo-800 rounded-md px-4 py-10 sm:px-6 xl:px-8">
+                  <dt class="text-sm text-white font-medium leading-6">Total Voided Votes</dt>
+                  <dd class="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-white">{{$total_voided_votes}}</dd>
                 </div>
               </dl>
           </div>

@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\RegisteredMember;
 use App\Models\Election;
 use App\Models\User;
+use App\Models\VoidedMember;
 use App\Models\Vote;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Artisan;
@@ -17,6 +18,8 @@ class Dashboard extends Component
     public $election;
     public $total_registered_members;
     public $total_voters;
+    public $total_overall_votes;
+    public $total_voided_votes;
     // protected $listeners = ['backupCompleted'];
 
     public function mount()
@@ -24,8 +27,10 @@ class Dashboard extends Component
         $this->election = Election::where('is_active', true)->first();
         $this->tellers = User::where('role_id', 2)->get();
         $this->voting_tellers = User::where('role_id', 3)->get();
-        $this->total_registered_members = RegisteredMember::where('election_id', $this->election?->id)->count();
+        $this->total_registered_members = RegisteredMember::where('election_id', $this->election?->id)->where('is_voided', false)->count();
         $this->total_voters = Vote::where('election_id', $this->election?->id)->distinct('registered_member_id')->count();
+        $this->total_voided_votes = VoidedMember::where('type', 'VOTING')->count();
+        $this->total_overall_votes = $this->total_voters + $this->total_voided_votes;
         // $this->total_voters = Vote::where('election_id', $this->election?->id)->count();
     }
 

@@ -15,7 +15,7 @@ class Member extends Model
         return $this->hasOne(RegisteredMember::class);
     }
 
-    public function voided_member()
+    public function voided_members()
     {
         return $this->HasMany(VoidedMember::class);
     }

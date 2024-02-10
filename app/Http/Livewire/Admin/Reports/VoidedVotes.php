@@ -19,7 +19,7 @@ class VoidedVotes extends Component
     public function mount()
     {
         $this->election = Election::where('is_active', true)->first();
-        $this->counter = User::where('role_id', 2)->get();
+        $this->counter = User::where('role_id', 3)->get();
     }
 
     public function redirectToDashboard()

@@ -18,7 +18,7 @@ class ReprintQrCode extends Component implements Tables\Contracts\HasTable
 
     protected function getTableQuery(): Builder
     {
-        return RegisteredMember::query()->where('election_id', $this->election_id);
+        return RegisteredMember::query()->where('election_id', $this->election_id)->where('is_voided', false);
     }
 
       public function getTableActions()

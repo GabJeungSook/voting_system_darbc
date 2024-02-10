@@ -17,7 +17,7 @@ class ScanQrCode extends Component
     public function verifyCode()
     {
     $member = RegisteredMember::where('qr_code', $this->scannedCode)->first();
-    if ($member) {
+    if ($member && !$member->is_voided) {
         if($member->votes()->exists())
         {
             $this->reset('scannedCode');
@@ -25,7 +25,8 @@ class ScanQrCode extends Component
                 $title = 'Code Already Used! ',
                 $description = strtoupper($member->first_name.' '.$member->middle_name.' '.$member->last_name).' already voted.'
             );
-        }else{
+        }
+        else{
             $this->reset('scannedCode');
             DB::beginTransaction();
             $registrationDuration = RegistrationDuration::where('registered_member_id', $member->id)->first();
@@ -43,7 +44,15 @@ class ScanQrCode extends Component
             return redirect()->route('voting.cast-vote', $member);
         }
 
-    } else {
+    }elseif($member && $member->is_voided)
+    {
+        $this->reset('scannedCode');
+        $this->dialog()->error(
+            $title = 'QR Code is Voided! ',
+            $description = 'This code belongs to '.strtoupper($member->first_name.' '.$member->middle_name.' '.$member->last_name).' and it is voided.'
+        );
+    }
+     else {
         $this->reset('scannedCode');
         $this->dialog()->error(
             $title = 'Code Not Found! ',

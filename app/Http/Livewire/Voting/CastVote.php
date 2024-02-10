@@ -261,20 +261,29 @@ class CastVote extends Component
                 $this->reviewVoteModal = false;
                 return redirect()->route('voting.scan-qr');
             }
-
-            foreach ($this->selectedCandidates as $selectedCandidate) {
-                $positionId = $selectedCandidate['position_id'];
-                $candidateId = $selectedCandidate['candidate_id'];
-
-                // Create a new record in the database for each selected candidate
+            if($this->selectedCandidates == null)
+            {
                 Vote::create([
                     'election_id' => $this->election->id,
                     'user_id' => auth()->user()->id,
                     'registered_member_id' => $registeredMemberId,
-                    'position_id' => $positionId,
-                    'candidate_id' => $candidateId,
                 ]);
+            }else{
+                foreach ($this->selectedCandidates as $selectedCandidate) {
+                    $positionId = $selectedCandidate['position_id'];
+                    $candidateId = $selectedCandidate['candidate_id'];
+
+                    // Create a new record in the database for each selected candidate
+                    Vote::create([
+                        'election_id' => $this->election->id,
+                        'user_id' => auth()->user()->id,
+                        'registered_member_id' => $registeredMemberId,
+                        'position_id' => $positionId,
+                        'candidate_id' => $candidateId === null ? null : $candidateId,
+                    ]);
+                }
             }
+
 
             $this->record->has_voted = 1;
             $this->record->registration_duration->update(['time_end' => Carbon::now()->toTimeString()]);

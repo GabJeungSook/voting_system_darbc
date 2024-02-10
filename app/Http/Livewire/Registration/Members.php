@@ -67,7 +67,7 @@ class Members extends Component implements Tables\Contracts\HasTable
             ->button()
             ->color('success')
             ->action(function (Member $record, array $data): void {
-                $exists = RegisteredMember::where('member_id', $record->id)->exists();
+                $exists = RegisteredMember::where('member_id', $record->id)->where('is_voided', false)->exists();
                 if(!$exists)
                 {
                     DB::beginTransaction();
@@ -96,7 +96,7 @@ class Members extends Component implements Tables\Contracts\HasTable
                     $this->resets();
                 }
             })->requiresConfirmation()->visible(function ($record) {
-                $exists = RegisteredMember::where('member_id', $record->id)->exists();
+                $exists = RegisteredMember::where('member_id', $record->id)->where('is_voided', false)->exists();
                 if(!$exists && $record->is_active === 1)
                 {
                     return true;
@@ -207,7 +207,7 @@ class Members extends Component implements Tables\Contracts\HasTable
     public function registerMember()
     {
 
-        $exists = RegisteredMember::where('member_id', $this->member_id)->exists();
+        $exists = RegisteredMember::where('member_id', $this->member_id)->where('is_voided', false)->exists();
         if(!$exists)
         {
             DB::beginTransaction();

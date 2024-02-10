@@ -25,7 +25,7 @@ class VoidMemberRegistration extends Component implements Tables\Contracts\HasTa
 
     protected function getTableQuery(): Builder
     {
-        return RegisteredMember::query()->where('election_id', $this->election_id)->whereDoesntHave('votes');
+        return RegisteredMember::query()->where('election_id', $this->election_id)->where('is_voided', false)->whereDoesntHave('votes');
     }
 
     public function getTableActions()
@@ -58,7 +58,7 @@ class VoidMemberRegistration extends Component implements Tables\Contracts\HasTa
                 DB::beginTransaction();
                 VoidedMember::create([
                     'registered_member_id' => $record->member->id,
-                    'member_id' => $data['member_id'],
+                    'member_id' => $data['unidentified'] ? null : $data['member_id'],
                     'user_id' => $record->user_id,
                     'note' =>  $data['note'],
                     'type' =>  'REGISTRATION',
@@ -66,7 +66,7 @@ class VoidMemberRegistration extends Component implements Tables\Contracts\HasTa
                 if (optional($record->registration_duration)->exists()) {
                     $record->registration_duration->delete();
                 }
-                $record->delete();
+                $record->update(['is_voided' => 1]);
                 DB::commit();
                 $this->dialog()->success(
                     $title = 'Success',

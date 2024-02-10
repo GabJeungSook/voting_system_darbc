@@ -20,7 +20,7 @@ class Dashboard extends Component implements Tables\Contracts\HasTable
 
     protected function getTableQuery(): Builder
     {
-        return RegisteredMember::query()->where('election_id', $this->election_id)->where('user_id', auth()->user()->id);
+        return RegisteredMember::query()->where('election_id', $this->election_id)->where('user_id', auth()->user()->id)->where('is_voided', false);
     }
 
     public function testPrinter()
@@ -119,8 +119,8 @@ class Dashboard extends Component implements Tables\Contracts\HasTable
     public function mount(): void
     {
         $this->election_id = Election::where('is_active', true)->first()?->id;
-        $this->registered_count = RegisteredMember::where('election_id', $this->election_id)->where('user_id', auth()->user()->id)->count();
-        $this->registered_count_total = RegisteredMember::where('election_id', $this->election_id)->count();
+        $this->registered_count = RegisteredMember::where('election_id', $this->election_id)->where('user_id', auth()->user()->id)->where('is_voided', false)->count();
+        $this->registered_count_total = RegisteredMember::where('election_id', $this->election_id)->where('is_voided', false)->count();
     }
 
     public function render()
