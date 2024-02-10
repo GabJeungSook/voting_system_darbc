@@ -81,6 +81,12 @@ Route::get('/admin/void-member', function () {
     ->middleware(['auth', 'verified', 'role:admin'])
     ->name('admin.void');
 
+Route::get('/admin/void-vote', function () {
+    return view('admin.void-vote');
+})
+    ->middleware(['auth', 'verified', 'role:admin'])
+    ->name('admin.void-vote');
+
 Route::get('/admin/members', function () {
     return view('admin.members');
 })
@@ -173,8 +179,8 @@ Route::get('voting/voting-module', function () {
 Route::get('voting/voting-module/successful-voters', function () {
     return view('voting.voted');
 })
-    ->middleware(['auth', 'verified', 'role:voting'])
-    ->name('voting.voted');
+    ->middleware(['auth', 'verified', 'role:admin'])
+    ->name('admin.voted');
 
 Route::get('voting/scan-qr-code', function () {
     return view('voting.scan-qr');
@@ -190,13 +196,13 @@ Route::get('/cast-vote/{record}', function ($record) {
     ->middleware(['auth', 'verified', 'role:voting'])
     ->name('voting.cast-vote');
 
-Route::get('/view-vote-ballot/{record}', function ($record) {
+Route::get('view-vote-ballot/{record}', function ($record) {
     $voteBallotRecord = RegisteredMember::findOrFail($record);
 
     return view('voting.view-ballot', ['record' => $voteBallotRecord]);
 })
-    ->middleware(['auth', 'verified', 'role:voting'])
-    ->name('voting.view-ballot');
+    ->middleware(['auth', 'verified', 'role:admin'])
+    ->name('admin.view-ballot');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

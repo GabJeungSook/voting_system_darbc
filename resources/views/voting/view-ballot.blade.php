@@ -1,4 +1,4 @@
-@section('title', 'View Official Ballot')
+@section('title', 'View Vote List')
 <x-cast-vote-layout>
     <livewire:voting.view-vote-ballot :record="$record"/>
 

@@ -1,4 +1,4 @@
 @section('title', 'Successful Voters')
-<x-voting-layout>
+<x-main-layout>
   <livewire:voting.voted />
-</x-voting-layout>
+</x-main-layout>

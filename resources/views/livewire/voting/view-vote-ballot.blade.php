@@ -13,7 +13,7 @@
                     <div>
                         <h1 class="text-xl font-bold text-gray-700 sm:text-xs lg:text-sm xl:text-xl">DOLEFIL AGRARIAN REFORM BENEFICIARIES COOP.</h1>
                         <h1 class=" lg:text-xs sm:text-xs xl:text-sm text-center">DARBC Complex, Brgy. Cannery Site, Polomolok, South Cotabato</h1>
-                        <h1 class="text-2xl text-center font-bold text-gray-700 mt-5">OFFICIAL BALLOT</h1>
+                        <h1 class="text-2xl text-center font-bold text-gray-700 mt-5">Vote List</h1>
                     </div>
 
                 </div>
@@ -21,7 +21,7 @@
                     <span class=" font-mono lg:text-xs xl:text-sm">Date: {{ \Carbon\Carbon::parse(now())->format('F d, Y') }}</span>
                 </div>
             </div>
-            <div class="p-1">
+            <div class="p-2">
                 <span class="text-sm font-mono">MEMBER NAME:  {{strtoupper($record->first_name.' '.$record->middle_name.' '.$record->last_name)}}</span>
             </div>
             <div class="p-2">
@@ -32,6 +32,15 @@
             </div>
             <div class="p-2">
                 <span class="text-sm font-mono">ELECTION DATE: {{\Carbon\Carbon::parse($election->date_from)->format('F d, Y')}} - {{\Carbon\Carbon::parse($election->date_to)->format('F d, Y')}}</span>
+             </div>
+             <div class="p-2">
+                <span class="text-sm font-mono">VOTED AT: {{strtoupper($record->vote->user->name)}}</span>
+             </div>
+             <div class="p-2">
+                <span class="text-sm font-mono">DATE VOTED: {{\Carbon\Carbon::parse($record->registration_duration->created_at)->format('F d, Y')}}</span>
+             </div>
+             <div class="p-2">
+                <span class="text-sm font-mono">TIME VOTED: {{\Carbon\Carbon::parse($record->registration_duration->time_start)->format('h:i A')}}</span>
              </div>
             <div class="px-4 py-3 sm:p-6">
                 <div class="px-4 sm:px-6 lg:px-8">
@@ -61,7 +70,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="mt-10 flex justify-end mr-4 items-center">
+                  {{-- <div class="mt-10 flex justify-end mr-4 items-center">
                     <div class="grid grid-cols-1">
                          <div class="text-center font-mono ">
                         {{strtoupper($record->first_name.' '.$record->middle_name.' '.$record->last_name)}}
@@ -73,7 +82,7 @@
                     </div>
 
 
-                  </div>
+                  </div> --}}
             </div>
           </div>
 

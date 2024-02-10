@@ -23,7 +23,7 @@ class ViewVoteBallot extends Component
 
     public function returnToVotingIndex()
     {
-        return redirect()->route('voting.voted');
+        return redirect()->route('admin.voted');
     }
 
     public function render()

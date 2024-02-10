@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Voting;
 use Livewire\Component;
 use App\Models\Election;
 use App\Models\RegisteredMember;
+use Carbon\Carbon;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Illuminate\Database\Eloquent\Builder;
@@ -30,20 +31,17 @@ class Voted extends Component implements Tables\Contracts\HasTable
     {
         return [
             Action::make('view_ballot')
+            ->label('View Vote')
             ->icon('heroicon-o-eye')
             ->button()
             ->color('warning')
-            ->url(fn (RegisteredMember $record): string => route('voting.view-ballot', $record)),
+            ->url(fn (RegisteredMember $record): string => route('admin.view-ballot', $record)),
         ];
     }
 
     protected function getTableColumns(): array
     {
         return [
-            Tables\Columns\TextColumn::make('election.name')
-            ->label('ELECTION NAME')
-            ->formatStateUsing(fn (RegisteredMember $record) => strtoupper($record->election->name))
-            ->searchable(),
             Tables\Columns\TextColumn::make('darbc_id')
             ->label('DARBC ID')
             ->searchable(),
@@ -59,6 +57,19 @@ class Voted extends Component implements Tables\Contracts\HasTable
             ->label('LAST NAME')
             ->formatStateUsing(fn (RegisteredMember $record) => strtoupper($record->last_name))
             ->searchable(),
+            Tables\Columns\TextColumn::make('vote.user.name')
+            ->label('VOTED AT')
+            ->formatStateUsing(fn ($state) => strtoupper($state))
+            ->searchable(),
+            Tables\Columns\TextColumn::make('registration_duration.created_at')
+            ->label('DATE VOTED')
+            ->date('F j, Y')
+            ->searchable(),
+            Tables\Columns\TextColumn::make('registration_duration.time_start')
+            ->label('TIME VOTED')
+            ->formatStateUsing(fn ($state) => Carbon::parse($state)->format('h:i A'))
+            ->searchable(),
+
         ];
     }
 
