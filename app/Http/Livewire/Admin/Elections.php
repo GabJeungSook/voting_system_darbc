@@ -83,7 +83,17 @@ class Elections extends Component implements Tables\Contracts\HasTable
                 $record->date_to = $data['date_to'];
                 $record->save();
                 DB::commit();
+            }),
+            Action::make('delete')
+            ->icon('heroicon-o-trash')
+            ->button()
+            ->color('danger')
+            ->action(function (Election $record): void {
+                $record->delete();
             })
+            ->requiresConfirmation()
+            ->visible(fn ($record) => $record->is_active == false),
+
         ];
     }
 

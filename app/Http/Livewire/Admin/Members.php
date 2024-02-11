@@ -2,24 +2,26 @@
 
 namespace App\Http\Livewire\Admin;
 
-use Livewire\Component;
-use App\Models\Member;
-use Illuminate\Support\Facades\Hash;
-use Filament\Tables;
-use Filament\Forms;
-use Illuminate\Database\Eloquent\Builder;
-use Filament\Notifications\Notification;
-use Filament\Tables\Actions\Action;
-use WireUi\Traits\Actions;
-use Carbon\Carbon;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\MemberImport;
 use DB;
+use Carbon\Carbon;
+use Filament\Forms;
+use Filament\Tables;
+use App\Models\Member;
+use Livewire\Component;
+use App\Models\Election;
+use WireUi\Traits\Actions;
+use App\Imports\MemberImport;
+use Filament\Tables\Actions\Action;
+use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
+use Filament\Notifications\Notification;
+use Illuminate\Database\Eloquent\Builder;
 
 class Members extends Component implements Tables\Contracts\HasTable
 {
     use Tables\Concerns\InteractsWithTable;
     use Actions;
+    public $election;
     protected function getTableQuery(): Builder
     {
         return Member::query();
@@ -112,6 +114,29 @@ class Members extends Component implements Tables\Contracts\HasTable
                     $description = 'Data Successfully Updated.'
                 );
             }),
+            Action::make('view_ballot')
+            ->label('View Vote')
+            ->icon('heroicon-o-eye')
+            ->button()
+            ->color('warning')
+            ->visible(function ($record) {
+                $has_vote = $record->whereHas('registered_member', function($query){
+                    $query->whereHas('vote', function ($query) {
+                        $query->where('election_id', $this->election->id);
+                    });
+                })->first();
+                if($has_vote->registered_member->member_id === $record->id)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            })
+            //  ->visible(fn ($record) => $record->registered_member?->whereHAs('vote', function ($query) {  $query->where('election_id', $this->election->id);}) !== null)
+            ->url(fn ($record): string => route('admin.view-ballot', $record->registered_member)),
         ];
     }
 
@@ -151,6 +176,10 @@ class Members extends Component implements Tables\Contracts\HasTable
         ];
     }
 
+    public function mount()
+    {
+        $this->election = Election::where('is_active', true)->first();
+    }
 
     public function render()
     {
