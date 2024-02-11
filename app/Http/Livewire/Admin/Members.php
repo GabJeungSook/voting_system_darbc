@@ -125,7 +125,7 @@ class Members extends Component implements Tables\Contracts\HasTable
                         $query->where('election_id', $this->election->id);
                     });
                 })->first();
-                if($has_vote->registered_member->member_id === $record->id)
+                if($has_vote?->registered_member->member_id === $record->id)
                 {
                     return true;
                 }

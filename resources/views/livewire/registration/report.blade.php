@@ -6,6 +6,7 @@
             <x-native-select label="Report" wire:model="report_get">
               <option selected hidden>Select Report</option>
               <option value="1">Restricted Members</option>
+              <option value="2">Registered Members</option>
             </x-native-select>
             <x-button.circle positive icon="refresh" spinner="report_get" />
           </div>
@@ -39,6 +40,9 @@
     @switch($report_get)
       @case(1)
         @include('registration.reports.restricted-members')
+      @break
+      @case(2)
+      @include('registration.reports.registered-members')
       @break
       @default
         <h1 class="text-gray-600">Select report to generate.</h1>

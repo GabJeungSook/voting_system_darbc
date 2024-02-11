@@ -2,18 +2,19 @@
 
 namespace App\Http\Livewire\Admin;
 
+use Carbon\Carbon;
+use Filament\Forms;
+use Filament\Tables;
 use Livewire\Component;
 use App\Models\Election;
 use App\Models\Position;
 use App\Models\Candidate;
-use Filament\Tables;
-use Filament\Forms;
-use Illuminate\Database\Eloquent\Builder;
-use Filament\Notifications\Notification;
-use Filament\Tables\Actions\Action;
 use WireUi\Traits\Actions;
-use Carbon\Carbon;
-use DB;
+use App\Models\RegisteredMember;
+use Illuminate\Support\Facades\DB;
+use Filament\Tables\Actions\Action;
+use Filament\Notifications\Notification;
+use Illuminate\Database\Eloquent\Builder;
 
 class Candidates extends Component implements Tables\Contracts\HasTable
 {
@@ -127,13 +128,13 @@ class Candidates extends Component implements Tables\Contracts\HasTable
                     $title = 'Success',
                     $description = 'Data was successfully updated'
                 );
-            }),
+            })->disabled(fn () => RegisteredMember::count() > 0),
             Action::make('delete')
             ->icon('heroicon-o-trash')
             ->button()
             ->color('danger')
             ->action(fn (Candidate $record) => $record->delete())
-            ->requiresConfirmation()
+            ->requiresConfirmation()->disabled(fn () => RegisteredMember::count() > 0)
         ];
     }
 
