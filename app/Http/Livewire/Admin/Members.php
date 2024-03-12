@@ -122,7 +122,7 @@ class Members extends Component implements Tables\Contracts\HasTable
             ->visible(function ($record) {
                 $has_vote = $record->whereHas('registered_member', function($query){
                     $query->whereHas('vote', function ($query) {
-                        $query->where('election_id', $this->election->id);
+                        $query->where('election_id', $this->election?->id);
                     });
                 })->first();
                 if($has_vote?->registered_member->member_id === $record->id)
