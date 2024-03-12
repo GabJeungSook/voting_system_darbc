@@ -49,8 +49,10 @@ class Elections extends Component implements Tables\Contracts\HasTable
                 Forms\Components\TextInput::make('name')->required(),
                 Forms\Components\Card::make()
                 ->schema([
-                    Forms\Components\DatePicker::make('date_from')->required(),
-                    Forms\Components\DatePicker::make('date_to')->required(),
+                    Forms\Components\DatePicker::make('date_from')->reactive()->required(),
+                    Forms\Components\DatePicker::make('date_to')->required()->minDate(fn ($get) => $get('date_from')),
+                    // Forms\Components\DateTimePicker::make('time_from')->withoutDate()->timezone('Asia/Manila')->use24hr(false)->required(),
+                    // Forms\Components\DateTimePicker::make('time_to')->withoutDate()->timezone('Asia/Manila')->use24hr(false)->required()
                 ])->columns(2),
             ])
         ];
@@ -72,8 +74,8 @@ class Elections extends Component implements Tables\Contracts\HasTable
                 Forms\Components\TextInput::make('name')->required(),
                 Forms\Components\Card::make()
                 ->schema([
-                    Forms\Components\DatePicker::make('date_from')->required(),
-                    Forms\Components\DatePicker::make('date_to')->required(),
+                    Forms\Components\DatePicker::make('date_from')->reactive()->required(),
+                    Forms\Components\DatePicker::make('date_to')->required()->minDate(fn ($get) => $get('date_from')),
                 ])->columns(2),
             ])
             ->action(function (Election $record, array $data): void {

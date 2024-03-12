@@ -54,7 +54,15 @@ class Positions extends Component implements Tables\Contracts\HasTable
                 Forms\Components\Select::make('election_id')
                 ->label('Election')
                 ->options(Election::where('is_active', 1)->pluck('name', 'id'))->required(),
-                Forms\Components\TextInput::make('name')->label('Position')->required(),
+                // Forms\Components\TextInput::make('name')->label('Position')->required(),
+                Forms\Components\Select::make('name')
+                ->label('Position')
+                ->options([
+                    'Board of Directors' => 'Board of Directors',
+                    'Audit Committee' => 'Audit Committee',
+                    'Election Committee' => 'Election Committee',
+                ])
+                ->required(),
                 Forms\Components\TextInput::make('number_of_candidates')
                 ->numeric()
                 ->required(),

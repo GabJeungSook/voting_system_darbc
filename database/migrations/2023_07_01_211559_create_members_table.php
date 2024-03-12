@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('middle_name')->nullable();
             $table->string('first_name');
-            $table->text('restriction');
+            $table->text('restriction')->nullable();
             $table->string('full_name');
             $table->timestamps();
         });

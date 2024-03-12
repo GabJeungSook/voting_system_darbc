@@ -98,7 +98,7 @@ class Members extends Component implements Tables\Contracts\HasTable
                 Forms\Components\TextInput::make('last_name')->required(),
                 Forms\Components\TextInput::make('middle_name'),
                 Forms\Components\TextInput::make('first_name')->required(),
-                Forms\Components\Textarea::make('restriction')->required(),
+                Forms\Components\Textarea::make('restriction'),
             ])
             ->action(function (Member $record, array $data): void {
                 DB::beginTransaction();
