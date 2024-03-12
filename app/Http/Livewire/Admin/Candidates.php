@@ -147,7 +147,7 @@ class Candidates extends Component implements Tables\Contracts\HasTable
             ->searchable(),
             Tables\Columns\TextColumn::make('position.name')
             ->label('POSITION')
-            ->formatStateUsing(fn (Candidate $record) => strtoupper($record->position->name))
+            ->formatStateUsing(fn (Candidate $record) => strtoupper($record->position?->name))
             ->searchable()->sortable(),
             Tables\Columns\TextColumn::make('name')
             ->label('NAME')
