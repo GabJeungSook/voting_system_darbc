@@ -90,7 +90,7 @@ class Printers extends Component implements Tables\Contracts\HasTable
             ->searchable(),
             Tables\Columns\TextColumn::make('user.role_id')
             ->label('ASSIGNMENT')
-            ->formatStateUsing(fn (Printer $record) => strtoupper($record?->user->roles->name))
+            ->formatStateUsing(fn (Printer $record) => strtoupper($record?->user->getRoleNameAttribute()))
             ->searchable(),
             Tables\Columns\TextColumn::make('ip_address')
             ->label('IP ADDRESS')

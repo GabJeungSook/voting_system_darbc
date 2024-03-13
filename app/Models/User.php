@@ -68,4 +68,16 @@ class User extends Authenticatable
     {
         return $this->HasOne(Printer::class);
     }
+
+    public function getRoleNameAttribute()
+    {
+        $roleName = $this->roles->name;
+
+        // Transform "staff" to "electoral officer"
+        if ($roleName === 'staff') {
+            return 'election officer';
+        }
+
+        return $roleName;
+    }
 }

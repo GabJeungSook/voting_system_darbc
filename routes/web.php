@@ -20,7 +20,7 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    if(auth()->user()->role_id == 1)
+    if(auth()->user()->role_id == 1 || auth()->user()->role_id == 4)
     {
         return redirect()->route('admin.dashboard');
     }elseif(auth()->user()->role_id == 2)
@@ -36,7 +36,7 @@ Route::get('/dashboard', function () {
 Route::get('admin/dashboard', function () {
     return view('admin.dashboard');
 })
-    ->middleware(['auth', 'verified', 'role:admin'])
+    ->middleware(['auth', 'verified', 'role:admin,staff'])
     ->name('admin.dashboard');
 
 Route::get('/admin/users', function () {
@@ -72,13 +72,13 @@ Route::get('/admin/printers', function () {
 Route::get('/admin/reprint-qr', function () {
     return view('admin.reprint-qr');
 })
-    ->middleware(['auth', 'verified', 'role:admin'])
+    ->middleware(['auth', 'verified', 'role:admin,staff'])
     ->name('admin.reprint');
 
 Route::get('/admin/void-member', function () {
     return view('admin.void-member');
 })
-    ->middleware(['auth', 'verified', 'role:admin'])
+    ->middleware(['auth', 'verified', 'role:admin,staff'])
     ->name('admin.void');
 
 Route::get('/admin/void-vote', function () {
@@ -90,7 +90,7 @@ Route::get('/admin/void-vote', function () {
 Route::get('/admin/members', function () {
     return view('admin.members');
 })
-    ->middleware(['auth', 'verified', 'role:admin'])
+    ->middleware(['auth', 'verified', 'role:admin,staff'])
     ->name('admin.members');
 
 Route::get('/admin/live-result', function () {
@@ -102,13 +102,13 @@ Route::get('/admin/live-result', function () {
 Route::get('/admin/reports/official-result', function () {
        return view('admin.reports.official-result');
 })
-    ->middleware(['auth', 'verified', 'role:admin'])
+    ->middleware(['auth', 'verified', 'role:admin,staff'])
     ->name('admin.reports.official-result');
 
 Route::get('/admin/reports/overall-result', function () {
     return view('admin.reports.overall-result');
 })
-    ->middleware(['auth', 'verified', 'role:admin'])
+    ->middleware(['auth', 'verified', 'role:admin,staff'])
     ->name('admin.reports.overall-result');
 
 Route::get('/admin/upload', function () {
@@ -120,30 +120,30 @@ Route::get('/admin/upload', function () {
 Route::get('/admin/reports/registered-members', function () {
     return view('admin.reports.registered-members');
  })
-    ->middleware(['auth', 'verified', 'role:admin'])
+    ->middleware(['auth', 'verified', 'role:admin,staff'])
     ->name('admin.reports.registered-members');
 
 Route::get('/admin/reports/voided-registration', function () {
     return view('admin.reports.voided-registration');
 })
-    ->middleware(['auth', 'verified', 'role:admin'])
+    ->middleware(['auth', 'verified', 'role:admin,staff'])
     ->name('admin.reports.voided-registration');
 
 Route::get('/admin/reports/voided-votes', function () {
     return view('admin.reports.voided-votes');
 })
-    ->middleware(['auth', 'verified', 'role:admin'])
+    ->middleware(['auth', 'verified', 'role:admin,staff'])
     ->name('admin.reports.voided-votes');
 Route::get('/admin/reports/voter-list', function () {
     return view('admin.reports.voter-list');
 })
-    ->middleware(['auth', 'verified', 'role:admin'])
+    ->middleware(['auth', 'verified', 'role:admin,staff'])
     ->name('admin.reports.voter-list');
 
 Route::get('/admin/reports/total-votes', function () {
     return view('admin.reports.total-votes');
 })
-    ->middleware(['auth', 'verified', 'role:admin'])
+    ->middleware(['auth', 'verified', 'role:admin,staff'])
     ->name('admin.reports.total-votes');
 
 Route::get('registration/dashboard', function () {

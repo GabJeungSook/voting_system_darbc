@@ -64,7 +64,8 @@ class Users extends Component implements Tables\Contracts\HasTable
                 ->label('User Assignment')
                 ->options([
                     2 => 'Registration',
-                    3 => 'Voting'
+                    3 => 'Voting',
+                    4 => 'Elecom Officer'
                 ])
                 ->required(),
                 ])
@@ -90,7 +91,8 @@ class Users extends Component implements Tables\Contracts\HasTable
                 ->label('User Assignment')
                 ->options([
                     2 => 'Registration',
-                    3 => 'Voting'
+                    3 => 'Voting',
+                    4 => 'Elecom Officer'
                 ])
                 ->required(),
                 Forms\Components\Fieldset::make('Change Password')
@@ -184,7 +186,7 @@ class Users extends Component implements Tables\Contracts\HasTable
             ->label('EMAIL')
             ->searchable(),
             Tables\Columns\TextColumn::make('roles.name')
-            ->formatStateUsing(fn (User $record) => strtoupper($record->roles->name))
+            ->formatStateUsing(fn (User $record) => strtoupper($record->getRoleNameAttribute()))
             ->label('ASSIGNMENT')
             ->searchable(),
         ];
