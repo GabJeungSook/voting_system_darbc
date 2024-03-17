@@ -47,7 +47,7 @@ class Printers extends Component implements Tables\Contracts\HasTable
             })
             ->form([
                 Forms\Components\Select::make('user_id')
-                ->label('Election')
+                ->label('User')
                 ->options(User::whereDoesntHave('printer')->pluck('name', 'id'))->required(),
                 Forms\Components\TextInput::make('ip_address')->label('IP Address')->required(),
             ])
@@ -86,11 +86,11 @@ class Printers extends Component implements Tables\Contracts\HasTable
         return [
             Tables\Columns\TextColumn::make('user.name')
             ->label('USER')
-            ->formatStateUsing(fn (Printer $record) => strtoupper($record?->user->name))
+            ->formatStateUsing(fn (Printer $record) => strtoupper($record?->user?->name))
             ->searchable(),
             Tables\Columns\TextColumn::make('user.role_id')
             ->label('ASSIGNMENT')
-            ->formatStateUsing(fn (Printer $record) => strtoupper($record?->user->getRoleNameAttribute()))
+            ->formatStateUsing(fn (Printer $record) => strtoupper($record?->user?->getRoleNameAttribute()))
             ->searchable(),
             Tables\Columns\TextColumn::make('ip_address')
             ->label('IP ADDRESS')
