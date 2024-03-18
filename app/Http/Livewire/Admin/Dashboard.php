@@ -10,6 +10,8 @@ use App\Models\VoidedMember;
 use App\Models\Vote;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Artisan;
+use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
+use Mike42\Escpos\Printer;
 
 class Dashboard extends Component
 {
