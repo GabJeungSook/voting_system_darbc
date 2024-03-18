@@ -1,6 +1,7 @@
 <div>
     <x-button red icon="eye" label="View Live Result" wire:click="redirectToLiveResult" />
     <x-button slate icon="download" label="Backup Database" wire:click="backupCompleted" />
+    <x-button emerald icon="printer" label="Test Printer" wire:click="testPrinter" />
       <div class="mt-5">
         <h2 class="text-sm font-medium text-gray-500">Registered Members Per Staff</h2>
         <ul role="list" class="mt-3 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">

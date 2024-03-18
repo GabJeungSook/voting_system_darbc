@@ -30,7 +30,7 @@ class Dashboard extends Component implements Tables\Contracts\HasTable
         $printer = new Printer($connector);
         try {
             $printer->setJustification(Printer::JUSTIFY_CENTER);
-            $printer->text("DARBC 2023 ELECTION\n");
+            $printer->text("DARBC 2024 ELECTION\n");
             $printer->text(auth()->user()->name);
             $printer->feed(4);
             $printer->text("Printer is good to go!");

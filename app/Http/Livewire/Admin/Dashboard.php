@@ -34,6 +34,26 @@ class Dashboard extends Component
         // $this->total_voters = Vote::where('election_id', $this->election?->id)->count();
     }
 
+    public function testPrinter()
+    {
+        $printerIp = auth()->user()->printer->ip_address;
+        $printerPort = 9100;
+        $connector = new NetworkPrintConnector($printerIp);
+        $printer = new Printer($connector);
+        try {
+            $printer->setJustification(Printer::JUSTIFY_CENTER);
+            $printer->text("DARBC 2024 ELECTION\n");
+            $printer->text(auth()->user()->name);
+            $printer->feed(4);
+            $printer->text("Printer is good to go!");
+            $printer->feed(4);
+            $printer->cut();
+            $printer->close();
+        } finally {
+            $printer -> close();
+        }
+    }
+
     public function redirectToLiveResult()
     {
         return redirect()->route('admin.live-result');
