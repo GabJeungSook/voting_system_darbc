@@ -87,7 +87,7 @@ class Members extends Component implements Tables\Contracts\HasTable
                         $description = 'User was successfully registered.'
                     );
                     $this->resets();
-                    $this->printQR($member);
+                    // $this->printQR($member);
                 }else{
                     $this->dialog()->error(
                         $title = 'Operation Faild',
