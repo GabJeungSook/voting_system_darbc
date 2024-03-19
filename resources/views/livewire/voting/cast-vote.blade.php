@@ -251,7 +251,7 @@
                         <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
                             <table class="min-w-full">
                                 <tbody class="bg-white">
-                                    @foreach ($positions->where('id',2) as $item)
+                                    @foreach ($positions->where('election_id',$election->id)->where('name', 'Audit Committee') as $item)
                                     <tr class="border-t border-gray-200">
                                         <th colspan="5" scope="colgroup" class="bg-gray-50 py-2 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-3">{{ strtoupper($item->name) }}</th>
                                     </tr>
@@ -286,7 +286,7 @@
                         <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
                             <table class="min-w-full">
                                 <tbody class="bg-white">
-                                    @foreach ($positions->where('id',3) as $item)
+                                    @foreach ($positions->where('election_id',$election->id)->where('name', 'Election Committee') as $item)
                                     <tr class="border-t border-gray-200">
                                         <th colspan="5" scope="colgroup" class="bg-gray-50 py-2 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-3">{{ strtoupper($item->name) }}</th>
                                     </tr>
