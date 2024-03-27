@@ -19,6 +19,7 @@ class VoterList extends Component
     public $members;
     public $voided_members;
     public $selectedCounter;
+    public $counterName;
     public $member_name;
 
     public function mount()
@@ -30,6 +31,17 @@ class VoterList extends Component
     public function redirectToDashboard()
     {
         return redirect()->route('admin.dashboard');
+    }
+
+    public function updatedSelectedCounter()
+    {
+        if($this->selectedCounter == null){
+            $this->counterName = null;
+            return;
+        }else{
+
+            $this->counterName = User::find($this->selectedCounter)->name;
+        }
     }
 
     public function exportReport()

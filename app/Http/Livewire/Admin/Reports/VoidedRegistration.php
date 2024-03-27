@@ -15,6 +15,7 @@ class VoidedRegistration extends Component
     public $counter;
     public $members;
     public $selectedCounter;
+    public $counterName;
 
     public function mount()
     {
@@ -25,6 +26,17 @@ class VoidedRegistration extends Component
     public function redirectToDashboard()
     {
         return redirect()->route('admin.dashboard');
+    }
+
+    public function updatedSelectedCounter()
+    {
+        if($this->selectedCounter == null){
+            $this->counterName = null;
+            return;
+        }else{
+
+            $this->counterName = User::find($this->selectedCounter)->name;
+        }
     }
 
     public function exportReport()

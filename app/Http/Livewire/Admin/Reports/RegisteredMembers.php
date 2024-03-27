@@ -15,6 +15,7 @@ class RegisteredMembers extends Component
     public $counter;
     public $members;
     public $selectedCounter;
+    public $counterName;
     public $selectedDate;
 
     public function mount()
@@ -27,6 +28,18 @@ class RegisteredMembers extends Component
     {
         return redirect()->route('admin.dashboard');
     }
+
+    public function updatedSelectedCounter()
+    {
+        if($this->selectedCounter == null){
+            $this->counterName = null;
+            return;
+        }else{
+
+            $this->counterName = User::find($this->selectedCounter)->name;
+        }
+    }
+
 
     public function exportReport()
     {

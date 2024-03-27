@@ -13,6 +13,9 @@
     </div>
     <div class="mt-5 overflow-x-auto">
         <div class="inline-block min-w-full pb-4 align-middle sm:px-6 lg:px-3">
+            <div class="mb-4 font-semibold text-lg">
+                <h1>COUNTER : {{$selectedCounter === '' || $selectedCounter === null ? 'ALL' : $counterName}}</h1>
+            </div>
             <table class="min-w-full border border-gray-600">
                 <tbody class="bg-white">
                     <tr class="border-t border-gray-600">

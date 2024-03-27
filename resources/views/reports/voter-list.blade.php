@@ -12,6 +12,9 @@
 
     </div>
     <div class="">
+        <div class="mb-4 font-semibold text-lg">
+            <h1>COUNTER : {{$selectedCounter === '' || $selectedCounter === null ? 'ALL' : $counterName}}</h1>
+        </div>
         {{-- add total count --}}
         <h1 class="text-left px-5 font-semibold text-lg mt-1">Total Ballot Count: {{ $members->count() + $voided_members->count() }}</h1>
         <h1 class="text-left px-5 font-semibold text-lg mt-1">Total Void Count: {{ $voided_members->count() }}</h1>
