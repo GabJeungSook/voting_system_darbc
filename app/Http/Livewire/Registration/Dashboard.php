@@ -10,10 +10,13 @@ use App\Models\RegisteredMember;
 use Filament\Tables\Actions\Action;
 use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
 use Mike42\Escpos\Printer;
+use WireUi\Traits\Actions;
 
 class Dashboard extends Component implements Tables\Contracts\HasTable
 {
     use Tables\Concerns\InteractsWithTable;
+    use Actions;
+
     public $election_id;
     public $registered_count;
     public $registered_count_total;
@@ -23,7 +26,21 @@ class Dashboard extends Component implements Tables\Contracts\HasTable
         return RegisteredMember::query()->where('election_id', $this->election_id)->where('user_id', auth()->user()->id)->where('is_voided', false);
     }
 
+
     public function testPrinter()
+    {
+        try {
+            $this->test();
+        } catch (\Exception $e) {
+            $this->dialog()->error(
+                $title = 'Printer Disconnected',
+                $description = 'Printer is not connected. Please check the printer connection.'
+            );
+        }
+
+    }
+
+    public function test()
     {
         $printerIp = auth()->user()->printer->ip_address;
         $printerPort = 9100;
@@ -42,6 +59,7 @@ class Dashboard extends Component implements Tables\Contracts\HasTable
             $printer -> close();
         }
     }
+
 
     public function printQR($member)
     {

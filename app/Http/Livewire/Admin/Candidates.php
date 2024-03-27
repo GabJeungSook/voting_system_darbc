@@ -128,13 +128,35 @@ class Candidates extends Component implements Tables\Contracts\HasTable
                     $title = 'Success',
                     $description = 'Data was successfully updated'
                 );
-            })->disabled(fn () => RegisteredMember::count() > 0),
+            })->visible(fn () => RegisteredMember::count() < 0),
             Action::make('delete')
             ->icon('heroicon-o-trash')
             ->button()
             ->color('danger')
             ->action(fn (Candidate $record) => $record->delete())
-            ->requiresConfirmation()->disabled(fn () => RegisteredMember::count() > 0)
+            ->requiresConfirmation()->visible(fn () => RegisteredMember::count() < 0),
+            Action::make('restrict_edit')
+            ->label('Edit')
+            ->icon('heroicon-o-pencil')
+            ->button()
+            ->color('success')
+            ->action(function () {
+                $this->dialog()->error(
+                    $title = 'Edit Restriction',
+                    $description = 'The registrastration has started and edit is restricted.'
+                );
+            })->visible(fn () => RegisteredMember::count() > 0),
+            Action::make('restrict_delete')
+            ->label('Delete')
+            ->icon('heroicon-o-trash')
+            ->button()
+            ->color('danger')
+            ->action(function () {
+                $this->dialog()->error(
+                    $title = 'Delete Restriction',
+                    $description = 'The registrastration has started and delete is restricted.'
+                );
+            })->visible(fn () => RegisteredMember::count() > 0),
         ];
     }
 

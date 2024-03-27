@@ -10,10 +10,12 @@ use App\Models\RegisteredMember;
 use Filament\Tables\Actions\Action;
 use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
 use Mike42\Escpos\Printer;
+use WireUi\Traits\Actions;
 
 class ReprintQrCode extends Component implements Tables\Contracts\HasTable
 {
     use Tables\Concerns\InteractsWithTable;
+    use Actions;
     public $election_id;
 
     protected function getTableQuery(): Builder
@@ -31,7 +33,15 @@ class ReprintQrCode extends Component implements Tables\Contracts\HasTable
             ->color('warning')
             ->requiresConfirmation()
             ->action(function (RegisteredMember $record) {
-                $this->printQR($record);
+                try {
+                    $this->printQR($record);
+                } catch (\Exception $e) {
+                    $this->dialog()->error(
+                        $title = 'Printer Disconnected',
+                        $description = 'Printer is not connected. Please check the printer connection.'
+                    );
+                }
+
             })
         ];
     }

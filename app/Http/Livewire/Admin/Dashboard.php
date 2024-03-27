@@ -12,9 +12,12 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Artisan;
 use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
 use Mike42\Escpos\Printer;
+use WireUi\Traits\Actions;
 
 class Dashboard extends Component
 {
+    use Actions;
+
     public $tellers;
     public $voting_tellers;
     public $election;
@@ -38,6 +41,19 @@ class Dashboard extends Component
 
     public function testPrinter()
     {
+        try {
+            $this->test();
+        } catch (\Exception $e) {
+            $this->dialog()->error(
+                $title = 'Printer Disconnected',
+                $description = 'Printer is not connected. Please check the printer connection.'
+            );
+        }
+
+    }
+
+    public function test()
+    {
         $printerIp = auth()->user()->printer->ip_address;
         $printerPort = 9100;
         $connector = new NetworkPrintConnector($printerIp);
@@ -55,6 +71,7 @@ class Dashboard extends Component
             $printer -> close();
         }
     }
+
 
     public function redirectToLiveResult()
     {
