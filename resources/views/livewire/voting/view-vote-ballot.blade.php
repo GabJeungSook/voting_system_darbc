@@ -28,7 +28,7 @@
                 <span class="text-sm font-mono">DARBC ID: {{$record->darbc_id}}</span>
             </div>
             <div class="p-2">
-                <span class="text-sm font-mono">ELECTION: {{$election->name}}</span>
+                <span class="text-sm font-mono">ELECTION NAME: {{$election->name}}</span>
             </div>
             <div class="p-2">
                 <span class="text-sm font-mono">ELECTION DATE: {{\Carbon\Carbon::parse($election->date_from)->format('F d, Y')}} - {{\Carbon\Carbon::parse($election->date_to)->format('F d, Y')}}</span>
