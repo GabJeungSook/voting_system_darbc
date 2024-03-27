@@ -43,7 +43,7 @@
                             @endif
                         </td>
                         <td class="whitespace-nowrap py-2 pl-4 text-left text-sm font-medium text-gray-900 sm:pl-3 border-r">
-                            {{strtoupper($item->user->name)}}
+                            {{strtoupper($item->user?->name)}}
                         </td>
                         <td class="whitespace-nowrap py-2 pl-4 text-left text-sm font-medium text-gray-900 sm:pl-3 border-r">
                             {{strtoupper($item->note)}}
