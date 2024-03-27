@@ -16,6 +16,7 @@ class OverallResult extends Component
     public $votes;
     public $counter;
     public $selectedCounter;
+    public $counterName;
     public $selectedDate;
     public function mount()
     {
@@ -51,6 +52,7 @@ class OverallResult extends Component
     public function updatedSelectedCounter()
     {
         $this->calculateVoteCounts();
+        $this->counterName = User::find($this->selectedCounter)->name;
     }
 
     public function updatedSelectedDate()
