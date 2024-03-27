@@ -15,7 +15,7 @@ class LiveResult extends Component
     public function mount()
     {
         $this->election = Election::where('is_active', true)->first();
-        $this->positions = Position::get();
+        $this->positions = Position::where('election_id', $this->election->id)->get();
     }
 
 
