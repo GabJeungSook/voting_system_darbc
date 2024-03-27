@@ -59,6 +59,32 @@ class Members extends Component implements Tables\Contracts\HasTable
         // return Member::query()->orderBy('restriction', 'asc');
     }
 
+    public function checkPrinterConnection()
+    {
+        try{
+            $printerIp = auth()->user()->printer->ip_address;
+            $printerPort = 9100;
+            $connector = new NetworkPrintConnector($printerIp);
+            $printer = new Printer($connector);
+                try {
+                    $printer -> text("DARBC ELECTION 2024\n");
+                    $printer -> feed(1);
+                    $printer -> cut();
+                    $printer -> close();
+
+                    return true;
+                } catch(\Exception $e)
+                {
+                return false;
+                }finally {
+                    $printer -> close();
+                }
+        }catch(\Exception $e)
+        {
+            return false;
+        }
+    }
+
     public function getTableActions()
     {
         return [
@@ -70,24 +96,33 @@ class Members extends Component implements Tables\Contracts\HasTable
                 $exists = RegisteredMember::where('member_id', $record->id)->where('is_voided', false)->exists();
                 if(!$exists)
                 {
-                    DB::beginTransaction();
-                    $member = RegisteredMember::create([
-                       'election_id' => $this->election_id,
-                       'user_id' => auth()->user()->id,
-                       'member_id' => $record->id,
-                       'darbc_id' =>  $record->darbc_id,
-                       'first_name' => $record->first_name,
-                       'middle_name' =>$record->middle_name,
-                       'last_name' => $record->last_name,
-                       'qr_code' => uniqid(),
-                    ]);
-                    DB::commit();
-                    $this->dialog()->success(
-                        $title = 'Member Registered',
-                        $description = 'User was successfully registered.'
-                    );
-                    $this->resets();
-                    $this->printQR($member);
+                    if($this->checkPrinterConnection())
+                    {
+                        DB::beginTransaction();
+                        $member = RegisteredMember::create([
+                           'election_id' => $this->election_id,
+                           'user_id' => auth()->user()->id,
+                           'member_id' => $record->id,
+                           'darbc_id' =>  $record->darbc_id,
+                           'first_name' => $record->first_name,
+                           'middle_name' =>$record->middle_name,
+                           'last_name' => $record->last_name,
+                           'qr_code' => uniqid(),
+                        ]);
+                        DB::commit();
+                        $this->dialog()->success(
+                            $title = 'Member Registered',
+                            $description = 'User was successfully registered.'
+                        );
+                        $this->resets();
+                        $this->printQR($member);
+                    }else{
+                        $this->dialog()->error(
+                            $title = 'Printer Disconnected',
+                            $description = 'Printer is not connected. Please check the printer connection.'
+                        );
+                    }
+
                 }else{
                     $this->dialog()->error(
                         $title = 'Operation Faild',
