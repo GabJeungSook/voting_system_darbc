@@ -19,8 +19,8 @@ class OverallResult extends Component
     public $selectedDate;
     public function mount()
     {
-        $this->positions = Position::with('candidates')->get();
         $this->election = Election::where('is_active', true)->first();
+        $this->positions = Position::with('candidates')->where('election_id', $this->election->id)->get();
         $this->counter = User::where('role_id', 3)->get();
         $this->calculateVoteCounts();
     }

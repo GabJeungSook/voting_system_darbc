@@ -37,7 +37,7 @@
                             {{strtoupper($item->last_name.', '.$item->first_name.' '.$item->middle_name)}}
                         </td>
                         <td class="whitespace-nowrap py-2 pl-4 text-left text-sm font-medium text-gray-900 sm:pl-3 border-r">
-                            {{strtoupper($item->user->name)}}
+                            {{strtoupper($item->user?->name)}}
                         </td>
                         <td class="whitespace-nowrap py-2 pl-4 text-left text-sm font-medium text-gray-900 sm:pl-3 border-r">
                             {{\Carbon\Carbon::parse($item->created_at)->format('F d, Y h:i:s A')}}
