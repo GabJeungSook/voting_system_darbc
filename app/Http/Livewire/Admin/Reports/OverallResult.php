@@ -51,8 +51,14 @@ class OverallResult extends Component
 
     public function updatedSelectedCounter()
     {
-        $this->calculateVoteCounts();
-        $this->counterName = User::find($this->selectedCounter)->name;
+        if($this->selectedCounter == null){
+            $this->counterName = null;
+            return;
+        }else{
+            $this->calculateVoteCounts();
+            $this->counterName = User::find($this->selectedCounter)->name;
+        }
+
     }
 
     public function updatedSelectedDate()
