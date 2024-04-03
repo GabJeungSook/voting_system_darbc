@@ -9,6 +9,7 @@ use App\Models\Election;
 use App\Models\RegisteredMember;
 use Filament\Tables\Actions\Action;
 use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 use Mike42\Escpos\Printer;
 use WireUi\Traits\Actions;
 
@@ -78,14 +79,16 @@ class ReprintQrCode extends Component implements Tables\Contracts\HasTable
     public function printQR($member)
     {
         $reg_member = $member;
-        $printerIp = auth()->user()->printer->ip_address;
-        $printerPort = 9100;
+        // $printerIp = auth()->user()->printer->ip_address;
+        // $printerPort = 9100;
         $content = $reg_member->qr_code;
         $member_name = strtoupper($reg_member->first_name.' '.$reg_member->middle_name.' '.$reg_member->last_name);
         $ec = Printer::QR_ECLEVEL_L;
         $size = 8;
         $model = Printer::QR_MODEL_2;
-        $connector = new NetworkPrintConnector($printerIp);
+        $name = auth()->user()->name;
+        $connector = new WindowsPrintConnector("EPSON-".$name);
+        // $connector = new NetworkPrintConnector($printerIp);
         $printer = new Printer($connector);
 
         try {
@@ -102,7 +105,7 @@ class ReprintQrCode extends Component implements Tables\Contracts\HasTable
             $printer->text($content);
             $printer->feed(4);
             $printer->cut();
-            $printer->close();
+            // $printer->close();
         } finally {
             $printer->close();
         }

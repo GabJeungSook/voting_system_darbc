@@ -12,6 +12,7 @@ use App\Models\RegisteredMember;
 use Filament\Tables\Actions\Action;
 use Illuminate\Database\Eloquent\Builder;
 use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 use WireUi\Traits\Actions;
 
 class Dashboard extends Component implements Tables\Contracts\HasTable
@@ -41,9 +42,11 @@ class Dashboard extends Component implements Tables\Contracts\HasTable
 
     public function test()
     {
-        $printerIp = auth()->user()->printer->ip_address;
-        $printerPort = 9100;
-        $connector = new NetworkPrintConnector($printerIp);
+        // $printerIp = auth()->user()->printer->ip_address;
+        // $printerPort = 9100;
+        // $connector = new NetworkPrintConnector($printerIp);
+        $name = auth()->user()->name;
+        $connector = new WindowsPrintConnector("EPSON-".$name);
         $printer = new Printer($connector);
         try {
             $printer->setJustification(Printer::JUSTIFY_CENTER);
@@ -53,7 +56,7 @@ class Dashboard extends Component implements Tables\Contracts\HasTable
             $printer->text("Printer is good to go!");
             $printer->feed(4);
             $printer->cut();
-            $printer->close();
+            //$printer->close();
         } finally {
             $printer -> close();
         }
@@ -71,10 +74,12 @@ class Dashboard extends Component implements Tables\Contracts\HasTable
     {
         $reg_member = $member;
         $votes = $reg_member->votes()->get();
-        $printerIp = auth()->user()->printer->ip_address;
-        $printerPort = 9100;
+        // $printerIp = auth()->user()->printer->ip_address;
+        // $printerPort = 9100;
         $member_name = strtoupper($reg_member->first_name.' '.$reg_member->middle_name.' '.$reg_member->last_name);
-        $connector = new NetworkPrintConnector($printerIp, $printerPort);
+        $name = auth()->user()->name;
+        $connector = new WindowsPrintConnector("EPSON-".$name);
+        // $connector = new NetworkPrintConnector($printerIp, $printerPort);
         $printer = new Printer($connector);
         try {
             $printer->setJustification(Printer::JUSTIFY_CENTER);
@@ -105,7 +110,7 @@ class Dashboard extends Component implements Tables\Contracts\HasTable
             $printer -> text($member_name);
             $printer -> feed(2);
             $printer -> cut();
-            $printer -> close();
+           // $printer -> close();
         } finally {
             $printer -> close();
         }
@@ -115,10 +120,12 @@ class Dashboard extends Component implements Tables\Contracts\HasTable
     {
         $reg_member = $member;
         $votes = $reg_member->votes()->get();
-        $printerIp = auth()->user()->printer->ip_address;
-        $printerPort = 9100;
+        // $printerIp = auth()->user()->printer->ip_address;
+        // $printerPort = 9100;
         $member_name = strtoupper($reg_member->first_name.' '.$reg_member->middle_name.' '.$reg_member->last_name);
-        $connector = new NetworkPrintConnector($printerIp, $printerPort);
+        $name = auth()->user()->name;
+        $connector = new WindowsPrintConnector("EPSON-".$name);
+        // $connector = new NetworkPrintConnector($printerIp, $printerPort);
         $printer = new Printer($connector);
         try {
             $printer->setJustification(Printer::JUSTIFY_CENTER);
@@ -138,7 +145,7 @@ class Dashboard extends Component implements Tables\Contracts\HasTable
             $printer -> setEmphasis(false);
             $printer -> feed(2);
             $printer -> cut();
-            $printer -> close();
+           // $printer -> close();
         } finally {
             $printer -> close();
         }

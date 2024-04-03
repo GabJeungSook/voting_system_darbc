@@ -9,6 +9,7 @@ use App\Models\Election;
 use App\Models\RegisteredMember;
 use Filament\Tables\Actions\Action;
 use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 use Mike42\Escpos\Printer;
 use WireUi\Traits\Actions;
 
@@ -42,9 +43,11 @@ class Dashboard extends Component implements Tables\Contracts\HasTable
 
     public function test()
     {
-        $printerIp = auth()->user()->printer->ip_address;
-        $printerPort = 9100;
-        $connector = new NetworkPrintConnector($printerIp);
+        // $printerIp = auth()->user()->printer->ip_address;
+        // $printerPort = 9100;
+        // $connector = new NetworkPrintConnector($printerIp);
+        $name = auth()->user()->name;
+        $connector = new WindowsPrintConnector("EPSON-".$name);
         $printer = new Printer($connector);
         try {
             $printer->setJustification(Printer::JUSTIFY_CENTER);
@@ -54,7 +57,7 @@ class Dashboard extends Component implements Tables\Contracts\HasTable
             $printer->text("Printer is good to go!");
             $printer->feed(4);
             $printer->cut();
-            $printer->close();
+            //$printer->close();
         } finally {
             $printer -> close();
         }

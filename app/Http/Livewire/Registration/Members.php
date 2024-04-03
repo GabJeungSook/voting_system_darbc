@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Storage;
 use Filament\Notifications\Notification;
 use Mike42\Escpos\PrintConnectors\FilePrintConnector;
 use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 
 class Members extends Component implements Tables\Contracts\HasTable
 {
@@ -62,15 +63,17 @@ class Members extends Component implements Tables\Contracts\HasTable
     public function checkPrinterConnection()
     {
         try{
-            $printerIp = auth()->user()->printer->ip_address;
-            $printerPort = 9100;
-            $connector = new NetworkPrintConnector($printerIp);
+            // $printerIp = auth()->user()->printer->ip_address;
+            // $printerPort = 9100;
+            $name = auth()->user()->name;
+            $connector = new WindowsPrintConnector("EPSON-".$name);
+            // $connector = new NetworkPrintConnector($printerIp);
             $printer = new Printer($connector);
                 try {
-                    $printer -> text("DARBC ELECTION 2024\n");
-                    $printer -> feed(1);
-                    $printer -> cut();
-                    $printer -> close();
+                    // $printer -> text("DARBC ELECTION 2024\n");
+                    // $printer -> feed(1);
+                    // $printer -> cut();
+                    //$printer -> close();
 
                     return true;
                 } catch(\Exception $e)
@@ -203,8 +206,8 @@ class Members extends Component implements Tables\Contracts\HasTable
     public function printQR($member)
     {
         $reg_member = $member;
-        $printerIp = auth()->user()->printer->ip_address;
-        $printerPort = 9100;
+        // $printerIp = auth()->user()->printer->ip_address;
+        // $printerPort = 9100;
         $content = $reg_member->qr_code;
         $member_name = strtoupper($reg_member->first_name.' '.$reg_member->middle_name.' '.$reg_member->last_name);
         $counter_number = $member->user->name;
@@ -212,7 +215,9 @@ class Members extends Component implements Tables\Contracts\HasTable
         $size = 8;
         $model = Printer::QR_MODEL_2;
         // $img = EscposImage::load(Storage::url('images/darbc.png'));
-        $connector = new NetworkPrintConnector($printerIp);
+        $name = auth()->user()->name;
+        $connector = new WindowsPrintConnector("EPSON-".$name);
+        // $connector = new NetworkPrintConnector($printerIp);
         $printer = new Printer($connector);
         try {
             if($printer)
@@ -227,7 +232,7 @@ class Members extends Component implements Tables\Contracts\HasTable
             $printer -> text($content);
             $printer -> feed(4);
             $printer -> cut();
-            $printer -> close();
+            //$printer -> close();
         } catch(\Exception $e)
         {
             Notification::make()

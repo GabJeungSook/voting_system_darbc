@@ -11,11 +11,15 @@ use App\Models\Vote;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Artisan;
 use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
+use Mike42\Escpos\PrintConnectors\FilePrintConnector;
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
+use Mike42\Escpos\CapabilityProfile;
 use Mike42\Escpos\Printer;
 use WireUi\Traits\Actions;
 
 class Dashboard extends Component
 {
+
     use Actions;
 
     public $tellers;
@@ -52,11 +56,26 @@ class Dashboard extends Component
 
     }
 
+    public function testPrint()
+    {
+        $connector = new WindowsPrintConnector("EPSON TM-T82X Receipt");
+        /* Print a "Hello world" receipt" */
+        $printer = new Printer($connector);
+        $printer -> text("Hello World\n");
+        $printer -> cut();
+
+        /* Close printer */
+        $printer -> close();
+
+    }
+
     public function test()
     {
-        $printerIp = auth()->user()->printer->ip_address;
-        $printerPort = 9100;
-        $connector = new NetworkPrintConnector($printerIp);
+        // $printerIp = auth()->user()->printer->ip_address;
+        // $printerPort = 9100;
+        // $connector = new NetworkPrintConnector($printerIp);
+        $name = auth()->user()->name;
+        $connector = new WindowsPrintConnector("EPSON-".$name);
         $printer = new Printer($connector);
         try {
             $printer->setJustification(Printer::JUSTIFY_CENTER);
@@ -66,7 +85,7 @@ class Dashboard extends Component
             $printer->text("Printer is good to go!");
             $printer->feed(4);
             $printer->cut();
-            $printer->close();
+            //$printer->close();
         } finally {
             $printer -> close();
         }
