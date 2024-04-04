@@ -134,12 +134,13 @@ class Members extends Component implements Tables\Contracts\HasTable
                     $this->resets();
                 }
             })->requiresConfirmation()->visible(function ($record) {
-                $exists = RegisteredMember::where('member_id', $record->id)->where('is_voided', false)->exists();
+                $already_registered = RegisteredMember::where('member_id', $record->id)->where('is_voided', false)->exists();
+                $already_registered_voided = RegisteredMember::where('member_id', $record->id)->where('is_voided', true)->exists();
 
-                if($exists || $record->is_active === 0)
+                if($already_registered || $record->is_active === 0)
                 {
                     return false;
-                }else
+                }elseif($already_registered_voided || $record->is_active === 1)
                 {
                     return true;
                 }
