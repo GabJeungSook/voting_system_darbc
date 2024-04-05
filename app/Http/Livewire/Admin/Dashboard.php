@@ -87,7 +87,7 @@ class Dashboard extends Component
             $printer->cut();
             $printer->close();
         } finally {
-            $printer -> close();
+            //$printer -> close();
         }
     }
 
