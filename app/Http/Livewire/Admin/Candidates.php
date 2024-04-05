@@ -80,7 +80,7 @@ class Candidates extends Component implements Tables\Contracts\HasTable
                 Forms\Components\FileUpload::make('image_path')
                 ->directory('candidate-photos')->preserveFilenames()->image()
                 ->label('Photo')->required(),
-            ])->visible(fn () => RegisteredMember::count() < 0)
+            ])->visible(fn () => RegisteredMember::count() == 0)
         ];
     }
 
