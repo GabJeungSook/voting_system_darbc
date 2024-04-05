@@ -69,7 +69,7 @@ class Positions extends Component implements Tables\Contracts\HasTable
                 Forms\Components\TextInput::make('number_of_winners')
                 ->numeric()
                 ->required(),
-            ])  ->visible(fn () => RegisteredMember::count() < 0)
+            ])  ->visible(fn () => RegisteredMember::count() == 0)
         ];
     }
 
