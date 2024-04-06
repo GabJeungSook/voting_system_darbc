@@ -75,7 +75,7 @@ class Dashboard extends Component
         // $printerPort = 9100;
         // $connector = new NetworkPrintConnector($printerIp);
         $name = auth()->user()->name;
-        $connector = new WindowsPrintConnector("EPSON-".$name);
+        $connector = new WindowsPrintConnector("smb://darbcserver/EPSON-".$name);
         $printer = new Printer($connector);
         try {
             $printer->setJustification(Printer::JUSTIFY_CENTER);
