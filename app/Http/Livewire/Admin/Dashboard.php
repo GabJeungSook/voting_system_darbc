@@ -77,7 +77,7 @@ class Dashboard extends Component
         $hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
         $name = auth()->user()->name;
         $ip=$_SERVER['REMOTE_ADDR'];
-        $connector = new WindowsPrintConnector("smb://Guest@$ip/EPSON-".$name);
+        $connector = new WindowsPrintConnector("EPSON-".$name);
         // $connector = new WindowsPrintConnector("smb://darbcserver/EPSON-".$name);
         $printer = new Printer($connector);
         try {
