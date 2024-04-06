@@ -207,8 +207,8 @@ class Members extends Component implements Tables\Contracts\HasTable
     public function printQR($member)
     {
         $reg_member = $member;
-        // $printerIp = auth()->user()->printer->ip_address;
-        // $printerPort = 9100;
+         $printerIp = auth()->user()->printer->ip_address;
+         $printerPort = 9100;
         $content = $reg_member->qr_code;
         $member_name = strtoupper($reg_member->first_name.' '.$reg_member->middle_name.' '.$reg_member->last_name);
         $counter_number = $member->user->name;
@@ -217,8 +217,8 @@ class Members extends Component implements Tables\Contracts\HasTable
         $model = Printer::QR_MODEL_2;
         // $img = EscposImage::load(Storage::url('images/darbc.png'));
         $name = auth()->user()->name;
-        $connector = new WindowsPrintConnector("EPSON-".$name);
-        // $connector = new NetworkPrintConnector($printerIp);
+      //  $connector = new WindowsPrintConnector("EPSON-".$name);
+       $connector = new NetworkPrintConnector($printerIp);
         $printer = new Printer($connector);
         try {
             if($printer)
