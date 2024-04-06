@@ -43,11 +43,11 @@ class Dashboard extends Component implements Tables\Contracts\HasTable
 
     public function test()
     {
-        // $printerIp = auth()->user()->printer->ip_address;
-        // $printerPort = 9100;
-        // $connector = new NetworkPrintConnector($printerIp);
-        $name = auth()->user()->name;
-        $connector = new WindowsPrintConnector("EPSON-".$name);
+        $printerIp = auth()->user()->printer->ip_address;
+        $printerPort = 9100;
+        $connector = new NetworkPrintConnector($printerIp);
+        // $name = auth()->user()->name;
+        // $connector = new WindowsPrintConnector("EPSON-".$name);
         $printer = new Printer($connector);
         try {
             $printer->setJustification(Printer::JUSTIFY_CENTER);

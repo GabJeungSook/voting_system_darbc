@@ -156,12 +156,12 @@ class CastVote extends Component
     {
         $reg_member = $member;
         $votes = $reg_member->votes()->get();
-        // $printerIp = auth()->user()->printer->ip_address;
-        // $printerPort = 9100;
+        $printerIp = auth()->user()->printer->ip_address;
+        $printerPort = 9100;
         $member_name = strtoupper($reg_member->first_name.' '.$reg_member->middle_name.' '.$reg_member->last_name);
-        $name = auth()->user()->name;
-        $connector = new WindowsPrintConnector("EPSON-".$name);
-        // $connector = new NetworkPrintConnector($printerIp, $printerPort);
+        // $name = auth()->user()->name;
+        // $connector = new WindowsPrintConnector("EPSON-".$name);
+        $connector = new NetworkPrintConnector($printerIp, $printerPort);
         $printer = new Printer($connector);
         try {
             $printer->setJustification(Printer::JUSTIFY_CENTER);
@@ -200,7 +200,7 @@ class CastVote extends Component
             $printer -> setEmphasis(false);
             $printer -> feed(2);
             $printer -> cut();
-           // $printer -> close();
+            $printer -> close();
         } finally {
             $printer -> close();
         }
@@ -210,12 +210,12 @@ class CastVote extends Component
     {
         $reg_member = $member;
         $votes = $reg_member->votes()->get();
-        // $printerIp = auth()->user()->printer->ip_address;
-        // $printerPort = 9100;
+        $printerIp = auth()->user()->printer->ip_address;
+        $printerPort = 9100;
         $member_name = strtoupper($reg_member->first_name.' '.$reg_member->middle_name.' '.$reg_member->last_name);
-        // $connector = new NetworkPrintConnector($printerIp, $printerPort);
-        $name = auth()->user()->name;
-        $connector = new WindowsPrintConnector("EPSON-".$name);
+        $connector = new NetworkPrintConnector($printerIp, $printerPort);
+        // $name = auth()->user()->name;
+        // $connector = new WindowsPrintConnector("EPSON-".$name);
         $printer = new Printer($connector);
         try {
             $printer->setJustification(Printer::JUSTIFY_CENTER);
@@ -235,7 +235,7 @@ class CastVote extends Component
             $printer -> setEmphasis(false);
             $printer -> feed(2);
             $printer -> cut();
-           // $printer -> close();
+            $printer -> close();
         } finally {
             $printer -> close();
         }

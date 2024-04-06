@@ -63,11 +63,11 @@ class Members extends Component implements Tables\Contracts\HasTable
     public function checkPrinterConnection()
     {
         try{
-            // $printerIp = auth()->user()->printer->ip_address;
-            // $printerPort = 9100;
-            $name = auth()->user()->name;
-            $connector = new WindowsPrintConnector("EPSON-".$name);
-            // $connector = new NetworkPrintConnector($printerIp);
+            $printerIp = auth()->user()->printer->ip_address;
+            $printerPort = 9100;
+            // $name = auth()->user()->name;
+            // $connector = new WindowsPrintConnector("EPSON-".$name);
+            $connector = new NetworkPrintConnector($printerIp);
             $printer = new Printer($connector);
                 try {
                     // $printer -> text("DARBC ELECTION 2024\n");
@@ -233,7 +233,7 @@ class Members extends Component implements Tables\Contracts\HasTable
             $printer -> text($content);
             $printer -> feed(4);
             $printer -> cut();
-            //$printer -> close();
+            $printer -> close();
         } catch(\Exception $e)
         {
             Notification::make()

@@ -71,14 +71,13 @@ class Dashboard extends Component
 
     public function test()
     {
-        // $printerIp = auth()->user()->printer->ip_address;
-        // $printerPort = 9100;
-        // $connector = new NetworkPrintConnector($printerIp);
-        $hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-        $name = auth()->user()->name;
-        $ip=$_SERVER['REMOTE_ADDR'];
-        $connector = new WindowsPrintConnector("smb://$ip/EPSON-".$name);
-        // $connector = new WindowsPrintConnector("smb://darbcserver/EPSON-".$name);
+        $printerIp = auth()->user()->printer->ip_address;
+        $printerPort = 9100;
+        $connector = new NetworkPrintConnector($printerIp);
+        // $hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+        // $name = auth()->user()->name;
+        // $ip=$_SERVER['REMOTE_ADDR'];
+        // $connector = new WindowsPrintConnector("smb://$ip/EPSON-".$name);
         $printer = new Printer($connector);
         try {
             $printer->setJustification(Printer::JUSTIFY_CENTER);
@@ -88,7 +87,7 @@ class Dashboard extends Component
             $printer->text("Printer is good to go!");
             $printer->feed(4);
             $printer->cut();
-            //$printer->close();
+            $printer->close();
         } finally {
             $printer -> close();
         }
